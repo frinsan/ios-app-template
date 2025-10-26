@@ -1,0 +1,23 @@
+name: ios-template-ci
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # TODO: set up Xcode, run unit tests, lint Swift
+
+  distribute-staging:
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # TODO: run fastlane to upload TestFlight build against staging backend

@@ -1,0 +1,23 @@
+# Xcode
+DerivedData/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+*.moved-aside
+build/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Package.resolved
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Secrets
+*.p8
+*.mobileprovision
+.env

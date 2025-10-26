@@ -1,0 +1,23 @@
+name: reusable-build
+
+on:
+  workflow_call:
+    inputs:
+      app-manifest:
+        required: true
+        type: string
+    secrets:
+      APPLE_API_KEY:
+        required: false
+      MATCH_PASSWORD:
+        required: false
+
+jobs:
+  build-and-distribute:
+    runs-on: macos-14
+    steps:
+      - name: Checkout template
+        uses: actions/checkout@v4
+      # TODO: fetch brand manifest, apply theming, run fastlane lane
+      - name: Echo manifest path
+        run: echo "Using manifest: ${{ inputs.app-manifest }}"
