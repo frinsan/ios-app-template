@@ -1,0 +1,25 @@
+{
+  "appId": "com.learnandbecurious.sample",
+  "displayName": "Template App",
+  "bundleIdSuffix": "template",
+  "theme": {
+    "primary": "#111111",
+    "accent": "#FFCC00",
+    "appearance": "system"
+  },
+  "features": {
+    "login": true,
+    "feedback": false
+  },
+  "apiBase": {
+    "staging": "https://staging.api.example.com",
+    "prod": "https://api.example.com"
+  },
+  "auth": {
+    "cognitoClientId": null,
+    "scheme": "templateapp",
+    "region": "us-west-2",
+    "hostedUIDomain": "platform-staging.auth.us-west-2.amazoncognito.com"
+  },
+  "activeEnvironment": "staging"
+}
