@@ -16,10 +16,10 @@
     "prod": "https://api.example.com"
   },
   "auth": {
-    "cognitoClientId": null,
+    "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
     "scheme": "templateapp",
     "region": "us-west-2",
-    "hostedUIDomain": "platform-staging.auth.us-west-2.amazoncognito.com"
+    "hostedUIDomain": "frinsan-platform-stg-20251027.auth.us-west-2.amazoncognito.com"
   },
   "activeEnvironment": "staging"
 }
