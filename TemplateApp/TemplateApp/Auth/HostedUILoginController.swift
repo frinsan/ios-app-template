@@ -102,16 +102,18 @@ struct HostedUILoginController {
     private static func decodeJWTClaims(_ token: String) throws -> [String: Any] {
         let parts = token.split(separator: ".")
         guard parts.count >= 2 else { return [:] }
-        var body = parts[1]
+        var body = String(parts[1])
         let requiredLength = ((body.count + 3) / 4) * 4
-        body.append(String(repeating: "=", count: requiredLength - body.count))
-        guard let data = Data(base64Encoded: String(body)) else { return [:] }
+        if body.count != requiredLength {
+            body.append(String(repeating: "=", count: requiredLength - body.count))
+        }
+        guard let data = Data(base64Encoded: body) else { return [:] }
         let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
         return json ?? [:]
     }
 }
 
-private struct HostedUIPresentationAnchor: ASWebAuthenticationPresentationContextProviding {
+private final class HostedUIPresentationAnchor: NSObject, ASWebAuthenticationPresentationContextProviding {
     static let shared = HostedUIPresentationAnchor()
 
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
