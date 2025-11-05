@@ -19,7 +19,7 @@
     "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
     "scheme": "templateapp",
     "region": "us-west-2",
-    "hostedUIDomain": "frinsan-platform-stg-20251027.auth.us-west-2.amazoncognito.com"
+    "hostedUIDomain": "learnandbecurious-staging.auth.us-west-2.amazoncognito.com"
   },
   "activeEnvironment": "staging"
 }
