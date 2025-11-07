@@ -86,7 +86,7 @@ final class AppState: ObservableObject {
     }
 }
 
-enum AuthState {
+enum AuthState: Equatable {
     case signedOut
     case signingIn
     case signedIn(AuthSession)
