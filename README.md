@@ -29,12 +29,13 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
    ruby ../scripts/generate_project.rb
    ```
 2. Open `TemplateApp/TemplateApp.xcodeproj` in Xcode 15.4+.
-3. In the *Signing & Capabilities* tab, set your Apple development team (required for device builds).
+3. In the *Signing & Capabilities* tab, set your Apple development team and add the **Sign in with Apple** capability.
 4. Select the `TemplateApp` scheme and build for an iOS simulator (`⌘B`) or run on device.
 
 ## Testing Auth End-to-End
 
 - Update `TemplateApp/TemplateApp/Config/app.json` with the real Cognito client ID, hosted UI domain, and custom URL scheme once the backend is deployed.
+- Ensure the custom URL scheme (`templateapp`) exists under *URL Types* in Info.plist so Hosted UI redirects back into the app.
 - The app uses `ASWebAuthenticationSession`; ensure your URL scheme is registered in Info.plist before testing on device.
 - Tokens are cached in `UserDefaults` via `AuthSessionStorage`; swap in Keychain storage before production hardening.
 
