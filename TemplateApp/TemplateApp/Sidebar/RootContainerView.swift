@@ -6,6 +6,14 @@ struct RootContainerView: View {
     @State private var isMenuVisible = false
 
     private let drawerWidth: CGFloat = 280
+    private var menuItems: [SidebarItem] {
+        switch appState.authState {
+        case .signedIn:
+            return [.home, .account]
+        default:
+            return [.home, .login]
+        }
+    }
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -30,11 +38,18 @@ struct RootContainerView: View {
                     .transition(.opacity)
             }
 
-            SidebarView(selection: $selection, isVisible: $isMenuVisible)
+            SidebarView(items: menuItems, selection: $selection, isVisible: $isMenuVisible)
                 .frame(width: drawerWidth)
                 .offset(x: isMenuVisible ? 0 : -drawerWidth - 16)
                 .shadow(color: .black.opacity(0.2), radius: 10, x: 4, y: 0)
                 .animation(.easeInOut(duration: 0.25), value: isMenuVisible)
+        }
+        .onChange(of: appState.authState) { _ in
+            if !menuItems.contains(selection) {
+                selection = menuItems.first ?? .home
+            } else if selection == .login, case .signedIn = appState.authState {
+                selection = .account
+            }
         }
     }
 

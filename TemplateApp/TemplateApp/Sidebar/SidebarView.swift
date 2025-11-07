@@ -2,13 +2,14 @@ import SwiftUI
 
 struct SidebarView: View {
     @EnvironmentObject private var appState: AppState
+    let items: [SidebarItem]
     @Binding var selection: SidebarItem
     @Binding var isVisible: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             header
-            ForEach(SidebarItem.allCases) { item in
+            ForEach(items) { item in
                 Button {
                     selection = item
                     withAnimation(.easeInOut(duration: 0.25)) {
@@ -58,6 +59,6 @@ struct SidebarView: View {
 }
 
 #Preview {
-    SidebarView(selection: .constant(.home), isVisible: .constant(true))
+    SidebarView(items: [.home, .login], selection: .constant(.home), isVisible: .constant(true))
         .environmentObject(AppState())
 }

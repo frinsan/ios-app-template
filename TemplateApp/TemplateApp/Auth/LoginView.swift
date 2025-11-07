@@ -45,7 +45,7 @@ struct LoginView: View {
             do {
                 let session = try await HostedUILoginController.signIn(provider: provider, manifest: appState.manifest)
                 await MainActor.run {
-                    appState.authState = .signedIn(session)
+                    appState.handleLoginSuccess(session)
                     isLoading = false
                 }
             } catch {

@@ -7,21 +7,8 @@ struct AccountView: View {
     var body: some View {
         VStack(spacing: 24) {
             switch appState.authState {
-            case .signedIn(let session):
-                VStack(spacing: 12) {
-                    Text(session.user.email ?? session.user.subject)
-                        .font(.title2.bold())
-                    if let given = session.user.givenName {
-                        Text("Welcome back, \(given)!")
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                if isLoggingOut {
-                    ProgressView("Signing out…")
-                } else {
-                    Button("Sign out", role: .destructive, action: signOut)
-                        .buttonStyle(.bordered)
-                }
+            case .signedIn:
+                profileContent()
             default:
                 Text("You are not signed in yet.")
                     .foregroundStyle(.secondary)
@@ -35,20 +22,45 @@ struct AccountView: View {
         .navigationTitle("Account")
     }
 
-    private func signOut() {
-        guard case .signedIn = appState.authState else {
-            return
+    @ViewBuilder
+    private func profileContent() -> some View {
+        VStack(spacing: 20) {
+            if let profile = appState.userProfile {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(profile.displayName)
+                        .font(.title2.bold())
+                    if let email = profile.email {
+                        Label(email, systemImage: "envelope")
+                            .foregroundStyle(.secondary)
+                    }
+                    if let environment = profile.environment {
+                        Text("Environment: \(environment)")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                ProgressView("Loading profile…")
+                    .task {
+                        appState.refreshProfileIfNeeded()
+                    }
+            }
+
+            if isLoggingOut {
+                ProgressView("Signing out…")
+            } else {
+                Button("Sign out", role: .destructive, action: signOut)
+                    .buttonStyle(.bordered)
+            }
         }
+    }
+
+    private func signOut() {
         isLoggingOut = true
         Task {
-            do {
-                try await HostedUILoginController.logout(manifest: appState.manifest)
-            } catch {
-                // Swallow errors; we'll still clear local session
-            }
-            AuthSessionStorage.shared.clear()
+            await appState.performLogout()
             await MainActor.run {
-                appState.authState = .signedOut
                 isLoggingOut = false
             }
         }

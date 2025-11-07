@@ -15,6 +15,7 @@ struct TemplateAppApp: App {
 final class AppState: ObservableObject {
     @Published var manifest: AppManifest = .placeholder
     @Published var authState: AuthState = .signedOut
+    @Published var userProfile: UserProfile?
 
     init() {
         loadManifest()
@@ -32,6 +33,55 @@ final class AppState: ObservableObject {
     private func restoreSession() {
         if let session = AuthSessionStorage.shared.load(), !session.isExpired {
             authState = .signedIn(session)
+            Task {
+                await bootstrapAndFetchProfile(forceBootstrap: false)
+            }
+        }
+    }
+
+    func handleLoginSuccess(_ session: AuthSession) {
+        authState = .signedIn(session)
+        Task {
+            await bootstrapAndFetchProfile(forceBootstrap: true)
+        }
+    }
+
+    func refreshProfileIfNeeded() {
+        guard userProfile == nil else { return }
+        Task {
+            await bootstrapAndFetchProfile(forceBootstrap: false)
+        }
+    }
+
+    func performLogout() async {
+        if case .signedIn = authState {
+            do {
+                try await HostedUILoginController.logout(manifest: manifest)
+            } catch {
+                print("[Auth] Logout failed: \(error)")
+            }
+        }
+
+        await MainActor.run {
+            AuthSessionStorage.shared.clear()
+            userProfile = nil
+            authState = .signedOut
+        }
+    }
+
+    private func bootstrapAndFetchProfile(forceBootstrap: Bool) async {
+        guard case let .signedIn(session) = authState else { return }
+        let service = UserProfileService(manifest: manifest)
+        do {
+            if forceBootstrap {
+                _ = try await service.bootstrapProfile(session: session)
+            }
+            let profile = try await service.fetchProfile(session: session)
+            await MainActor.run {
+                self.userProfile = profile
+            }
+        } catch {
+            print("[Profile] Failed to sync: \(error)")
         }
     }
 }

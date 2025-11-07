@@ -12,7 +12,7 @@
     "feedback": false
   },
   "apiBase": {
-    "staging": "https://staging.api.example.com",
+    "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
     "prod": "https://api.example.com"
   },
   "auth": {
