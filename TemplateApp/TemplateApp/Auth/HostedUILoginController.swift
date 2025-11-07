@@ -130,7 +130,11 @@ struct HostedUILoginController {
         request.httpBody = body.data(using: .utf8)
 
         let (data, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw HostedUILoginError.tokenExchangeFailed
+        }
+
+        guard httpResponse.statusCode == 200 else {
             if let payload = String(data: data, encoding: .utf8) {
                 print("[Auth] Token exchange failed: \(httpResponse.statusCode) - \(payload)")
             }
