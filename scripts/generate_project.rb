@@ -67,7 +67,8 @@ source_files = {
     ['HostedUILoginController.swift', 'HostedUILoginController.swift']
   ],
   api_group => [
-    ['APIClient.swift', 'APIClient.swift']
+    ['APIClient.swift', 'APIClient.swift'],
+    ['UserProfileService.swift', 'UserProfileService.swift']
   ],
   sidebar_group => [
     ['RootContainerView.swift', 'RootContainerView.swift'],
