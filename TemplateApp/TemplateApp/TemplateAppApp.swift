@@ -86,8 +86,21 @@ final class AppState: ObservableObject {
     }
 }
 
-enum AuthState: Equatable {
+enum AuthState {
     case signedOut
     case signingIn
     case signedIn(AuthSession)
+}
+
+extension AuthState: Equatable {
+    static func == (lhs: AuthState, rhs: AuthState) -> Bool {
+        switch (lhs, rhs) {
+        case (.signedOut, .signedOut), (.signingIn, .signingIn):
+            return true
+        case let (.signedIn(a), .signedIn(b)):
+            return (a.user.subject ?? a.idToken) == (b.user.subject ?? b.idToken)
+        default:
+            return false
+        }
+    }
 }
