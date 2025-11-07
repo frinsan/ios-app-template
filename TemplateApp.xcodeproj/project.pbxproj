@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E7A6B7C47C6C4F5FBA5F1F1F /* TemplateApp/TemplateApp/API/EmailAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CEBD3179344A84A8F1A2B6 /* TemplateApp/TemplateApp/API/EmailAuthService.swift */; };
 		04E0D262D8C13776FBCA898F /* TemplateApp/TemplateApp/API/UserProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D23BEF7D4D624C1FF7C092 /* TemplateApp/TemplateApp/API/UserProfileService.swift */; };
 		1773B4471C8DB2C3AE056C60 /* TemplateApp/TemplateApp/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FFC013538AF0FCAB457133E /* TemplateApp/TemplateApp/Assets.xcassets */; };
 		270AAABA7E17C03437AAC929 /* TemplateApp/TemplateApp/ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACC6F28BB95FD3F76FDD72 /* TemplateApp/TemplateApp/ContentView.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F1CEBD3179344A84A8F1A2B6 /* TemplateApp/TemplateApp/API/EmailAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/EmailAuthService.swift; sourceTree = SOURCE_ROOT; };
 		07E1B3D51B1D6E07B6BD4B6F /* TemplateApp/TemplateApp/Auth/LoginView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/LoginView.swift; sourceTree = SOURCE_ROOT; };
 		0B61B88D2EBDE52300D4DB3E /* TemplateApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TemplateApp.entitlements; path = TemplateApp/TemplateApp.entitlements; sourceTree = "<group>"; };
 		0DACC6F28BB95FD3F76FDD72 /* TemplateApp/TemplateApp/ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/ContentView.swift; sourceTree = SOURCE_ROOT; };
@@ -73,6 +75,7 @@
 		161826A6C3BD3A2DC6C12FC5 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				F1CEBD3179344A84A8F1A2B6 /* TemplateApp/TemplateApp/API/EmailAuthService.swift */,
 				407CDB9A2592AEC28843BF7F /* TemplateApp/TemplateApp/API/APIClient.swift */,
 				78D23BEF7D4D624C1FF7C092 /* TemplateApp/TemplateApp/API/UserProfileService.swift */,
 			);
@@ -244,6 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7A6B7C47C6C4F5FBA5F1F1F /* TemplateApp/TemplateApp/API/EmailAuthService.swift in Sources */,
 				FC77882820524B7FEDFFBBDA /* TemplateApp/TemplateApp/TemplateAppApp.swift in Sources */,
 				270AAABA7E17C03437AAC929 /* TemplateApp/TemplateApp/ContentView.swift in Sources */,
 				8F7065E606F77340383E4F51 /* TemplateApp/TemplateApp/Config/AppManifest.swift in Sources */,
