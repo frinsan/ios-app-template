@@ -162,7 +162,7 @@ struct HostedUILoginController {
         return session
     }
 
-    private static func decodeJWTClaims(_ token: String) throws -> [String: Any] {
+    static func decodeJWTClaims(_ token: String) throws -> [String: Any] {
         let parts = token.split(separator: ".")
         guard parts.count >= 2 else { return [:] }
         var body = String(parts[1])

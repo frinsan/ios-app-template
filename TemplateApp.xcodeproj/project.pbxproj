@@ -7,181 +7,179 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		034132681299AC5FCA17CBFE /* TemplateApp/TemplateApp/Config/ManifestLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C55149111C0291EDFB925 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */; };
-		0F38BA96FB0EFDE6D5FBA2B1 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685E748F2A5FC1AC1B2FEF17 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift */; };
-		1759A9C4B6A5EE14A9E05EC4 /* TemplateApp/TemplateApp/Auth/AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C65F1A3508B7359F613776 /* TemplateApp/TemplateApp/Auth/AuthSession.swift */; };
-		1D57D2120C51175D1652099A /* TemplateApp/TemplateApp/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA89647F4B3F91E82F33C579 /* TemplateApp/TemplateApp/Assets.xcassets */; };
-		2622B0B5534C9EBFB537EEB2 /* TemplateApp/TemplateApp/ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3ADF26DF39AE9926B84D94 /* TemplateApp/TemplateApp/ContentView.swift */; };
-		3CD6F8DD549C93EECBBA0E80 /* TemplateApp/TemplateApp/Config/Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126E3B8D33EB0D0135433DB3 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */; };
-		3D7EDC981CCCDE9B62F15161 /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E4E88745F90D82ED9EC3BF /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift */; };
-		3EA33D7DA177A174F8A1128F /* TemplateApp/TemplateApp/Auth/AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03974C7A757CAF825D1A3591 /* TemplateApp/TemplateApp/Auth/AccountView.swift */; };
-		41680142816EB6C322B257C3 /* TemplateApp/TemplateApp/TemplateAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E537E1094BD02DDF45000D /* TemplateApp/TemplateApp/TemplateAppApp.swift */; };
-		41F985E14FC730DC1E53F6E2 /* TemplateApp/TemplateApp/Config/AppManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AE70EB3F2E381D2E91D114 /* TemplateApp/TemplateApp/Config/AppManifest.swift */; };
-		48DDCEA45755167CA1B52064 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A15AB70F82E99F3A73EB37C /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */; };
-		569ED0FD8D6274434A6846E6 /* TemplateApp/TemplateApp/Config/app.json in Resources */ = {isa = PBXBuildFile; fileRef = A796F981F3585F52B444C058 /* TemplateApp/TemplateApp/Config/app.json */; };
-		791D3544303947A1759761AA /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7151C269608413F8B82FDE /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift */; };
-		7C37898B7412D1410859DC1D /* TemplateApp/TemplateApp/Auth/LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E095E0D88F0134C28591699 /* TemplateApp/TemplateApp/Auth/LoginView.swift */; };
-		A04E46ADF819032E8CF6DF23 /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1FE27070836565CF8CA8BDC /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets */; };
-		A85A1E4CBB27DBF69085C98A /* TemplateApp/TemplateApp/API/APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE28A289652F1545AE6633 /* TemplateApp/TemplateApp/API/APIClient.swift */; };
-		AC8A4D141A46E0D469433768 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB61B059D628655E37F99630 /* Foundation.framework */; };
-		C369AA4D35F735F8310D4DEB /* TemplateApp/TemplateApp/API/UserProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0813FBA11351931250DFD68A /* TemplateApp/TemplateApp/API/UserProfileService.swift */; };
-		C7F7F9F0D876E18CACA845AD /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F04DA30F94453ED101E601A /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */; };
-		DCA73856352A75E9F05341AE /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5865B03CD2EF22FC262538B6 /* AuthenticationServices.framework */; };
-		F3666C379D574224416FD3F7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5F0AD0A9D39CBE8923A82E65 /* Localizable.strings */; };
+		04E0D262D8C13776FBCA898F /* UserProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D23BEF7D4D624C1FF7C092 /* UserProfileService.swift */; };
+		1773B4471C8DB2C3AE056C60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FFC013538AF0FCAB457133E /* Assets.xcassets */; };
+		270AAABA7E17C03437AAC929 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACC6F28BB95FD3F76FDD72 /* ContentView.swift */; };
+		29D3A96AEE2C837A895D8F10 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F5D6162C45AAC4E7775DB52 /* Preview Assets.xcassets */; };
+		2B85E75A8F12F3EA125797F9 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407CDB9A2592AEC28843BF7F /* APIClient.swift */; };
+		5A08BE21A505A84453B8F8BE /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7074552D12DDA8612CB1B7 /* SidebarView.swift */; };
+		6335D7823BAB651E7862DB68 /* SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B6CAE17E72AD34C58CA0E5 /* SidebarItem.swift */; };
+		653C9019A7D4B100AEBDD922 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEE5392CD01D5A4DD0F534DC /* Color+Hex.swift */; };
+		6912459E641A8382F94D2DBF /* AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C723C5C9783DF64B2E9B6934 /* AuthSession.swift */; };
+		6ABE08CAD0B12F964C724E50 /* RootContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C343FE61D0E9B12E02EBA797 /* RootContainerView.swift */; };
+		8BE9FB387F7C7664640A7F26 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1B3D51B1D6E07B6BD4B6F /* LoginView.swift */; };
+		8F7065E606F77340383E4F51 /* AppManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6B3A12886746A25F5117FC /* AppManifest.swift */; };
+		9B66963FC8151E6A321DAB28 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C112744B073CE3683244D5 /* Foundation.framework */; };
+		B1E4E5E240CBE5D02A871A84 /* app.json in Resources */ = {isa = PBXBuildFile; fileRef = CADBF6A14324A15515B220D5 /* app.json */; };
+		CC8952F9F6C4DCC8E14F61ED /* AuthSessionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5E6249D7859E48ED9A26B1 /* AuthSessionStorage.swift */; };
+		E8F621C17790F173A5BD8AFF /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463B436D052C863ABAC1120C /* AccountView.swift */; };
+		ECAEBA872C1AA20D72B736B8 /* ManifestLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDCA8D484199B60159471CC /* ManifestLoader.swift */; };
+		F290C25A5E465E3006AE2082 /* HostedUILoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531FA401503B7F43C8999170 /* HostedUILoginController.swift */; };
+		F81E98A752B085C02762D2A5 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F229C06280D97605EC63F123 /* AuthenticationServices.framework */; };
+		FBF72B386939F1366C778294 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 491BD14D91D960990D086AC2 /* Localizable.strings */; };
+		FC77882820524B7FEDFFBBDA /* TemplateAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEC6BD4657F60C89B19443F /* TemplateAppApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02E537E1094BD02DDF45000D /* TemplateApp/TemplateApp/TemplateAppApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/TemplateAppApp.swift; sourceTree = SOURCE_ROOT; };
-		03974C7A757CAF825D1A3591 /* TemplateApp/TemplateApp/Auth/AccountView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AccountView.swift; sourceTree = SOURCE_ROOT; };
-		0813FBA11351931250DFD68A /* TemplateApp/TemplateApp/API/UserProfileService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/UserProfileService.swift; sourceTree = SOURCE_ROOT; };
-		0B71DE6B2EBDDEA2001C9DDA /* TemplateApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TemplateApp.entitlements; path = TemplateApp/TemplateApp.entitlements; sourceTree = "<group>"; };
-		11E1EACCD2E73DC90AEF8109 /* TemplateApp/TemplateApp/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateApp/Info.plist; sourceTree = SOURCE_ROOT; };
-		126E3B8D33EB0D0135433DB3 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "TemplateApp/TemplateApp/Config/Color+Hex.swift"; sourceTree = SOURCE_ROOT; };
-		2CFE28A289652F1545AE6633 /* TemplateApp/TemplateApp/API/APIClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/APIClient.swift; sourceTree = SOURCE_ROOT; };
-		363C55149111C0291EDFB925 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/ManifestLoader.swift; sourceTree = SOURCE_ROOT; };
-		3A15AB70F82E99F3A73EB37C /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarView.swift; sourceTree = SOURCE_ROOT; };
-		3E095E0D88F0134C28591699 /* TemplateApp/TemplateApp/Auth/LoginView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/LoginView.swift; sourceTree = SOURCE_ROOT; };
-		4F04DA30F94453ED101E601A /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/HostedUILoginController.swift; sourceTree = SOURCE_ROOT; };
-		5865B03CD2EF22FC262538B6 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = "<group>"; };
-		5F0AD0A9D39CBE8923A82E65 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = TemplateApp/TemplateApp/Localization/Base.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
-		67C65F1A3508B7359F613776 /* TemplateApp/TemplateApp/Auth/AuthSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AuthSession.swift; sourceTree = SOURCE_ROOT; };
-		685E748F2A5FC1AC1B2FEF17 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/RootContainerView.swift; sourceTree = SOURCE_ROOT; };
-		7B3ADF26DF39AE9926B84D94 /* TemplateApp/TemplateApp/ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/ContentView.swift; sourceTree = SOURCE_ROOT; };
-		A796F981F3585F52B444C058 /* TemplateApp/TemplateApp/Config/app.json */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json; path = TemplateApp/TemplateApp/Config/app.json; sourceTree = SOURCE_ROOT; };
-		A9AE70EB3F2E381D2E91D114 /* TemplateApp/TemplateApp/Config/AppManifest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/AppManifest.swift; sourceTree = SOURCE_ROOT; };
-		B7E4E88745F90D82ED9EC3BF /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift; sourceTree = SOURCE_ROOT; };
-		BE3B2DAA5F380B91D52AE54E /* TemplateApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA89647F4B3F91E82F33C579 /* TemplateApp/TemplateApp/Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = TemplateApp/TemplateApp/Assets.xcassets; sourceTree = SOURCE_ROOT; };
-		D1FE27070836565CF8CA8BDC /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = "TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets"; sourceTree = SOURCE_ROOT; };
-		EE7151C269608413F8B82FDE /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarItem.swift; sourceTree = SOURCE_ROOT; };
-		FB61B059D628655E37F99630 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		07E1B3D51B1D6E07B6BD4B6F /* LoginView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/LoginView.swift; sourceTree = SOURCE_ROOT; };
+		0DACC6F28BB95FD3F76FDD72 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/ContentView.swift; sourceTree = SOURCE_ROOT; };
+		3EDCA8D484199B60159471CC /* ManifestLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/ManifestLoader.swift; sourceTree = SOURCE_ROOT; };
+		407CDB9A2592AEC28843BF7F /* APIClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/APIClient.swift; sourceTree = SOURCE_ROOT; };
+		463B436D052C863ABAC1120C /* AccountView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AccountView.swift; sourceTree = SOURCE_ROOT; };
+		491BD14D91D960990D086AC2 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = TemplateApp/TemplateApp/Localization/Base.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		4E941A022ED3088C653E173A /* TemplateApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		531FA401503B7F43C8999170 /* HostedUILoginController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/HostedUILoginController.swift; sourceTree = SOURCE_ROOT; };
+		6FFC013538AF0FCAB457133E /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = TemplateApp/TemplateApp/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		78D23BEF7D4D624C1FF7C092 /* UserProfileService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/UserProfileService.swift; sourceTree = SOURCE_ROOT; };
+		85C112744B073CE3683244D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		8D7074552D12DDA8612CB1B7 /* SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarView.swift; sourceTree = SOURCE_ROOT; };
+		9F5D6162C45AAC4E7775DB52 /* Preview Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = "TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		A7B6CAE17E72AD34C58CA0E5 /* SidebarItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarItem.swift; sourceTree = SOURCE_ROOT; };
+		AE6B3A12886746A25F5117FC /* AppManifest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/AppManifest.swift; sourceTree = SOURCE_ROOT; };
+		AFEC6BD4657F60C89B19443F /* TemplateAppApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/TemplateAppApp.swift; sourceTree = SOURCE_ROOT; };
+		C343FE61D0E9B12E02EBA797 /* RootContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/RootContainerView.swift; sourceTree = SOURCE_ROOT; };
+		C723C5C9783DF64B2E9B6934 /* AuthSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AuthSession.swift; sourceTree = SOURCE_ROOT; };
+		CADBF6A14324A15515B220D5 /* app.json */ = {isa = PBXFileReference; includeInIndex = 1; path = TemplateApp/TemplateApp/Config/app.json; sourceTree = SOURCE_ROOT; };
+		DEE5392CD01D5A4DD0F534DC /* Color+Hex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "TemplateApp/TemplateApp/Config/Color+Hex.swift"; sourceTree = SOURCE_ROOT; };
+		EC5E6249D7859E48ED9A26B1 /* AuthSessionStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift; sourceTree = SOURCE_ROOT; };
+		F229C06280D97605EC63F123 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = "<group>"; };
+		FE250B330AD4C0CC5C7FA805 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateApp/Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		FCC45FBE4EEC9B78D040BCF5 /* Frameworks */ = {
+		84C0609DC22D5B1E3B7CFB1D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC8A4D141A46E0D469433768 /* Foundation.framework in Frameworks */,
-				DCA73856352A75E9F05341AE /* AuthenticationServices.framework in Frameworks */,
+				9B66963FC8151E6A321DAB28 /* Foundation.framework in Frameworks */,
+				F81E98A752B085C02762D2A5 /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0006FD1BE9B8A19ADC95F664 /* Config */ = {
+		161826A6C3BD3A2DC6C12FC5 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				A9AE70EB3F2E381D2E91D114 /* TemplateApp/TemplateApp/Config/AppManifest.swift */,
-				363C55149111C0291EDFB925 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */,
-				126E3B8D33EB0D0135433DB3 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */,
-				A796F981F3585F52B444C058 /* TemplateApp/TemplateApp/Config/app.json */,
+				407CDB9A2592AEC28843BF7F /* APIClient.swift */,
+				78D23BEF7D4D624C1FF7C092 /* UserProfileService.swift */,
 			);
-			name = Config;
+			name = API;
 			sourceTree = "<group>";
 		};
-		1A308903E44B2BEBDC2CBC55 /* TemplateApp */ = {
+		17F10F6A066708EFFBCCC406 /* TemplateApp */ = {
 			isa = PBXGroup;
 			children = (
-				0B71DE6B2EBDDEA2001C9DDA /* TemplateApp.entitlements */,
-				0006FD1BE9B8A19ADC95F664 /* Config */,
-				619B0151423CE80F13DA3124 /* Auth */,
-				F771BF3ACE5D5A0E1FBDEAB8 /* API */,
-				56FC641C71A3F42505445558 /* Sidebar */,
-				02E537E1094BD02DDF45000D /* TemplateApp/TemplateApp/TemplateAppApp.swift */,
-				7B3ADF26DF39AE9926B84D94 /* TemplateApp/TemplateApp/ContentView.swift */,
-				CA89647F4B3F91E82F33C579 /* TemplateApp/TemplateApp/Assets.xcassets */,
-				11E1EACCD2E73DC90AEF8109 /* TemplateApp/TemplateApp/Info.plist */,
-				5F0AD0A9D39CBE8923A82E65 /* Localizable.strings */,
+				E6346D6B8FE4600DDEEA6C46 /* Config */,
+				8D330E95B1EC3603AD42B257 /* Auth */,
+				161826A6C3BD3A2DC6C12FC5 /* API */,
+				3D826337F6289EE9DE3A3FB5 /* Sidebar */,
+				AFEC6BD4657F60C89B19443F /* TemplateAppApp.swift */,
+				0DACC6F28BB95FD3F76FDD72 /* ContentView.swift */,
+				6FFC013538AF0FCAB457133E /* Assets.xcassets */,
+				FE250B330AD4C0CC5C7FA805 /* Info.plist */,
+				491BD14D91D960990D086AC2 /* Localizable.strings */,
 			);
 			name = TemplateApp;
 			sourceTree = "<group>";
 		};
-		39B2F022E9F99809785953A0 /* Preview Content */ = {
+		24104F538D8CA23E6918A3F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D1FE27070836565CF8CA8BDC /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets */,
-			);
-			name = "Preview Content";
-			sourceTree = "<group>";
-		};
-		56FC641C71A3F42505445558 /* Sidebar */ = {
-			isa = PBXGroup;
-			children = (
-				685E748F2A5FC1AC1B2FEF17 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift */,
-				EE7151C269608413F8B82FDE /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift */,
-				3A15AB70F82E99F3A73EB37C /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */,
-			);
-			name = Sidebar;
-			sourceTree = "<group>";
-		};
-		619B0151423CE80F13DA3124 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				3E095E0D88F0134C28591699 /* TemplateApp/TemplateApp/Auth/LoginView.swift */,
-				67C65F1A3508B7359F613776 /* TemplateApp/TemplateApp/Auth/AuthSession.swift */,
-				B7E4E88745F90D82ED9EC3BF /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift */,
-				03974C7A757CAF825D1A3591 /* TemplateApp/TemplateApp/Auth/AccountView.swift */,
-				4F04DA30F94453ED101E601A /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */,
-			);
-			name = Auth;
-			sourceTree = "<group>";
-		};
-		82059CBCE473353E59C3704D /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				FB61B059D628655E37F99630 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		C89EB573190C235133D1BF2A = {
-			isa = PBXGroup;
-			children = (
-				E4BD5038AE724A870F6DC8F2 /* Products */,
-				F0E37FCF171F5D5BE33AED47 /* Frameworks */,
-				1A308903E44B2BEBDC2CBC55 /* TemplateApp */,
-				39B2F022E9F99809785953A0 /* Preview Content */,
-			);
-			sourceTree = "<group>";
-		};
-		E4BD5038AE724A870F6DC8F2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BE3B2DAA5F380B91D52AE54E /* TemplateApp.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		F0E37FCF171F5D5BE33AED47 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				82059CBCE473353E59C3704D /* iOS */,
-				5865B03CD2EF22FC262538B6 /* AuthenticationServices.framework */,
+				ECBB96AE072A0DE37F8A8B93 /* iOS */,
+				F229C06280D97605EC63F123 /* AuthenticationServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F771BF3ACE5D5A0E1FBDEAB8 /* API */ = {
+		3D826337F6289EE9DE3A3FB5 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
-				2CFE28A289652F1545AE6633 /* TemplateApp/TemplateApp/API/APIClient.swift */,
-				0813FBA11351931250DFD68A /* TemplateApp/TemplateApp/API/UserProfileService.swift */,
+				C343FE61D0E9B12E02EBA797 /* RootContainerView.swift */,
+				A7B6CAE17E72AD34C58CA0E5 /* SidebarItem.swift */,
+				8D7074552D12DDA8612CB1B7 /* SidebarView.swift */,
 			);
-			name = API;
+			name = Sidebar;
+			sourceTree = "<group>";
+		};
+		41523B365C603C39AF506552 = {
+			isa = PBXGroup;
+			children = (
+				CFB36501F229309EC1DFD8B6 /* Products */,
+				24104F538D8CA23E6918A3F1 /* Frameworks */,
+				17F10F6A066708EFFBCCC406 /* TemplateApp */,
+				470BB8324492B0775A046008 /* Preview Content */,
+			);
+			sourceTree = "<group>";
+		};
+		470BB8324492B0775A046008 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9F5D6162C45AAC4E7775DB52 /* Preview Assets.xcassets */,
+			);
+			name = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8D330E95B1EC3603AD42B257 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				07E1B3D51B1D6E07B6BD4B6F /* LoginView.swift */,
+				C723C5C9783DF64B2E9B6934 /* AuthSession.swift */,
+				EC5E6249D7859E48ED9A26B1 /* AuthSessionStorage.swift */,
+				463B436D052C863ABAC1120C /* AccountView.swift */,
+				531FA401503B7F43C8999170 /* HostedUILoginController.swift */,
+			);
+			name = Auth;
+			sourceTree = "<group>";
+		};
+		CFB36501F229309EC1DFD8B6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4E941A022ED3088C653E173A /* TemplateApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6346D6B8FE4600DDEEA6C46 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				AE6B3A12886746A25F5117FC /* AppManifest.swift */,
+				3EDCA8D484199B60159471CC /* ManifestLoader.swift */,
+				DEE5392CD01D5A4DD0F534DC /* Color+Hex.swift */,
+				CADBF6A14324A15515B220D5 /* app.json */,
+			);
+			name = Config;
+			sourceTree = "<group>";
+		};
+		ECBB96AE072A0DE37F8A8B93 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				85C112744B073CE3683244D5 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		22C30BBF32A99287C15A8129 /* TemplateApp */ = {
+		6E7DA1FB939F9EE63746A4EC /* TemplateApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 94B4742ADEE860BD7F754C15 /* Build configuration list for PBXNativeTarget "TemplateApp" */;
+			buildConfigurationList = 6B1744B96EC833DC49272FA2 /* Build configuration list for PBXNativeTarget "TemplateApp" */;
 			buildPhases = (
-				AD558D11A200D50E5EFF11FF /* Sources */,
-				FCC45FBE4EEC9B78D040BCF5 /* Frameworks */,
-				EB94C8C50A8DDA255B5A20D8 /* Resources */,
+				584EC3E60A4825DB00B68C2A /* Sources */,
+				84C0609DC22D5B1E3B7CFB1D /* Frameworks */,
+				5F33BB22B3BFE83DB777770E /* Resources */,
 			);
 			buildRules = (
 			);
@@ -189,25 +187,19 @@
 			);
 			name = TemplateApp;
 			productName = TemplateApp;
-			productReference = BE3B2DAA5F380B91D52AE54E /* TemplateApp.app */;
+			productReference = 4E941A022ED3088C653E173A /* TemplateApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		28951A5023B4BCB7F542A624 /* Project object */ = {
+		45A5C78A2333AE0E20C5E007 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1500;
-				TargetAttributes = {
-					22C30BBF32A99287C15A8129 = {
-						DevelopmentTeam = MH94CAVYWW;
-						ProvisioningStyle = Automatic;
-					};
-				};
 			};
-			buildConfigurationList = 79B169EC4AD86DF483BA8457 /* Build configuration list for PBXProject "TemplateApp" */;
+			buildConfigurationList = 4DC83DED814E71A98747283B /* Build configuration list for PBXProject "TemplateApp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -215,77 +207,59 @@
 				en,
 				Base,
 			);
-			mainGroup = C89EB573190C235133D1BF2A;
-			productRefGroup = E4BD5038AE724A870F6DC8F2 /* Products */;
+			mainGroup = 41523B365C603C39AF506552;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CFB36501F229309EC1DFD8B6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				22C30BBF32A99287C15A8129 /* TemplateApp */,
+				6E7DA1FB939F9EE63746A4EC /* TemplateApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		EB94C8C50A8DDA255B5A20D8 /* Resources */ = {
+		5F33BB22B3BFE83DB777770E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				569ED0FD8D6274434A6846E6 /* TemplateApp/TemplateApp/Config/app.json in Resources */,
-				1D57D2120C51175D1652099A /* TemplateApp/TemplateApp/Assets.xcassets in Resources */,
-				F3666C379D574224416FD3F7 /* Localizable.strings in Resources */,
-				A04E46ADF819032E8CF6DF23 /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets in Resources */,
+				B1E4E5E240CBE5D02A871A84 /* app.json in Resources */,
+				1773B4471C8DB2C3AE056C60 /* Assets.xcassets in Resources */,
+				FBF72B386939F1366C778294 /* Localizable.strings in Resources */,
+				29D3A96AEE2C837A895D8F10 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		AD558D11A200D50E5EFF11FF /* Sources */ = {
+		584EC3E60A4825DB00B68C2A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41680142816EB6C322B257C3 /* TemplateApp/TemplateApp/TemplateAppApp.swift in Sources */,
-				2622B0B5534C9EBFB537EEB2 /* TemplateApp/TemplateApp/ContentView.swift in Sources */,
-				41F985E14FC730DC1E53F6E2 /* TemplateApp/TemplateApp/Config/AppManifest.swift in Sources */,
-				034132681299AC5FCA17CBFE /* TemplateApp/TemplateApp/Config/ManifestLoader.swift in Sources */,
-				3CD6F8DD549C93EECBBA0E80 /* TemplateApp/TemplateApp/Config/Color+Hex.swift in Sources */,
-				7C37898B7412D1410859DC1D /* TemplateApp/TemplateApp/Auth/LoginView.swift in Sources */,
-				1759A9C4B6A5EE14A9E05EC4 /* TemplateApp/TemplateApp/Auth/AuthSession.swift in Sources */,
-				3D7EDC981CCCDE9B62F15161 /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift in Sources */,
-				3EA33D7DA177A174F8A1128F /* TemplateApp/TemplateApp/Auth/AccountView.swift in Sources */,
-				C7F7F9F0D876E18CACA845AD /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift in Sources */,
-				A85A1E4CBB27DBF69085C98A /* TemplateApp/TemplateApp/API/APIClient.swift in Sources */,
-				C369AA4D35F735F8310D4DEB /* TemplateApp/TemplateApp/API/UserProfileService.swift in Sources */,
-				0F38BA96FB0EFDE6D5FBA2B1 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift in Sources */,
-				791D3544303947A1759761AA /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift in Sources */,
-				48DDCEA45755167CA1B52064 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift in Sources */,
+				FC77882820524B7FEDFFBBDA /* TemplateAppApp.swift in Sources */,
+				270AAABA7E17C03437AAC929 /* ContentView.swift in Sources */,
+				8F7065E606F77340383E4F51 /* AppManifest.swift in Sources */,
+				ECAEBA872C1AA20D72B736B8 /* ManifestLoader.swift in Sources */,
+				653C9019A7D4B100AEBDD922 /* Color+Hex.swift in Sources */,
+				8BE9FB387F7C7664640A7F26 /* LoginView.swift in Sources */,
+				6912459E641A8382F94D2DBF /* AuthSession.swift in Sources */,
+				CC8952F9F6C4DCC8E14F61ED /* AuthSessionStorage.swift in Sources */,
+				E8F621C17790F173A5BD8AFF /* AccountView.swift in Sources */,
+				F290C25A5E465E3006AE2082 /* HostedUILoginController.swift in Sources */,
+				2B85E75A8F12F3EA125797F9 /* APIClient.swift in Sources */,
+				04E0D262D8C13776FBCA898F /* UserProfileService.swift in Sources */,
+				6ABE08CAD0B12F964C724E50 /* RootContainerView.swift in Sources */,
+				6335D7823BAB651E7862DB68 /* SidebarItem.swift in Sources */,
+				5A08BE21A505A84453B8F8BE /* SidebarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		5C475566B1273A519E23762B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_ENTITLEMENTS = TemplateApp/TemplateApp.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MH94CAVYWW;
-				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.learnandbecurious.template;
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		6A0E16C5535113A543AC4250 /* Debug */ = {
+		097186434853FF134A2761CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -346,7 +320,25 @@
 			};
 			name = Debug;
 		};
-		A88F06819D30FF24BDC20563 /* Release */ = {
+		53A2EB1C7508BBC1628DADDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.learnandbecurious.template;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6D26B7739B736C0BDC93C742 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -394,20 +386,20 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
-		FF4624008674048DDA7DEBCB /* Debug */ = {
+		AA3FB7759634A626EA747DC2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_ENTITLEMENTS = TemplateApp/TemplateApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MH94CAVYWW;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -415,31 +407,32 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		79B169EC4AD86DF483BA8457 /* Build configuration list for PBXProject "TemplateApp" */ = {
+		4DC83DED814E71A98747283B /* Build configuration list for PBXProject "TemplateApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6A0E16C5535113A543AC4250 /* Debug */,
-				A88F06819D30FF24BDC20563 /* Release */,
+				097186434853FF134A2761CE /* Debug */,
+				6D26B7739B736C0BDC93C742 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		94B4742ADEE860BD7F754C15 /* Build configuration list for PBXNativeTarget "TemplateApp" */ = {
+		6B1744B96EC833DC49272FA2 /* Build configuration list for PBXNativeTarget "TemplateApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5C475566B1273A519E23762B /* Release */,
-				FF4624008674048DDA7DEBCB /* Debug */,
+				AA3FB7759634A626EA747DC2 /* Release */,
+				53A2EB1C7508BBC1628DADDB /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 28951A5023B4BCB7F542A624 /* Project object */;
+	rootObject = 45A5C78A2333AE0E20C5E007 /* Project object */;
 }

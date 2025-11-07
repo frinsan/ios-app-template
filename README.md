@@ -17,7 +17,8 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 - [x] Repository scaffolded with folder structure, README, and workflow placeholders.
 - [x] Initialize SwiftUI project within `TemplateApp/` (blank home, sidebar skeleton).
 - [x] Implement manifest-driven configuration loader.
-- [x] Build Hosted UI auth flow (Apple + Google via Cognito) and session handling (token exchange stubbed, Hosted UI wiring ready).
+- [x] Build Hosted UI auth flow (Apple + Google via Cognito) and session handling.
+- [x] Add native email sign-up/login flow backed by `/v1/auth/email/{signup,login}`.
 - [ ] Add baseline tests and fastlane lanes for staging TestFlight uploads.
 - [ ] Finalize reusable GitHub Actions workflow for branded repos.
 
@@ -38,6 +39,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 - Ensure the custom URL scheme (`templateapp`) exists under *URL Types* in Info.plist so Hosted UI redirects back into the app.
 - The app uses `ASWebAuthenticationSession`; ensure your URL scheme is registered in Info.plist before testing on device.
 - Tokens are cached in `UserDefaults` via `AuthSessionStorage`; swap in Keychain storage before production hardening.
+- Email login/sign-up posts to `/v1/auth/email/login` or `/v1/auth/email/signup` on the platform API and returns Cognito tokens the app converts into an `AuthSession`. Use the in-app form under “Use email instead”.
 
 ## Handoff Notes
 
