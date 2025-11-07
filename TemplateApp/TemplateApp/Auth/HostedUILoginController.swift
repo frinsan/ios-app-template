@@ -57,7 +57,13 @@ struct HostedUILoginController {
         }
 
         let callbackURL = try await presentHostedUI(url: authUrl, callbackScheme: scheme)
-        return try await exchangeCode(callbackURL: callbackURL, clientId: clientId, redirectUri: redirectUri, region: region)
+        return try await exchangeCode(
+            callbackURL: callbackURL,
+            clientId: clientId,
+            redirectUri: redirectUri,
+            region: region,
+            domain: domain
+        )
     }
 
     static func logout(manifest: AppManifest) async throws {
@@ -106,12 +112,18 @@ struct HostedUILoginController {
         }
     }
 
-    private static func exchangeCode(callbackURL: URL, clientId: String, redirectUri: String, region: String) async throws -> AuthSession {
+    private static func exchangeCode(
+        callbackURL: URL,
+        clientId: String,
+        redirectUri: String,
+        region: String,
+        domain: String
+    ) async throws -> AuthSession {
         guard let code = URLComponents(url: callbackURL, resolvingAgainstBaseURL: false)?.queryItems?.first(where: { $0.name == "code" })?.value else {
             throw HostedUILoginError.tokenExchangeFailed
         }
 
-        var request = URLRequest(url: URL(string: "https://cognito-idp.\(region).amazonaws.com/oauth2/token")!)
+        var request = URLRequest(url: URL(string: "https://\(domain)/oauth2/token")!)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         let body = "grant_type=authorization_code&code=\(code)&client_id=\(clientId)&redirect_uri=\(redirectUri)"
@@ -119,6 +131,9 @@ struct HostedUILoginController {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            if let payload = String(data: data, encoding: .utf8) {
+                print("[Auth] Token exchange failed: \(httpResponse.statusCode) - \(payload)")
+            }
             throw HostedUILoginError.tokenExchangeFailed
         }
 
