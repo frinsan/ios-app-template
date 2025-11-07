@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AccountView: View {
     @EnvironmentObject private var appState: AppState
+    @State private var isLoggingOut = false
 
     var body: some View {
         VStack(spacing: 24) {
@@ -15,8 +16,12 @@ struct AccountView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                Button("Sign out", role: .destructive, action: signOut)
-                    .buttonStyle(.bordered)
+                if isLoggingOut {
+                    ProgressView("Signing out…")
+                } else {
+                    Button("Sign out", role: .destructive, action: signOut)
+                        .buttonStyle(.bordered)
+                }
             default:
                 Text("You are not signed in yet.")
                     .foregroundStyle(.secondary)
@@ -31,8 +36,22 @@ struct AccountView: View {
     }
 
     private func signOut() {
-        AuthSessionStorage.shared.clear()
-        appState.authState = .signedOut
+        guard case .signedIn = appState.authState else {
+            return
+        }
+        isLoggingOut = true
+        Task {
+            do {
+                try await HostedUILoginController.logout(manifest: appState.manifest)
+            } catch {
+                // Swallow errors; we'll still clear local session
+            }
+            AuthSessionStorage.shared.clear()
+            await MainActor.run {
+                appState.authState = .signedOut
+                isLoggingOut = false
+            }
+        }
     }
 }
 

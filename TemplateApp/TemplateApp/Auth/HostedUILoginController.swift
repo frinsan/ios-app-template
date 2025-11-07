@@ -8,7 +8,17 @@ enum HostedUIProvider: String {
     case google
 
     var displayName: String {
-        rawValue.capitalized
+        switch self {
+        case .apple: return "Continue with Apple"
+        case .google: return "Continue with Google"
+        }
+    }
+
+    var hostedUIIdentifier: String {
+        switch self {
+        case .apple: return "SignInWithApple"
+        case .google: return "Google"
+        }
     }
 }
 
@@ -31,12 +41,46 @@ struct HostedUILoginController {
         }
 
         let redirectUri = "\(scheme)://auth"
-        guard let authUrl = URL(string: "https://\(domain)/oauth2/authorize?client_id=\(clientId)&response_type=code&identity_provider=\(provider.rawValue)&redirect_uri=\(redirectUri.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? redirectUri)&scope=openid%20email%20profile") else {
+        guard var components = URLComponents(string: "https://\(domain)/oauth2/authorize") else {
+            throw HostedUILoginError.invalidConfiguration
+        }
+        components.queryItems = [
+            URLQueryItem(name: "client_id", value: clientId),
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "scope", value: "openid email profile"),
+            URLQueryItem(name: "redirect_uri", value: redirectUri),
+            URLQueryItem(name: "identity_provider", value: provider.hostedUIIdentifier)
+        ]
+
+        guard let authUrl = components.url else {
             throw HostedUILoginError.invalidConfiguration
         }
 
         let callbackURL = try await presentHostedUI(url: authUrl, callbackScheme: scheme)
         return try await exchangeCode(callbackURL: callbackURL, clientId: clientId, redirectUri: redirectUri, region: region)
+    }
+
+    static func logout(manifest: AppManifest) async throws {
+        guard let domain = manifest.auth.hostedUIDomain,
+              let clientId = manifest.auth.cognitoClientId,
+              let scheme = manifest.auth.scheme else {
+            throw HostedUILoginError.invalidConfiguration
+        }
+
+        guard var components = URLComponents(string: "https://\(domain)/logout") else {
+            throw HostedUILoginError.invalidConfiguration
+        }
+        let logoutRedirect = "\(scheme)://auth"
+        components.queryItems = [
+            URLQueryItem(name: "client_id", value: clientId),
+            URLQueryItem(name: "logout_uri", value: logoutRedirect)
+        ]
+
+        guard let logoutURL = components.url else {
+            throw HostedUILoginError.invalidConfiguration
+        }
+
+        _ = try await presentHostedUI(url: logoutURL, callbackScheme: scheme)
     }
 
     private static func presentHostedUI(url: URL, callbackScheme: String) async throws -> URL {

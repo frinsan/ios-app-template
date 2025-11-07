@@ -15,14 +15,14 @@ struct LoginView: View {
                 .padding(.horizontal, 32)
 
             Button(action: { startLogin(provider: .apple) }) {
-                Label("Continue with Apple", systemImage: "apple.logo")
+                Label(HostedUIProvider.apple.displayName, systemImage: "apple.logo")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
 
             Button(action: { startLogin(provider: .google) }) {
-                Label("Continue with Google", systemImage: "globe")
+                Label(HostedUIProvider.google.displayName, systemImage: "globe")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
