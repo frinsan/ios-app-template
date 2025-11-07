@@ -69,7 +69,7 @@ struct UserProfileService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode < 400 else {
-            let message = String(data: data, encoding: .utf8) ?? "Unknown error"
+            let message = String(data: data, encoding: .utf8)
             throw APIError.responseError(message)
         }
 
@@ -81,8 +81,4 @@ struct UserProfileService {
         let givenName: String?
         let familyName: String?
     }
-}
-
-enum APIError: Error {
-    case responseError(String)
 }
