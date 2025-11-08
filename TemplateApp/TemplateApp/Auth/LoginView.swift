@@ -205,10 +205,7 @@ extension EmailSignUpView {
     }
 
     private var isFormValid: Bool {
-        isValidEmail(email)
-            && !password.isEmpty
-            && !confirmPassword.isEmpty
-            && password == confirmPassword
+        EmailSignUpValidator.isFormValid(email: email, password: password, confirmPassword: confirmPassword)
     }
 
     private func submit() {
@@ -264,7 +261,7 @@ extension EmailSignUpView {
             errorMessage = "Email and password are required."
             return false
         }
-        guard isValidEmail(email) else {
+        guard EmailSignUpValidator.isValidEmail(email) else {
             errorMessage = "Enter a valid email address."
             return false
         }
@@ -323,11 +320,6 @@ extension EmailSignUpView {
             errorMessage = nil
         }
         return true
-    }
-
-    private func isValidEmail(_ email: String) -> Bool {
-        let trimmed = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.contains("@") && trimmed.contains(".")
     }
 }
 

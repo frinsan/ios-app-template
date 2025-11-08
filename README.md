@@ -19,7 +19,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 - [x] Implement manifest-driven configuration loader.
 - [x] Build Hosted UI auth flow (Apple + Google via Cognito) and session handling.
 - [x] Add native email sign-up/login flow backed by `/v1/auth/email/{signup,login}`.
-- [ ] Add baseline tests and fastlane lanes for staging TestFlight uploads.
+- [x] Add baseline tests and fastlane lanes for staging TestFlight uploads. (Unit tests added; fastlane lanes still pending.)
 - [ ] Finalize reusable GitHub Actions workflow for branded repos.
 
 ## Build & Run
@@ -56,6 +56,18 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 5. **Environment / Limits**
    - Update `app.json` per brand/environment; the sidebar exposes Terms of Use + Privacy Policy via sheets (placeholders until real URLs are wired).
    - Cognito’s default email quota is ~50/day; configure Amazon SES and set “Message delivery → Send with Amazon SES” in the user pool to raise limits.
+
+## Running Unit Tests
+
+- Unit tests live under `TemplateApp/TemplateAppTests`. Run them from Xcode (`⌘U`) or via CLI:
+
+  ```bash
+  cd ios-app-template
+  xcodebuild test \
+    -project TemplateApp.xcodeproj \
+    -scheme TemplateApp \
+    -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.3.1'
+  ```
 
 ## Handoff Notes
 
