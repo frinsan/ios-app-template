@@ -16,6 +16,7 @@ struct ContentView: View {
         }
         .padding()
         .navigationTitle("Home")
+        .lightModeTextColor()
     }
 }
 

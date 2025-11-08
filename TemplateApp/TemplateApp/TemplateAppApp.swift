@@ -16,6 +16,7 @@ final class AppState: ObservableObject {
     @Published var manifest: AppManifest = .placeholder
     @Published var authState: AuthState = .signedOut
     @Published var userProfile: UserProfile?
+    @Published var latestLoginSuccessID: UUID?
 
     init() {
         loadManifest()
@@ -40,7 +41,14 @@ final class AppState: ObservableObject {
     }
 
     func handleLoginSuccess(_ session: AuthSession) {
+        do {
+            try AuthSessionStorage.shared.store(session)
+        } catch {
+            print("[Auth] Failed to persist session: \(error)")
+        }
+
         authState = .signedIn(session)
+        latestLoginSuccessID = UUID()
         Task {
             await bootstrapAndFetchProfile(forceBootstrap: true)
         }

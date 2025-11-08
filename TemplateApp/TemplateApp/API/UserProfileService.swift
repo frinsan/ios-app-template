@@ -50,6 +50,24 @@ struct UserProfileService {
         return try await send(path: "/v1/users/me", method: "GET", body: Optional<BootstrapPayload>.none, session: session)
     }
 
+    func deleteAccount(session: AuthSession) async throws {
+        let cleanPath = "v1/users/me"
+        let url = manifest.baseURL.appendingPathComponent(cleanPath)
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("Bearer \(session.accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue(manifest.appId, forHTTPHeaderField: "x-app-id")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.responseError("No response from server")
+        }
+        guard httpResponse.statusCode < 400 else {
+            let message = String(data: data, encoding: .utf8)
+            throw APIError.responseError(message ?? "Unable to delete account")
+        }
+    }
+
     private func send<Body: Encodable>(
         path: String,
         method: String,

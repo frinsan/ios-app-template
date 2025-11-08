@@ -77,18 +77,30 @@ source_files = {
   ]
 }
 
+added_paths = []
+
 source_files.each do |group, files|
   base = base_paths[group]
   files.each do |relative_name, display_name|
+    relative_path = File.join(base, relative_name)
     file_ref = group.new_file(display_name)
-    file_ref.set_path(File.join(base, relative_name))
+    file_ref.set_path(relative_path)
     file_ref.set_source_tree('SOURCE_ROOT')
     if display_name == 'app.json'
       target.add_resources([file_ref])
     else
       target.add_file_references([file_ref])
+      added_paths << relative_path
     end
   end
+end
+
+Dir.glob('TemplateApp/TemplateApp/**/*.swift').each do |path|
+  next if added_paths.include?(path)
+  file_ref = sources_group.new_file(File.basename(path))
+  file_ref.set_path(path)
+  file_ref.set_source_tree('SOURCE_ROOT')
+  target.add_file_references([file_ref])
 end
 
 assets_ref = sources_group.new_file('Assets.xcassets')

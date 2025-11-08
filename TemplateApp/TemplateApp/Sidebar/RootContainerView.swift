@@ -4,15 +4,17 @@ struct RootContainerView: View {
     @EnvironmentObject private var appState: AppState
     @State private var selection: SidebarItem = .home
     @State private var isMenuVisible = false
+    @State private var sheetType: LegalSheetType?
 
     private let drawerWidth: CGFloat = 280
     private var menuItems: [SidebarItem] {
-        switch appState.authState {
-        case .signedIn:
-            return [.home, .account]
-        default:
-            return [.home, .login]
+        var items: [SidebarItem] = [.home, .terms, .privacy]
+        if case .signedIn = appState.authState {
+            items.append(.account)
+        } else {
+            items.append(.login)
         }
+        return items
     }
 
     var body: some View {
@@ -38,19 +40,34 @@ struct RootContainerView: View {
                     .transition(.opacity)
             }
 
-            SidebarView(items: menuItems, selection: $selection, isVisible: $isMenuVisible)
+            SidebarView(
+                items: menuItems,
+                selection: $selection,
+                isVisible: $isMenuVisible,
+                onSelect: handleSidebarSelection
+            )
                 .frame(width: drawerWidth)
                 .offset(x: isMenuVisible ? 0 : -drawerWidth - 16)
                 .shadow(color: .black.opacity(0.2), radius: 10, x: 4, y: 0)
                 .animation(.easeInOut(duration: 0.25), value: isMenuVisible)
         }
-        .onChange(of: appState.authState) { _ in
+        .onChange(of: appState.authState) { newValue in
             if !menuItems.contains(selection) {
                 selection = menuItems.first ?? .home
-            } else if selection == .login, case .signedIn = appState.authState {
-                selection = .account
+            } else if selection == .login, case .signedIn = newValue {
+                selection = .home
             }
         }
+        .onChange(of: appState.latestLoginSuccessID) { _ in
+            selection = .home
+            isMenuVisible = false
+        }
+        .sheet(item: $sheetType) { sheet in
+            LegalDocumentSheet(title: sheet.title, message: sheet.message)
+                .presentationDetents([.fraction(0.85)])
+                .presentationDragIndicator(.visible)
+        }
+        .lightModeTextColor()
     }
 
     @ViewBuilder
@@ -58,10 +75,23 @@ struct RootContainerView: View {
         switch selection {
         case .home:
             ContentView()
+        case .terms, .privacy:
+            ContentView()
         case .account:
             AccountView()
         case .login:
             LoginView()
+        }
+    }
+
+    private func handleSidebarSelection(_ item: SidebarItem) {
+        switch item {
+        case .terms:
+            sheetType = .terms
+        case .privacy:
+            sheetType = .privacy
+        default:
+            selection = item
         }
     }
 
@@ -72,7 +102,59 @@ struct RootContainerView: View {
     }
 }
 
+private enum LegalSheetType: Identifiable {
+    case terms
+    case privacy
+
+    var id: String {
+        switch self {
+        case .terms: return "terms"
+        case .privacy: return "privacy"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .terms: return "Terms of Use"
+        case .privacy: return "Privacy Policy"
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .terms:
+            return "Placeholder content for Terms of Use. Replace this with your hosted web page."
+        case .privacy:
+            return "Placeholder content for Privacy Policy. Replace this with your hosted web page."
+        }
+    }
+}
+
+private struct LegalDocumentSheet: View {
+    let title: String
+    let message: String
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                Text(message)
+                    .multilineTextAlignment(.leading)
+                    .padding()
+            }
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
 #Preview {
     RootContainerView()
         .environmentObject(AppState())
+}
+
+#Preview("Legal Document Sheet") {
+    LegalDocumentSheet(
+        title: "Terms of Use",
+        message: "Detailed terms go here. Replace this placeholder text with the hosted webpage contents."
+    )
 }

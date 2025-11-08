@@ -4,7 +4,7 @@
   "bundleIdSuffix": "template",
   "theme": {
     "primary": "#111111",
-    "accent": "#FFCC00",
+    "accent": "#B8E986",
     "appearance": "system"
   },
   "features": {

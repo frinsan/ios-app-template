@@ -5,13 +5,15 @@ struct SidebarView: View {
     let items: [SidebarItem]
     @Binding var selection: SidebarItem
     @Binding var isVisible: Bool
+    var onSelect: (SidebarItem) -> Void = { _ in }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             header
             ForEach(items) { item in
                 Button {
-                    selection = item
+                    onSelect(item)
+                    selection = selectionForHighlight(item: item)
                     withAnimation(.easeInOut(duration: 0.25)) {
                         isVisible = false
                     }
@@ -46,6 +48,15 @@ struct SidebarView: View {
         )
     }
 
+    private func selectionForHighlight(item: SidebarItem) -> SidebarItem {
+        switch item {
+        case .terms, .privacy:
+            return selection
+        default:
+            return item
+        }
+    }
+
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(appState.manifest.displayName)
@@ -59,6 +70,11 @@ struct SidebarView: View {
 }
 
 #Preview {
-    SidebarView(items: [.home, .login], selection: .constant(.home), isVisible: .constant(true))
+    SidebarView(
+        items: [.home, .terms, .privacy, .login],
+        selection: .constant(.home),
+        isVisible: .constant(true),
+        onSelect: { _ in }
+    )
         .environmentObject(AppState())
 }

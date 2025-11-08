@@ -33,16 +33,37 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 3. In the *Signing & Capabilities* tab, set your Apple development team and add the **Sign in with Apple** capability.
 4. Select the `TemplateApp` scheme and build for an iOS simulator (`⌘B`) or run on device.
 
-## Testing Auth End-to-End
+## Auth Flow Walkthrough
 
-- Update `TemplateApp/TemplateApp/Config/app.json` with the real Cognito client ID, hosted UI domain, and custom URL scheme once the backend is deployed.
-- Ensure the custom URL scheme (`templateapp`) exists under *URL Types* in Info.plist so Hosted UI redirects back into the app.
-- The app uses `ASWebAuthenticationSession`; ensure your URL scheme is registered in Info.plist before testing on device.
-- Tokens are cached in `UserDefaults` via `AuthSessionStorage`; swap in Keychain storage before production hardening.
-- Email login/sign-up posts to `/v1/auth/email/login` or `/v1/auth/email/signup` on the platform API and returns Cognito tokens the app converts into an `AuthSession`. Use the in-app form under “Use email instead”.
+1. **Hosted UI (Apple / Google)**
+   - Configure Cognito Hosted UI with Apple + Google IdPs and provide the client ID, domain, and redirect scheme in `TemplateApp/TemplateApp/Config/app.json`.
+   - Ensure the custom URL scheme (`templateapp`) is added under *URL Types* in Info.plist so `ASWebAuthenticationSession` can return to the app.
+   - On success the app stores the tokens via `AuthSessionStorage` (UserDefaults placeholder) and triggers `AppState.handleLoginSuccess` to bootstrap the profile.
+
+2. **Native Email Sign-Up**
+   - Uses `/v1/auth/email/signup`, `/confirm`, and `/resend`.
+   - Flow: user submits email/password → backend creates a Cognito user and returns delivery metadata → app pushes `EmailConfirmView` where the OTP is entered → confirmation exchanges for tokens and logs in.
+   - The sign-up button stays disabled until email format is valid and passwords match; error messages surface inline + via alert.
+
+3. **Email Login + Forgot Password**
+   - Login posts to `/v1/auth/email/login` and handles common Cognito errors (`UserNotConfirmed`, `NotAuthorized`, etc.).
+   - Forgot password resides on a modal sheet: request screen posts to `/v1/auth/email/forgot`, confirmation screen posts to `/forgot/confirm`, then automatically logs the user in.
+
+4. **Account Management**
+   - `AccountView` fetches `/v1/users/me`, signs out, or calls `DELETE /v1/users/me` after the user types DELETE in a confirmation sheet.
+   - Analytics hooks fire on signup/login/resend/delete events.
+
+5. **Environment / Limits**
+   - Update `app.json` per brand/environment; the sidebar exposes Terms of Use + Privacy Policy via sheets (placeholders until real URLs are wired).
+   - Cognito’s default email quota is ~50/day; configure Amazon SES and set “Message delivery → Send with Amazon SES” in the user pool to raise limits.
 
 ## Handoff Notes
 
 - Xcode 15.4+ required (compiled against iOS 17 SDK).
 - Record any secrets required for CI (Apple API key, App Store Connect credentials) once workflows are wired.
 - Keep staging API base URLs as defaults; note overrides if testing prod locally.
+- Native email sign-up enforces Cognito’s verification code step; testers can resend codes in-app and must type DELETE to remove accounts.
+- Hosted UI + native email share the same AppState; if SES/email limits are exceeded Cognito returns `Exceeded daily email limit...` which surfaces directly in the UI.
+
+- Lightweight analytics hooks fire on email signup/login/resend/delete so downstream apps can route events to their preferred provider.
+- Account view offers “Delete account”, which calls the new backend endpoint and then signs the user out.

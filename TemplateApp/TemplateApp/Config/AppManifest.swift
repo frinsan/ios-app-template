@@ -61,7 +61,7 @@ struct AppManifest: Codable {
         appId: "com.learnandbecurious.sample",
         displayName: "Template App",
         bundleIdSuffix: "template",
-        theme: .init(primaryHex: "#111111", accentHex: "#FFCC00", appearance: .system),
+        theme: .init(primaryHex: "#111111", accentHex: "#B8E986", appearance: .system),
         features: .init(login: true, feedback: false),
         apiBase: .init(
             staging: URL(string: "https://staging.api.example.com")!,
