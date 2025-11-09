@@ -11,7 +11,9 @@ struct EmailAuthService {
         return EmailSignUpResult(
             message: response.message,
             deliveryMedium: response.deliveryMedium,
-            destination: response.destination
+            destination: response.destination,
+            status: response.status,
+            deliveryDescription: response.deliveryDescription
         )
     }
 
@@ -131,21 +133,18 @@ struct EmailAuthService {
         let message: String
         let deliveryMedium: String?
         let destination: String?
+        let deliveryDescription: String?
     }
 
     struct EmailSignUpResult {
         let message: String
         let deliveryMedium: String?
         let destination: String?
+        let status: String
+        let deliveryDescription: String?
 
-        var deliveryDescription: String {
-            if let destination {
-                return destination
-            }
-            if let deliveryMedium {
-                return deliveryMedium
-            }
-            return "your email"
+        var deliveryDescriptionString: String {
+            deliveryDescription ?? destination ?? deliveryMedium ?? "your email"
         }
     }
 

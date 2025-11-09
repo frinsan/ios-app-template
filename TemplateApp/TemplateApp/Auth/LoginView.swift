@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct LoginView: View {
     @EnvironmentObject private var appState: AppState
@@ -209,6 +210,7 @@ extension EmailSignUpView {
     }
 
     private func submit() {
+        guard !isSubmitting else { return }
         guard validateInput() else { return }
         isSubmitting = true
         errorMessage = nil
@@ -222,15 +224,7 @@ extension EmailSignUpView {
                     givenName: givenName.isEmpty ? nil : givenName,
                     familyName: familyName.isEmpty ? nil : familyName
                 )
-                await MainActor.run {
-                    pendingConfirmation = PendingConfirmation(
-                        email: email,
-                        password: password,
-                        message: result.message,
-                        deliveryDescription: result.deliveryDescription
-                    )
-                    isSubmitting = false
-                }
+                await handleSignUpResult(result: result)
                 AnalyticsClient.shared.track(.emailSignupSubmitted, properties: [
                     "emailDomain": emailDomain(from: email)
                 ])
@@ -297,9 +291,26 @@ extension EmailSignUpView {
         email.split(separator: "@").last.map(String.init) ?? "unknown"
     }
 
+    private func handleSignUpResult(result: EmailAuthService.EmailSignUpResult) async {
+        await MainActor.run {
+            pendingConfirmation = PendingConfirmation(
+                email: email,
+                password: password,
+                message: result.message,
+                deliveryDescription: result.deliveryDescriptionString
+            )
+            isSubmitting = false
+            errorMessage = nil
+            serverErrorMessage = nil
+        }
+    }
+
     private func handlePendingConfirmation(apiError: APIError) async -> Bool {
-        guard case .responseError(let message?) = apiError,
-              message.localizedCaseInsensitiveContains("Pending confirmation") else {
+        guard case .responseError(let message?) = apiError else {
+            return false
+        }
+        let normalizedMessage = message.lowercased()
+        guard normalizedMessage.contains("pending confirmation") || normalizedMessage.contains("account already exists") else {
             return false
         }
 
@@ -314,10 +325,11 @@ extension EmailSignUpView {
                 email: email,
                 password: password,
                 message: "We found a pending sign-up. Enter the verification code we sent to \(email).",
-                deliveryDescription: email
+                deliveryDescription: "your email"
             )
             isSubmitting = false
             errorMessage = nil
+            serverErrorMessage = nil
         }
         return true
     }
@@ -454,10 +466,6 @@ struct EmailLoginView: View {
         email.split(separator: "@").last.map(String.init) ?? "unknown"
     }
 
-    private func isValidEmail(_ email: String) -> Bool {
-        let trimmed = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.contains("@") && trimmed.contains(".")
-    }
 }
 
 struct EmailConfirmView: View {
@@ -469,6 +477,10 @@ struct EmailConfirmView: View {
     @State private var errorMessage: String?
     @State private var isResending = false
     @State private var resendStatus: String?
+    @State private var resendCooldownRemaining = 0
+    @AppStorage("EmailSignUpResendCooldownUntil") private var signupResendCooldownUntil: Double = 0
+    private let resendCooldownSeconds = 60
+    private let resendTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         Form {
@@ -487,19 +499,23 @@ struct EmailConfirmView: View {
                 }
             }
 
-            if let resendStatus {
-                Section {
-                    Text(resendStatus)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
-            }
-
             Section {
                 Button("Resend code") {
                     Task { await resendCode() }
                 }
-                .disabled(isResending)
+                .disabled(isResending || resendCooldownRemaining > 0)
+                VStack(alignment: .leading, spacing: 4) {
+                    if resendCooldownRemaining > 0 {
+                        Text("You can resend in \(resendCooldownRemaining)s.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                    if let resendStatus {
+                        Text(resendStatus)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
 
             Section {
@@ -516,6 +532,12 @@ struct EmailConfirmView: View {
         }
         .lightModeTextColor()
         .navigationTitle("Enter verification code")
+        .onAppear {
+            updateResendCooldown()
+        }
+        .onReceive(resendTimer) { _ in
+            tickResendCooldown()
+        }
     }
 
     private func submit() {
@@ -566,6 +588,8 @@ struct EmailConfirmView: View {
             await MainActor.run {
                 resendStatus = "Code resent to \(pending.deliveryDescription)."
                 isResending = false
+                signupResendCooldownUntil = Date().addingTimeInterval(Double(resendCooldownSeconds)).timeIntervalSince1970
+                updateResendCooldown()
             }
             AnalyticsClient.shared.track(.emailSignupResentCode, properties: [
                 "emailDomain": emailDomain(from: pending.email)
@@ -588,6 +612,20 @@ struct EmailConfirmView: View {
 
     private func emailDomain(from email: String) -> String {
         email.split(separator: "@").last.map(String.init) ?? "unknown"
+    }
+
+    private func updateResendCooldown() {
+        let remaining = Int(signupResendCooldownUntil - Date().timeIntervalSince1970)
+        resendCooldownRemaining = max(0, remaining)
+    }
+
+    private func tickResendCooldown() {
+        guard resendCooldownRemaining > 0 else { return }
+        resendCooldownRemaining -= 1
+        if resendCooldownRemaining <= 0 {
+            resendCooldownRemaining = 0
+            signupResendCooldownUntil = 0
+        }
     }
 }
 
