@@ -57,6 +57,9 @@ struct EmailAuthService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(manifest.appId, forHTTPHeaderField: "x-app-id")
+        if let clientId = manifest.auth.cognitoClientId {
+            request.setValue(clientId, forHTTPHeaderField: "x-app-client-id")
+        }
         request.httpBody = try encoder.encode(payload)
 
         let (data, response) = try await URLSession.shared.data(for: request)
