@@ -37,11 +37,7 @@ struct EmailAuthService {
     func startPasswordReset(email: String) async throws -> EmailPasswordResetResult {
         let payload = ForgotPasswordRequestPayload(email: email)
         let response: ForgotPasswordResponse = try await post(path: "/v1/auth/email/forgot", payload: payload)
-        return EmailPasswordResetResult(
-            message: response.message,
-            deliveryMedium: response.deliveryMedium,
-            destination: response.destination
-        )
+        return EmailPasswordResetResult(response: response)
     }
 
     func confirmPasswordReset(email: String, code: String, newPassword: String) async throws {
@@ -50,6 +46,15 @@ struct EmailAuthService {
             path: "/v1/auth/email/forgot/confirm",
             payload: payload
         )
+    }
+
+    func passwordResetStatus(email: String) async throws -> PasswordResetStatusResult {
+        let payload = EmailStatusPayload(email: email)
+        let response: PasswordResetStatusResponse = try await post(
+            path: "/v1/auth/email/reset/status",
+            payload: payload
+        )
+        return PasswordResetStatusResult(response: response)
     }
 
     private func post<Body: Encodable, Response: Decodable>(path: String, payload: Body) async throws -> Response {
@@ -128,6 +133,7 @@ struct EmailAuthService {
         let message: String
         let deliveryMedium: String?
         let destination: String?
+        let deliveryDescription: String?
     }
 
     private struct ForgotPasswordConfirmResponse: Decodable {
@@ -203,15 +209,33 @@ struct EmailAuthService {
         let message: String
         let deliveryMedium: String?
         let destination: String?
+        let deliveryDescription: String?
 
-        var deliveryDescription: String {
-            if let destination {
-                return destination
-            }
-            if let deliveryMedium {
-                return deliveryMedium
-            }
-            return "your email"
+        init(response: ForgotPasswordResponse) {
+            self.message = response.message
+            self.deliveryMedium = response.deliveryMedium
+            self.destination = response.destination
+            self.deliveryDescription = response.deliveryDescription
+        }
+
+        var deliveryDescriptionString: String {
+            deliveryDescription ?? destination ?? deliveryMedium ?? "your email"
+        }
+    }
+
+    struct PasswordResetStatusResult {
+        enum Status: String {
+            case pending = "PENDING"
+            case clear = "CLEAR"
+            case unknown
+        }
+
+        let status: Status
+        let retryAfterSeconds: Int?
+
+        init(response: PasswordResetStatusResponse) {
+            self.status = Status(rawValue: response.status) ?? .unknown
+            self.retryAfterSeconds = response.retryAfterSeconds
         }
     }
 
@@ -225,6 +249,11 @@ struct EmailAuthService {
     private struct APIErrorPayload: Decodable {
         let message: String?
         let code: String?
+    }
+
+    private struct PasswordResetStatusResponse: Decodable {
+        let status: String
+        let retryAfterSeconds: Int?
     }
 }
 

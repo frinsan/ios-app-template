@@ -47,7 +47,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 
 3. **Email Login + Forgot Password**
    - Login posts to `/v1/auth/email/login` and handles common Cognito errors (`UserNotConfirmed`, `NotAuthorized`, etc.).
-   - Forgot password resides on a modal sheet: request screen posts to `/v1/auth/email/forgot`, confirmation screen posts to `/forgot/confirm`, then automatically logs the user in.
+   - Forgot password now happens on a single sheet: the same form sends the reset code, enforces a cooldown, accepts the verification code + new password, and calls `/v1/auth/email/{forgot,forgot/confirm}` before logging the user back in.
 
 4. **Account Management**
    - `AccountView` fetches `/v1/users/me`, signs out, or calls `DELETE /v1/users/me` after the user types DELETE in a confirmation sheet.
