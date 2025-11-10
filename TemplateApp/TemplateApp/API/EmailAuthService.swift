@@ -128,7 +128,7 @@ struct EmailAuthService {
         let newPassword: String
     }
 
-    private struct ForgotPasswordResponse: Decodable {
+    struct ForgotPasswordResponse: Decodable {
         let status: String
         let message: String
         let deliveryMedium: String?
@@ -251,7 +251,7 @@ struct EmailAuthService {
         let code: String?
     }
 
-    private struct PasswordResetStatusResponse: Decodable {
+    struct PasswordResetStatusResponse: Decodable {
         let status: String
         let retryAfterSeconds: Int?
     }
