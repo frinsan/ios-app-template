@@ -8,13 +8,13 @@ struct EmailAuthService {
     func signUp(email: String, password: String, givenName: String?, familyName: String?) async throws -> EmailSignUpResult {
         let payload = SignUpPayload(email: email, password: password, givenName: givenName, familyName: familyName)
         let response: SignUpResponse = try await post(path: "/v1/auth/email/signup", payload: payload)
-        return EmailSignUpResult(
-            message: response.message,
-            deliveryMedium: response.deliveryMedium,
-            destination: response.destination,
-            status: response.status,
-            deliveryDescription: response.deliveryDescription
-        )
+        return EmailSignUpResult(response: response)
+    }
+
+    func checkEmailStatus(email: String) async throws -> EmailStatusResult {
+        let payload = EmailStatusPayload(email: email)
+        let response: EmailStatusResponse = try await post(path: "/v1/auth/email/status", payload: payload)
+        return EmailStatusResult(response: response)
     }
 
     func confirm(email: String, password: String, code: String) async throws -> AuthSession {
@@ -66,15 +66,18 @@ struct EmailAuthService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw APIError.responseError("No response from server")
+            throw APIError.responseError(message: "No response from server", code: nil)
         }
 
         if httpResponse.statusCode >= 400 {
             if let errorPayload = try? decoder.decode(APIErrorPayload.self, from: data) {
-                throw APIError.responseError(errorPayload.message ?? "Request failed")
+                throw APIError.responseError(
+                    message: errorPayload.message ?? "Request failed",
+                    code: errorPayload.code
+                )
             }
             let message = String(data: data, encoding: .utf8) ?? "Unknown error"
-            throw APIError.responseError(message)
+            throw APIError.responseError(message: message, code: nil)
         }
 
         return try decoder.decode(Response.self, from: data)
@@ -85,6 +88,10 @@ struct EmailAuthService {
         let password: String
         let givenName: String?
         let familyName: String?
+    }
+
+    private struct EmailStatusPayload: Encodable {
+        let email: String
     }
 
     private struct LoginPayload: Encodable {
@@ -128,7 +135,7 @@ struct EmailAuthService {
         let message: String?
     }
 
-    private struct SignUpResponse: Decodable {
+    struct SignUpResponse: Decodable {
         let status: String
         let message: String
         let deliveryMedium: String?
@@ -136,15 +143,59 @@ struct EmailAuthService {
         let deliveryDescription: String?
     }
 
+    struct EmailStatusResponse: Decodable {
+        let status: String
+        let deliveryDescription: String?
+    }
+
     struct EmailSignUpResult {
+        enum Status: String {
+            case confirmationRequired = "CONFIRMATION_REQUIRED"
+            case pendingConfirmation = "PENDING_CONFIRMATION"
+            case unknown
+        }
+
         let message: String
         let deliveryMedium: String?
         let destination: String?
-        let status: String
+        let status: Status
         let deliveryDescription: String?
+
+        init(response: SignUpResponse) {
+            self.message = response.message
+            self.deliveryMedium = response.deliveryMedium
+            self.destination = response.destination
+            self.deliveryDescription = response.deliveryDescription
+            self.status = Status(rawValue: response.status) ?? .unknown
+        }
 
         var deliveryDescriptionString: String {
             deliveryDescription ?? destination ?? deliveryMedium ?? "your email"
+        }
+
+        var requiresConfirmation: Bool {
+            switch status {
+            case .confirmationRequired, .pendingConfirmation:
+                return true
+            case .unknown:
+                return false
+            }
+        }
+    }
+
+    struct EmailStatusResult {
+        enum Status: String {
+            case new = "NEW"
+            case pendingConfirmation = "PENDING_CONFIRMATION"
+            case confirmed = "CONFIRMED"
+        }
+
+        let status: Status
+        let deliveryDescription: String?
+
+        init(response: EmailStatusResponse) {
+            self.status = Status(rawValue: response.status) ?? .new
+            self.deliveryDescription = response.deliveryDescription
         }
     }
 
@@ -173,6 +224,7 @@ struct EmailAuthService {
 
     private struct APIErrorPayload: Decodable {
         let message: String?
+        let code: String?
     }
 }
 

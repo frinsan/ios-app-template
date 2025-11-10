@@ -60,11 +60,11 @@ struct UserProfileService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw APIError.responseError("No response from server")
+            throw APIError.responseError(message: "No response from server", code: nil)
         }
         guard httpResponse.statusCode < 400 else {
             let message = String(data: data, encoding: .utf8)
-            throw APIError.responseError(message ?? "Unable to delete account")
+            throw APIError.responseError(message: message ?? "Unable to delete account", code: nil)
         }
     }
 
@@ -88,7 +88,7 @@ struct UserProfileService {
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode < 400 else {
             let message = String(data: data, encoding: .utf8)
-            throw APIError.responseError(message)
+            throw APIError.responseError(message: message, code: nil)
         }
 
         return try decoder.decode(UserProfile.self, from: data)

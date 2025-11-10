@@ -41,9 +41,9 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
    - On success the app stores the tokens via `AuthSessionStorage` (UserDefaults placeholder) and triggers `AppState.handleLoginSuccess` to bootstrap the profile.
 
 2. **Native Email Sign-Up**
-   - Uses `/v1/auth/email/signup`, `/confirm`, and `/resend`.
-   - Flow: user submits email/password → backend creates a Cognito user and returns delivery metadata → app pushes `EmailConfirmView` where the OTP is entered → confirmation exchanges for tokens and logs in.
-   - The sign-up button stays disabled until email format is valid and passwords match; error messages surface inline + via alert.
+   - Two screens now drive the flow: Screen 1 captures the email and calls `/v1/auth/email/status` to decide whether the account is new, pending, or already confirmed; Screen 2 locks that email while collecting password, profile details, the verification code, and resend/confirm actions in one place.
+   - Uses `/v1/auth/email/signup`, `/confirm`, `/resend`, and the new `/status` endpoint. Creating an account immediately enables the on-page code entry instead of navigating to a separate confirm view.
+   - The primary actions stay disabled until the form is valid, and inline status/error messages explain whether the code was sent, pending, or confirmed.
 
 3. **Email Login + Forgot Password**
    - Login posts to `/v1/auth/email/login` and handles common Cognito errors (`UserNotConfirmed`, `NotAuthorized`, etc.).
@@ -76,7 +76,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 - Keep staging API base URLs as defaults; note overrides if testing prod locally.
 - Native email sign-up enforces Cognito’s verification code step; testers can resend codes in-app and must type DELETE to remove accounts.
 - Hosted UI + native email share the same AppState; if SES/email limits are exceeded Cognito returns `Exceeded daily email limit...` which surfaces directly in the UI.
-- **Next session todo:** Finish the “pending confirmation / account already exists” flow so abandoned sign-ups automatically get routed back to OTP entry with a new code.
+- Email sign-up & login now automatically detect pending confirmations: if Cognito reports an existing unverified account we resend the code and route the user back into the OTP screen.
 
 - Lightweight analytics hooks fire on email signup/login/resend/delete so downstream apps can route events to their preferred provider.
 - Account view offers “Delete account”, which calls the new backend endpoint and then signs the user out.

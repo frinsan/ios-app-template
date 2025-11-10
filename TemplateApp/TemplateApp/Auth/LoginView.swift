@@ -85,72 +85,60 @@ extension LoginView {
 }
 
 struct EmailSignUpView: View {
+    enum Step {
+        case emailEntry
+        case details
+    }
+
+    enum EmailFlowStatus: Equatable {
+        case new
+        case pending(String?)
+    }
+
     @EnvironmentObject private var appState: AppState
     @Environment(\.dismiss) private var dismiss
-    @State private var email = ""
+    @State private var step: Step = .emailEntry
+    @State private var emailInput = ""
+    @State private var lockedEmail = ""
+    @State private var emailStatus: EmailFlowStatus?
     @State private var password = ""
     @State private var confirmPassword = ""
-    @State private var givenName = ""
-    @State private var familyName = ""
+    @State private var verificationCode = ""
     @State private var isPasswordVisible = false
     @State private var isConfirmPasswordVisible = false
     @State private var errorMessage: String?
     @State private var serverErrorMessage: String?
+    @State private var codeErrorMessage: String?
+    @State private var isCheckingEmail = false
     @State private var isSubmitting = false
-    @State private var pendingConfirmation: PendingConfirmation?
+    @State private var isConfirmingCode = false
+    @State private var isResendingCode = false
+    @State private var codeInfoMessage: String?
+    @State private var resendStatusMessage: String?
+    @State private var isCodeSectionEnabled = false
+    @State private var resendCooldownRemaining = 0
     @FocusState private var focusedField: SignUpField?
+    @AppStorage("EmailSignUpResendCooldownUntil") private var signupResendCooldownUntil: Double = 0
+    private let resendTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         Form {
-            Section {
-                TextField("Email", text: $email)
-                    .textInputAutocapitalization(.never)
-                    .keyboardType(.emailAddress)
-                    .autocorrectionDisabled()
-                    .focused($focusedField, equals: .email)
-
-                passwordInput(
-                    title: "Password (min 12 characters)",
-                    text: $password,
-                    isVisible: $isPasswordVisible,
-                    field: .password
-                )
-
-                passwordInput(
-                    title: "Confirm password",
-                    text: $confirmPassword,
-                    isVisible: $isConfirmPasswordVisible,
-                    field: .confirmPassword
-                )
-            }
-
-            Section("Optional") {
-                TextField("First name", text: $givenName)
-                    .focused($focusedField, equals: .givenName)
-                TextField("Last name", text: $familyName)
-                    .focused($focusedField, equals: .familyName)
-            }
-
-            Section {
-                Button(action: submit) {
-                    if isSubmitting {
-                        ProgressView().frame(maxWidth: .infinity)
-                    } else {
-                        Text("Sign up").frame(maxWidth: .infinity)
-                    }
-                }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
-                .disabled(isSubmitting || !isFormValid)
+            switch step {
+            case .emailEntry:
+                emailEntryStep
+            case .details:
+                detailsStep
             }
         }
         .lightModeTextColor()
         .navigationTitle("Sign up with email")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(item: $pendingConfirmation) { pending in
-            EmailConfirmView(pending: pending)
-        }
         .onChange(of: appState.latestLoginSuccessID) { _ in
             dismiss()
+        }
+        .onAppear { updateResendCooldown() }
+        .onReceive(resendTimer) { _ in
+            tickResendCooldown()
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
@@ -205,13 +193,216 @@ extension EmailSignUpView {
         Color(hex: appState.manifest.theme.accentHex)
     }
 
-    private var isFormValid: Bool {
-        EmailSignUpValidator.isFormValid(email: email, password: password, confirmPassword: confirmPassword)
+    private var isEmailInputValid: Bool {
+        EmailSignUpValidator.isValidEmail(emailInput.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
-    private func submit() {
+    private var isDetailsFormValid: Bool {
+        EmailSignUpValidator.isFormValid(email: lockedEmail, password: password, confirmPassword: confirmPassword)
+    }
+
+    @ViewBuilder
+    private var emailEntryStep: some View {
+        Section {
+            TextField("Email", text: $emailInput)
+                .textInputAutocapitalization(.never)
+                .keyboardType(.emailAddress)
+                .autocorrectionDisabled()
+                .focused($focusedField, equals: .email)
+        } footer: {
+            Text("We'll check if this email already has an account before continuing.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+
+        if let errorMessage {
+            Section {
+                Text(errorMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
+        }
+
+        Section {
+            Button(action: submitEmailAddress) {
+                if isCheckingEmail {
+                    ProgressView().frame(maxWidth: .infinity)
+                } else {
+                    Text("Continue").frame(maxWidth: .infinity)
+                }
+            }
+            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+            .disabled(!isEmailInputValid || isCheckingEmail)
+        }
+    }
+
+    @ViewBuilder
+    private var detailsStep: some View {
+        Section {
+            LabeledContent("Email", value: lockedEmail)
+            Button("Change email") {
+                resetToEmailEntry()
+            }
+            .font(.footnote)
+        }
+
+        if case let .pending(description) = emailStatus {
+            Section {
+                Text("We found a pending sign-up. Enter the verification code we sent to \(description ?? lockedEmail) to finish.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+        }
+
+        Section {
+            passwordInput(
+                title: "Password (min 12 characters)",
+                text: $password,
+                isVisible: $isPasswordVisible,
+                field: .password
+            )
+
+            passwordInput(
+                title: "Confirm password",
+                text: $confirmPassword,
+                isVisible: $isConfirmPasswordVisible,
+                field: .confirmPassword
+            )
+        }
+
+        if let errorMessage {
+            Section {
+                Text(errorMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
+        }
+
+        if emailStatus == nil || emailStatus == .new {
+            Section {
+                Button(action: startSignUp) {
+                    if isSubmitting {
+                        ProgressView().frame(maxWidth: .infinity)
+                    } else {
+                        Text("Get verification code").frame(maxWidth: .infinity)
+                    }
+                }
+                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .disabled(!isDetailsFormValid || isSubmitting)
+            }
+        }
+
+        verificationSection
+    }
+
+    @ViewBuilder
+    private var verificationSection: some View {
+        Section("Verification Code") {
+            TextField("6-digit code", text: $verificationCode)
+                .keyboardType(.numberPad)
+                .textContentType(.oneTimeCode)
+                .disabled(!isCodeSectionEnabled)
+                .focused($focusedField, equals: .verificationCode)
+
+            if let codeErrorMessage {
+                Text(codeErrorMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
+
+            if let codeInfoMessage {
+                Text(codeInfoMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+
+            if let resendStatusMessage {
+                Text(resendStatusMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+
+            if resendCooldownRemaining > 0 {
+                Text("You can resend in \(resendCooldownRemaining)s.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+
+            Button(action: confirmCode) {
+                if isConfirmingCode {
+                    ProgressView().frame(maxWidth: .infinity)
+                } else {
+                    Text("Confirm code").frame(maxWidth: .infinity)
+                }
+            }
+            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+            .disabled(!isCodeSectionEnabled || verificationCode.isEmpty || isConfirmingCode)
+
+            Button("Resend code") {
+                resendVerificationCode()
+            }
+            .disabled(!isCodeSectionEnabled || isResendingCode || resendCooldownRemaining > 0)
+        }
+    }
+
+    private func submitEmailAddress() {
+        guard isEmailInputValid else {
+            errorMessage = "Enter a valid email."
+            return
+        }
+        let normalized = emailInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        errorMessage = nil
+        isCheckingEmail = true
+
+        Task {
+            do {
+                let service = EmailAuthService(manifest: appState.manifest)
+                let status = try await service.checkEmailStatus(email: normalized)
+                await MainActor.run {
+                    handleEmailStatus(status, email: normalized)
+                }
+            } catch let apiError as APIError {
+                await MainActor.run {
+                    serverErrorMessage = apiError.message ?? "Unable to check email."
+                    isCheckingEmail = false
+                }
+            } catch {
+                await MainActor.run {
+                    serverErrorMessage = "Unexpected error. Please try again."
+                    isCheckingEmail = false
+                }
+            }
+        }
+    }
+
+    private func handleEmailStatus(_ result: EmailAuthService.EmailStatusResult, email: String) {
+        isCheckingEmail = false
+        switch result.status {
+        case .confirmed:
+            serverErrorMessage = "An account already exists for \(email). Try logging in instead."
+        case .new:
+            lockedEmail = email
+            emailStatus = .new
+            step = .details
+            resetDetailsState(preservingEmail: true)
+            isCodeSectionEnabled = false
+            codeInfoMessage = "Tap Create account to receive a verification code."
+        case .pendingConfirmation:
+            lockedEmail = email
+            emailStatus = .pending(result.deliveryDescription)
+            step = .details
+            resetDetailsState(preservingEmail: true)
+            enableCodeEntry(message: "Enter the code we sent to \(result.deliveryDescription ?? email).")
+        }
+    }
+
+    private func startSignUp() {
+        guard !lockedEmail.isEmpty else { return }
+        guard isDetailsFormValid else {
+            errorMessage = "Check your password entries before continuing."
+            return
+        }
         guard !isSubmitting else { return }
-        guard validateInput() else { return }
         isSubmitting = true
         errorMessage = nil
 
@@ -219,26 +410,18 @@ extension EmailSignUpView {
             do {
                 let service = EmailAuthService(manifest: appState.manifest)
                 let result = try await service.signUp(
-                    email: email,
+                    email: lockedEmail,
                     password: password,
-                    givenName: givenName.isEmpty ? nil : givenName,
-                    familyName: familyName.isEmpty ? nil : familyName
+                    givenName: nil,
+                    familyName: nil
                 )
                 await handleSignUpResult(result: result)
                 AnalyticsClient.shared.track(.emailSignupSubmitted, properties: [
-                    "emailDomain": emailDomain(from: email)
+                    "emailDomain": emailDomain(from: lockedEmail)
                 ])
             } catch let apiError as APIError {
-                if await handlePendingConfirmation(apiError: apiError) {
-                    return
-                }
                 await MainActor.run {
-                    switch apiError {
-                    case .responseError(let message):
-                        let displayMessage = message ?? "Unable to start email sign-up."
-                        errorMessage = displayMessage
-                        serverErrorMessage = displayMessage
-                    }
+                    errorMessage = apiError.message ?? "Unable to start email sign-up."
                     isSubmitting = false
                 }
             } catch {
@@ -250,20 +433,145 @@ extension EmailSignUpView {
         }
     }
 
-    private func validateInput() -> Bool {
-        guard !email.isEmpty, !password.isEmpty else {
-            errorMessage = "Email and password are required."
-            return false
+    private func handleSignUpResult(result: EmailAuthService.EmailSignUpResult) async {
+        await MainActor.run {
+            isSubmitting = false
+            guard result.requiresConfirmation else {
+                serverErrorMessage = "Unexpected response from server. Please try again."
+                return
+            }
+            emailStatus = .pending(result.deliveryDescription)
+            enableCodeEntry(message: result.message)
         }
-        guard EmailSignUpValidator.isValidEmail(email) else {
-            errorMessage = "Enter a valid email address."
-            return false
+    }
+
+    private func confirmCode() {
+        guard !lockedEmail.isEmpty else { return }
+        guard isCodeSectionEnabled else {
+            codeErrorMessage = "Send yourself a verification code first."
+            return
         }
-        guard password == confirmPassword else {
-            errorMessage = "Passwords do not match."
-            return false
+        guard !verificationCode.isEmpty else {
+            codeErrorMessage = "Enter the verification code."
+            return
         }
-        return true
+        guard !isConfirmingCode else { return }
+        codeErrorMessage = nil
+        isConfirmingCode = true
+
+        Task {
+            do {
+                let service = EmailAuthService(manifest: appState.manifest)
+                let session = try await service.confirm(email: lockedEmail, password: password, code: verificationCode)
+                await MainActor.run {
+                    isConfirmingCode = false
+                    appState.handleLoginSuccess(session)
+                }
+            } catch let apiError as APIError {
+                await MainActor.run {
+                    codeErrorMessage = apiError.message ?? "Unable to confirm code."
+                    isConfirmingCode = false
+                }
+            } catch {
+                await MainActor.run {
+                    codeErrorMessage = "Unexpected error. Please try again."
+                    isConfirmingCode = false
+                }
+            }
+        }
+    }
+
+    private func resendVerificationCode() {
+        guard !lockedEmail.isEmpty else { return }
+        guard isCodeSectionEnabled else { return }
+        guard !isResendingCode else { return }
+        isResendingCode = true
+        codeErrorMessage = nil
+
+        Task {
+            do {
+                let service = EmailAuthService(manifest: appState.manifest)
+                try await service.resendCode(email: lockedEmail)
+                await MainActor.run {
+                    resendStatusMessage = "New code sent to \(lockedEmail)."
+                    isResendingCode = false
+                    signupResendCooldownUntil = Date().addingTimeInterval(60).timeIntervalSince1970
+                    updateResendCooldown()
+                }
+                AnalyticsClient.shared.track(.emailSignupResentCode, properties: [
+                    "emailDomain": emailDomain(from: lockedEmail)
+                ])
+            } catch let apiError as APIError {
+                await MainActor.run {
+                    resendStatusMessage = apiError.message ?? "Unable to resend verification code."
+                    isResendingCode = false
+                }
+            } catch {
+                await MainActor.run {
+                    resendStatusMessage = "Unexpected error. Please try again."
+                    isResendingCode = false
+                }
+            }
+        }
+    }
+
+    private func enableCodeEntry(message: String?) {
+        isCodeSectionEnabled = true
+        codeInfoMessage = message
+        resendStatusMessage = nil
+        verificationCode = ""
+        updateResendCooldown()
+        focusedField = .verificationCode
+    }
+
+    private func resetToEmailEntry() {
+        step = .emailEntry
+        emailStatus = nil
+        lockedEmail = ""
+        password = ""
+        confirmPassword = ""
+        verificationCode = ""
+        errorMessage = nil
+        codeErrorMessage = nil
+        serverErrorMessage = nil
+        codeInfoMessage = nil
+        resendStatusMessage = nil
+        isCodeSectionEnabled = false
+        focusedField = .email
+    }
+
+    private func resetDetailsState(preservingEmail: Bool) {
+        password = ""
+        confirmPassword = ""
+        verificationCode = ""
+        errorMessage = nil
+        codeErrorMessage = nil
+        codeInfoMessage = nil
+        resendStatusMessage = nil
+        isCodeSectionEnabled = false
+        if preservingEmail {
+            focusedField = .password
+        } else {
+            focusedField = nil
+        }
+    }
+
+    private func updateResendCooldown() {
+        let remaining = Int(signupResendCooldownUntil - Date().timeIntervalSince1970)
+        resendCooldownRemaining = max(0, remaining)
+    }
+
+    private func tickResendCooldown() {
+        guard resendCooldownRemaining > 0 else { return }
+        resendCooldownRemaining -= 1
+        if resendCooldownRemaining <= 0 {
+            resendCooldownRemaining = 0
+            signupResendCooldownUntil = 0
+        }
+    }
+
+    private func emailDomain(from email: String) -> String {
+        email.split(separator: "@").last.map(String.init) ?? "unknown"
     }
 
     @ViewBuilder
@@ -286,53 +594,6 @@ extension EmailSignUpView {
             }
         }
     }
-
-    private func emailDomain(from email: String) -> String {
-        email.split(separator: "@").last.map(String.init) ?? "unknown"
-    }
-
-    private func handleSignUpResult(result: EmailAuthService.EmailSignUpResult) async {
-        await MainActor.run {
-            pendingConfirmation = PendingConfirmation(
-                email: email,
-                password: password,
-                message: result.message,
-                deliveryDescription: result.deliveryDescriptionString
-            )
-            isSubmitting = false
-            errorMessage = nil
-            serverErrorMessage = nil
-        }
-    }
-
-    private func handlePendingConfirmation(apiError: APIError) async -> Bool {
-        guard case .responseError(let message?) = apiError else {
-            return false
-        }
-        let normalizedMessage = message.lowercased()
-        guard normalizedMessage.contains("pending confirmation") || normalizedMessage.contains("account already exists") else {
-            return false
-        }
-
-        let service = EmailAuthService(manifest: appState.manifest)
-        do {
-            try await service.resendCode(email: email)
-        } catch {
-            return false
-        }
-        await MainActor.run {
-            pendingConfirmation = PendingConfirmation(
-                email: email,
-                password: password,
-                message: "We found a pending sign-up. Enter the verification code we sent to \(email).",
-                deliveryDescription: "your email"
-            )
-            isSubmitting = false
-            errorMessage = nil
-            serverErrorMessage = nil
-        }
-        return true
-    }
 }
 
 struct EmailLoginView: View {
@@ -340,11 +601,12 @@ struct EmailLoginView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var email = ""
     @State private var password = ""
+    @State private var isPasswordVisible = false
     @State private var errorMessage: String?
     @State private var isSubmitting = false
-    @State private var isPasswordVisible = false
     @State private var isForgotPasswordPresented = false
     @FocusState private var focusedField: LoginField?
+    @State private var pendingConfirmation: PendingConfirmation?
 
     var body: some View {
         Form {
@@ -417,6 +679,9 @@ struct EmailLoginView: View {
                 ForgotPasswordRequestView()
             }
         }
+        .navigationDestination(item: $pendingConfirmation) { pending in
+            EmailConfirmView(pending: pending)
+        }
     }
 
     private func submit() {
@@ -442,9 +707,12 @@ struct EmailLoginView: View {
                     "emailDomain": emailDomain(from: email)
                 ])
             } catch let apiError as APIError {
+                if await handleLoginPendingConfirmation(apiError: apiError) {
+                    return
+                }
                 await MainActor.run {
                     switch apiError {
-                    case .responseError(let message):
+                    case let .responseError(message, _):
                         errorMessage = message ?? "Unable to log in."
                     }
                     isSubmitting = false
@@ -464,6 +732,29 @@ struct EmailLoginView: View {
 
     private func emailDomain(from email: String) -> String {
         email.split(separator: "@").last.map(String.init) ?? "unknown"
+    }
+
+    private func handleLoginPendingConfirmation(apiError: APIError) async -> Bool {
+        guard case let .responseError(message, code) = apiError, code == "USER_NOT_CONFIRMED" else {
+            return false
+        }
+        let service = EmailAuthService(manifest: appState.manifest)
+        do {
+            try await service.resendCode(email: email)
+        } catch {
+            // Ignore resend failures; the confirm screen exposes manual retry.
+        }
+        await MainActor.run {
+            pendingConfirmation = PendingConfirmation(
+                email: email,
+                password: password,
+                message: message ?? "Finish confirming your account to continue.",
+                deliveryDescription: email
+            )
+            isSubmitting = false
+            errorMessage = nil
+        }
+        return true
     }
 
 }
@@ -561,7 +852,7 @@ struct EmailConfirmView: View {
             } catch let apiError as APIError {
                 await MainActor.run {
                     switch apiError {
-                    case .responseError(let message):
+                    case let .responseError(message, _):
                         errorMessage = message ?? "Unable to confirm code."
                     }
                     isSubmitting = false
@@ -597,7 +888,7 @@ struct EmailConfirmView: View {
         } catch let apiError as APIError {
             await MainActor.run {
                 switch apiError {
-                case .responseError(let message):
+                case let .responseError(message, _):
                     resendStatus = message ?? "Unable to resend verification code."
                 }
                 isResending = false
@@ -646,8 +937,7 @@ private enum SignUpField: Hashable {
     case email
     case password
     case confirmPassword
-    case givenName
-    case familyName
+    case verificationCode
 }
 
 private enum LoginField: Hashable {

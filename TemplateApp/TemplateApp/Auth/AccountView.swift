@@ -124,7 +124,7 @@ struct AccountView: View {
             } catch let apiError as APIError {
                 await MainActor.run {
                     switch apiError {
-                    case .responseError(let message):
+                    case let .responseError(message, _):
                         deleteError = message ?? "Unable to delete account."
                     }
                     isDeleting = false

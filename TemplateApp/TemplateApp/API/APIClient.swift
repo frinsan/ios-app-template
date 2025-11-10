@@ -14,7 +14,7 @@ struct APIClient {
 
         let (data, response) = try await session.data(for: urlRequest)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode < 400 else {
-            throw APIError.responseError(nil)
+            throw APIError.responseError(message: nil, code: nil)
         }
         return try JSONDecoder().decode(T.self, from: data)
     }
@@ -28,5 +28,21 @@ struct APIRequest<T: Decodable> {
 }
 
 enum APIError: Error {
-    case responseError(String?)
+    case responseError(message: String?, code: String?)
+}
+
+extension APIError {
+    var message: String? {
+        switch self {
+        case let .responseError(message, _):
+            return message
+        }
+    }
+
+    var code: String? {
+        switch self {
+        case let .responseError(_, code):
+            return code
+        }
+    }
 }

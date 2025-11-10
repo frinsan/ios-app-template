@@ -86,7 +86,7 @@ struct ForgotPasswordRequestView: View {
             } catch let apiError as APIError {
                 await MainActor.run {
                     switch apiError {
-                    case .responseError(let message):
+                    case let .responseError(message, _):
                         errorMessage = message ?? "Unable to send reset code."
                     }
                     isSubmitting = false
@@ -250,7 +250,7 @@ struct ForgotPasswordConfirmView: View {
             } catch let apiError as APIError {
                 await MainActor.run {
                     switch apiError {
-                    case .responseError(let message):
+                    case let .responseError(message, _):
                         errorMessage = message ?? "Unable to update password."
                     }
                     isSubmitting = false
@@ -283,7 +283,7 @@ struct ForgotPasswordConfirmView: View {
         } catch let apiError as APIError {
             await MainActor.run {
                 switch apiError {
-                case .responseError(let message):
+                case let .responseError(message, _):
                     resendStatus = message ?? "Unable to resend verification code."
                 }
                 isResending = false
