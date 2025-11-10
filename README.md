@@ -76,6 +76,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 - Keep staging API base URLs as defaults; note overrides if testing prod locally.
 - Native email sign-up enforces Cognito’s verification code step; testers can resend codes in-app and must type DELETE to remove accounts.
 - Hosted UI + native email share the same AppState; if SES/email limits are exceeded Cognito returns `Exceeded daily email limit...` which surfaces directly in the UI.
+- **Next session todo:** Finish the “pending confirmation / account already exists” flow so abandoned sign-ups automatically get routed back to OTP entry with a new code.
 
 - Lightweight analytics hooks fire on email signup/login/resend/delete so downstream apps can route events to their preferred provider.
 - Account view offers “Delete account”, which calls the new backend endpoint and then signs the user out.

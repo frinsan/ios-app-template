@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct ForgotPasswordRequestView: View {
     @EnvironmentObject private var appState: AppState
@@ -120,6 +121,12 @@ struct ForgotPasswordConfirmView: View {
     @State private var isSubmitting = false
     @State private var isNewPasswordVisible = false
     @State private var isConfirmPasswordVisible = false
+    @State private var isResending = false
+    @State private var resendStatus: String?
+    @State private var resendCooldownRemaining = 0
+    @AppStorage("ForgotPasswordResendCooldownUntil") private var forgotResendCooldownUntil: Double = 0
+    private let resendCooldownSeconds = 60
+    private let resendTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @FocusState private var focusedField: ForgotPasswordConfirmField?
 
     var body: some View {
@@ -158,6 +165,25 @@ struct ForgotPasswordConfirmView: View {
             }
 
             Section {
+                Button("Resend code") {
+                    Task { await resendCode() }
+                }
+                .disabled(isResending || resendCooldownRemaining > 0)
+                VStack(alignment: .leading, spacing: 4) {
+                    if resendCooldownRemaining > 0 {
+                        Text("You can resend in \(resendCooldownRemaining)s.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                    if let resendStatus {
+                        Text(resendStatus)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+
+            Section {
                 Button(action: submit) {
                     if isSubmitting {
                         ProgressView().frame(maxWidth: .infinity)
@@ -179,6 +205,12 @@ struct ForgotPasswordConfirmView: View {
         }
         .onChange(of: appState.latestLoginSuccessID) { _ in
             dismiss()
+        }
+        .onAppear {
+            updateResendCooldown()
+        }
+        .onReceive(resendTimer) { _ in
+            tickResendCooldown()
         }
     }
 
@@ -232,6 +264,38 @@ struct ForgotPasswordConfirmView: View {
         }
     }
 
+    private func resendCode() async {
+        guard !isResending else { return }
+        isResending = true
+        do {
+            let service = EmailAuthService(manifest: appState.manifest)
+            let result = try await service.startPasswordReset(email: pending.email)
+            await MainActor.run {
+                resendStatus = "Code resent to \(result.deliveryDescription)."
+                isResending = false
+                forgotResendCooldownUntil = Date().addingTimeInterval(Double(resendCooldownSeconds)).timeIntervalSince1970
+                updateResendCooldown()
+            }
+            AnalyticsClient.shared.track(.emailPasswordResetRequested, properties: [
+                "emailDomain": emailDomain(from: pending.email),
+                "context": "resend"
+            ])
+        } catch let apiError as APIError {
+            await MainActor.run {
+                switch apiError {
+                case .responseError(let message):
+                    resendStatus = message ?? "Unable to resend verification code."
+                }
+                isResending = false
+            }
+        } catch {
+            await MainActor.run {
+                resendStatus = "Unexpected error. Please try again."
+                isResending = false
+            }
+        }
+    }
+
     private func passwordInput(
         title: String,
         text: Binding<String>,
@@ -263,6 +327,20 @@ struct ForgotPasswordConfirmView: View {
 
     private func emailDomain(from email: String) -> String {
         email.split(separator: "@").last.map(String.init) ?? "unknown"
+    }
+
+    private func updateResendCooldown() {
+        let remaining = Int(forgotResendCooldownUntil - Date().timeIntervalSince1970)
+        resendCooldownRemaining = max(0, remaining)
+    }
+
+    private func tickResendCooldown() {
+        guard resendCooldownRemaining > 0 else { return }
+        resendCooldownRemaining -= 1
+        if resendCooldownRemaining <= 0 {
+            resendCooldownRemaining = 0
+            forgotResendCooldownUntil = 0
+        }
     }
 }
 
