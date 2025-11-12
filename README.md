@@ -81,6 +81,52 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 - Lightweight analytics hooks fire on email signup/login/resend/delete so downstream apps can route events to their preferred provider.
 - Account view offers “Delete account”, which calls the new backend endpoint and then signs the user out.
 
+## Brand manifest + automation
+
+Every branded app provides an `app.json` that mirrors the template config (`TemplateApp/TemplateApp/Config/app.json`). Minimum shape:
+
+```json
+{
+  "appId": "com.learnandbecurious.sample",
+  "displayName": "Template App",
+  "bundleIdSuffix": "sample",
+  "theme": {
+    "primary": "#111111",
+    "accent": "#B8E986",
+    "appearance": "system"
+  },
+  "features": {
+    "login": true,
+    "feedback": false
+  },
+  "apiBase": {
+    "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
+    "prod": "https://api.example.com"
+  },
+  "auth": {
+    "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
+    "scheme": "templateapp",
+    "region": "us-west-2",
+    "hostedUIDomain": "learnandbecurious-staging.auth.us-west-2.amazoncognito.com"
+  },
+  "activeEnvironment": "staging"
+}
+```
+
+Each brand repo keeps this manifest at the root (`app.json`) plus optional asset overrides under `Assets/` (e.g., `Assets/AppIcon.appiconset`). During automation the manifest is copied into the template via `scripts/apply_manifest.sh`.
+
+### GitHub Actions build pipeline
+
+Brand repos define a workflow that:
+
+1. Checks out the brand repo (manifest + assets).
+2. Checks out this template repo into a sibling directory.
+3. Runs `scripts/apply_manifest.sh` to copy the manifest into the template.
+4. Runs `xcodebuild test` (optional) and `xcodebuild archive` for the chosen scheme/config.
+5. Uploads the `.xcarchive` as a workflow artifact.
+
+`app-sample/.github/workflows/build.yml` contains a ready-to-copy workflow definition. Update the `repository`/`ref` fields to point at this template if you fork/rename it, then run the workflow via **Actions → Run workflow** to produce a fresh archive without opening Xcode locally.
+
 ## Brand manifest schema
 
 Each branded app supplies an `app.json` that mirrors the template’s config file (`TemplateApp/TemplateApp/Config/app.json`). A minimal manifest looks like this:
