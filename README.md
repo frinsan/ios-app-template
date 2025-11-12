@@ -72,6 +72,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 ## Handoff Notes
 
 - Always build with the latest stable Xcode release (right now 26.11) so local runs, CI, and TestFlight uploads all match the same toolchain/iOS SDK combo.
+- Build numbers are auto-incremented via `agvtool new-version -all <run#>` inside CI/CD, so you never have to bump `CFBundleVersion` manually before TestFlight.
 - Record any secrets required for CI (Apple API key, App Store Connect credentials) once workflows are wired.
 - Keep staging API base URLs as defaults; note overrides if testing prod locally.
 - Native email sign-up enforces Cognito’s verification code step; testers can resend codes in-app and must type DELETE to remove accounts.

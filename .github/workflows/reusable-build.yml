@@ -96,6 +96,11 @@ jobs:
           sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
           xcodebuild -version
 
+      - name: Set build number
+        run: |
+          BUILD_NUMBER=${{ github.run_number }}
+          xcrun agvtool new-version -all "$BUILD_NUMBER"
+
       - name: Run unit tests
         if: inputs.run_tests == true
         run: |
