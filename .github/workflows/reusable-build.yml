@@ -72,6 +72,8 @@ jobs:
     steps:
       - name: Checkout template
         uses: actions/checkout@v4
+        with:
+          repository: frinsan/ios-app-template
 
       - name: Checkout brand manifest
         uses: actions/checkout@v4
