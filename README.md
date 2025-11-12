@@ -44,7 +44,6 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
    - Two screens now drive the flow: Screen 1 captures the email and calls `/v1/auth/email/status` to decide whether the account is new, pending, or already confirmed; Screen 2 locks that email while collecting password, profile details, the verification code, and resend/confirm actions in one place.
    - Uses `/v1/auth/email/signup`, `/confirm`, `/resend`, and the new `/status` endpoint. Creating an account immediately enables the on-page code entry instead of navigating to a separate confirm view.
    - The primary actions stay disabled until the form is valid, and inline status/error messages explain whether the code was sent, pending, or confirmed.
-   - **New:** Username is now required during sign-up (3–32 characters, letters/numbers/._-). The template stores the username/email in Dynamo, so every downstream app gets a friendly display name even if the identity provider hides the email.
 
 3. **Email Login + Forgot Password**
    - Login posts to `/v1/auth/email/login` and handles common Cognito errors (`UserNotConfirmed`, `NotAuthorized`, etc.).
@@ -76,7 +75,6 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 - Build numbers are auto-incremented via `agvtool new-version -all <run#>` inside CI/CD, so you never have to bump `CFBundleVersion` manually before TestFlight.
 - Record any secrets required for CI (Apple API key, App Store Connect credentials) once workflows are wired.
 - Keep staging API base URLs as defaults; note overrides if testing prod locally.
-- On first sign-in, if Cognito doesn't provide a username/email (e.g., Sign in with Apple), the app now presents a mandatory profile-completion sheet so every account captures those fields before proceeding.
 - Native email sign-up enforces Cognito’s verification code step; testers can resend codes in-app and must type DELETE to remove accounts.
 - Hosted UI + native email share the same AppState; if SES/email limits are exceeded Cognito returns `Exceeded daily email limit...` which surfaces directly in the UI.
 - Email sign-up & login now automatically detect pending confirmations: if Cognito reports an existing unverified account we resend the code and route the user back into the OTP screen.
