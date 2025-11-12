@@ -29,10 +29,46 @@ on:
         required: false
         default: true
         type: boolean
+      perform_signing:
+        required: false
+        default: false
+        type: boolean
+        description: Set true to import certs/profiles and produce a signed archive
+      provisioning_profile_name:
+        required: false
+        default: TemplateApp-AppStore
+        type: string
+      code_sign_identity:
+        required: false
+        default: Apple Distribution
+        type: string
+      upload_to_testflight:
+        required: false
+        default: false
+        type: boolean
+        description: Requires perform_signing + App Store Connect API secrets
+    secrets:
+      APPLE_CERTIFICATE:
+        required: false
+      APPLE_CERTIFICATE_PASSWORD:
+        required: false
+      APPLE_PROVISIONING_PROFILE:
+        required: false
+      APPLE_TEAM_ID:
+        required: false
+      APP_STORE_CONNECT_KEY_ID:
+        required: false
+      APP_STORE_CONNECT_ISSUER_ID:
+        required: false
+      APP_STORE_CONNECT_PRIVATE_KEY:
+        required: false
+
+env:
+  XCODE_PROJECT: TemplateApp.xcodeproj
 
 jobs:
   build-and-archive:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout template
         uses: actions/checkout@v4
@@ -44,39 +80,99 @@ jobs:
           ref: ${{ inputs.manifest_ref }}
           path: __brand
 
+      - name: Validate manifest JSON
+        run: jq . "__brand/${{ inputs.manifest_path }}"
+
       - name: Apply manifest
         run: ./scripts/apply_manifest.sh "__brand/${{ inputs.manifest_path }}"
 
       - name: Show applied manifest
         run: cat TemplateApp/TemplateApp/Config/app.json
 
+      - name: Select latest Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          xcodebuild -version
+
       - name: Run unit tests
         if: inputs.run_tests == true
         run: |
+          set -o pipefail
           xcodebuild \
-            -project TemplateApp.xcodeproj \
-            -scheme ${{ inputs.scheme }} \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -project "$XCODE_PROJECT" \
+            -scheme "${{ inputs.scheme }}" \
+            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 16' \
             clean test
+
+      - name: Import signing certificate
+        if: inputs.perform_signing == true
+        uses: apple-actions/import-codesign-certs@v2
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+
+      - name: Install provisioning profile
+        if: inputs.perform_signing == true
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          PROFILE_PATH=~/Library/MobileDevice/Provisioning\ Profiles/${{ inputs.provisioning_profile_name }}.mobileprovision
+          if printf '%s' "${{ secrets.APPLE_PROVISIONING_PROFILE }}" | base64 --decode > "$PROFILE_PATH" 2>/dev/null; then
+            echo "Decoded provisioning profile from base64."
+          else
+            printf '%s' "${{ secrets.APPLE_PROVISIONING_PROFILE }}" > "$PROFILE_PATH"
+            echo "Provisioning profile written without base64 decoding."
+          fi
 
       - name: Archive iOS app
         run: |
+          set -o pipefail
           mkdir -p build
-          xcodebuild \
-            -project TemplateApp.xcodeproj \
-            -scheme ${{ inputs.scheme }} \
-            -configuration ${{ inputs.configuration }} \
-            -sdk iphoneos \
-            -archivePath build/${{ inputs.scheme }}.xcarchive \
-            clean archive
+          if [ "${{ inputs.perform_signing }}" = "true" ]; then
+            xcodebuild \
+              -project "$XCODE_PROJECT" \
+              -scheme "${{ inputs.scheme }}" \
+              -configuration "${{ inputs.configuration }}" \
+              -sdk iphoneos \
+              -archivePath "build/${{ inputs.scheme }}.xcarchive" \
+              DEVELOPMENT_TEAM=${{ secrets.APPLE_TEAM_ID }} \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="${{ inputs.code_sign_identity }}" \
+              PROVISIONING_PROFILE_SPECIFIER="${{ inputs.provisioning_profile_name }}" \
+              clean archive
+          else
+            xcodebuild \
+              -project "$XCODE_PROJECT" \
+              -scheme "${{ inputs.scheme }}" \
+              -configuration "${{ inputs.configuration }}" \
+              -sdk iphoneos \
+              -archivePath "build/${{ inputs.scheme }}.xcarchive" \
+              CODE_SIGNING_ALLOWED=NO \
+              clean archive
+          fi
 
-      - name: Zip archive
+      - name: Export IPA
+        if: inputs.perform_signing == true
         run: |
-          cd build
-          zip -r ${RUNNER_TEMP}/${{ inputs.scheme }}.xcarchive.zip ${{ inputs.scheme }}.xcarchive
+          set -o pipefail
+          xcodebuild \
+            -exportArchive \
+            -archivePath "build/${{ inputs.scheme }}.xcarchive" \
+            -exportOptionsPlist exportOptions.plist \
+            -exportPath build/export
 
       - name: Upload archive artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.scheme }}-xcarchive
-          path: ${RUNNER_TEMP}/${{ inputs.scheme }}.xcarchive.zip
+          name: ${{ inputs.scheme }}-build
+          path: build
+
+      - name: Upload to TestFlight
+        if: inputs.upload_to_testflight == true && inputs.perform_signing == true
+        uses: maierj/fastlane-action@v2.1.0
+        with:
+          lane: upload_testflight
+          subdirectory: .
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}

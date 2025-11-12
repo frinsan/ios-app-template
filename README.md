@@ -29,7 +29,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
    cd ios-app-template/TemplateApp
    ruby ../scripts/generate_project.rb
    ```
-2. Open `TemplateApp/TemplateApp.xcodeproj` in Xcode 15.4+.
+2. Open `TemplateApp/TemplateApp.xcodeproj` in the latest stable Xcode (currently 26.11 on GitHub runners and local installs).
 3. In the *Signing & Capabilities* tab, set your Apple development team and add the **Sign in with Apple** capability.
 4. Select the `TemplateApp` scheme and build for an iOS simulator (`⌘B`) or run on device.
 
@@ -71,7 +71,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 
 ## Handoff Notes
 
-- Xcode 15.4+ required (compiled against iOS 17 SDK).
+- Always build with the latest stable Xcode release (right now 26.11) so local runs, CI, and TestFlight uploads all match the same toolchain/iOS SDK combo.
 - Record any secrets required for CI (Apple API key, App Store Connect credentials) once workflows are wired.
 - Keep staging API base URLs as defaults; note overrides if testing prod locally.
 - Native email sign-up enforces Cognito’s verification code step; testers can resend codes in-app and must type DELETE to remove accounts.

@@ -5,19 +5,101 @@ on:
     branches: ["main"]
   pull_request:
 
+env:
+  XCODE_PROJECT: TemplateApp.xcodeproj
+  XCODE_SCHEME: TemplateApp
+  ARCHIVE_PATH: build/TemplateApp.xcarchive
+  EXPORT_PATH: build/export
+  PROVISIONING_PROFILE_NAME: TemplateApp-AppStore
+
 jobs:
   build-and-test:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # TODO: set up Xcode, run unit tests, lint Swift
+
+      - name: Select latest Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          xcodebuild -version
+
+      - name: Run unit tests on simulator
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 16' \
+            clean test
 
   distribute-staging:
     needs: build-and-test
     if: github.ref == 'refs/heads/main'
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # TODO: run fastlane to upload TestFlight build against staging backend
+
+      - name: Select latest Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          xcodebuild -version
+
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v2
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+
+      - name: Install provisioning profile
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          PROFILE_PATH=~/Library/MobileDevice/Provisioning\ Profiles/${PROVISIONING_PROFILE_NAME}.mobileprovision
+          if printf '%s' "${{ secrets.APPLE_PROVISIONING_PROFILE }}" | base64 --decode > "$PROFILE_PATH" 2>/dev/null; then
+            echo "Decoded provisioning profile from base64."
+          else
+            printf '%s' "${{ secrets.APPLE_PROVISIONING_PROFILE }}" > "$PROFILE_PATH"
+            echo "Provisioning profile written without base64 decoding."
+          fi
+
+      - name: Archive iOS app
+        run: |
+          set -o pipefail
+          mkdir -p build
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath "$ARCHIVE_PATH" \
+            DEVELOPMENT_TEAM=${{ secrets.APPLE_TEAM_ID }} \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            PROVISIONING_PROFILE_SPECIFIER="${PROVISIONING_PROFILE_NAME}" \
+            clean archive
+
+      - name: Export IPA
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -exportArchive \
+            -archivePath "$ARCHIVE_PATH" \
+            -exportOptionsPlist exportOptions.plist \
+            -exportPath "$EXPORT_PATH"
+
+      - name: Upload archive artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: templateapp-xcarchive
+          path: build
+
+      - name: Upload to TestFlight
+        uses: maierj/fastlane-action@v2.1.0
+        with:
+          lane: upload_testflight
+          subdirectory: .
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
