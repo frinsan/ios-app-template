@@ -5,8 +5,8 @@ struct EmailAuthService {
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
 
-    func signUp(email: String, password: String, givenName: String?, familyName: String?) async throws -> EmailSignUpResult {
-        let payload = SignUpPayload(email: email, password: password, givenName: givenName, familyName: familyName)
+    func signUp(email: String, password: String, username: String, givenName: String?, familyName: String?) async throws -> EmailSignUpResult {
+        let payload = SignUpPayload(email: email, password: password, username: username, givenName: givenName, familyName: familyName)
         let response: SignUpResponse = try await post(path: "/v1/auth/email/signup", payload: payload)
         return EmailSignUpResult(response: response)
     }
@@ -91,6 +91,7 @@ struct EmailAuthService {
     private struct SignUpPayload: Encodable {
         let email: String
         let password: String
+        let username: String
         let givenName: String?
         let familyName: String?
     }

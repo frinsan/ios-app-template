@@ -103,6 +103,7 @@ struct EmailSignUpView: View {
     @State private var emailStatus: EmailFlowStatus?
     @State private var password = ""
     @State private var confirmPassword = ""
+    @State private var username = ""
     @State private var verificationCode = ""
     @State private var isPasswordVisible = false
     @State private var isConfirmPasswordVisible = false
@@ -198,7 +199,12 @@ extension EmailSignUpView {
     }
 
     private var isDetailsFormValid: Bool {
-        EmailSignUpValidator.isFormValid(email: lockedEmail, password: password, confirmPassword: confirmPassword)
+        EmailSignUpValidator.isFormValid(
+            email: lockedEmail,
+            password: password,
+            confirmPassword: confirmPassword,
+            username: normalizedUsername
+        )
     }
 
     private var passwordValidationMessage: String? {
@@ -210,6 +216,16 @@ extension EmailSignUpView {
         guard !confirmPassword.isEmpty else { return nil }
         guard !password.isEmpty else { return nil }
         return password == confirmPassword ? nil : "Passwords must match."
+    }
+
+    private var usernameValidationMessage: String? {
+        let trimmed = normalizedUsername
+        guard !trimmed.isEmpty else { return "Username is required." }
+        return EmailSignUpValidator.isValidUsername(trimmed) ? nil : "Use 3-32 letters, numbers, period, underscore, or dash."
+    }
+
+    private var normalizedUsername: String {
+        username.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     @ViewBuilder
@@ -255,6 +271,23 @@ extension EmailSignUpView {
                 resetToEmailEntry()
             }
             .font(.footnote)
+        }
+
+        Section {
+            TextField("Username", text: $username)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .focused($focusedField, equals: .username)
+
+            Text("Used to identify you in the app. 3-32 letters, numbers, ., _, or -.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+
+            if let usernameValidationMessage {
+                Text(usernameValidationMessage)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
         }
 
         if case let .pending(description) = emailStatus {
@@ -433,6 +466,7 @@ extension EmailSignUpView {
                 let result = try await service.signUp(
                     email: lockedEmail,
                     password: password,
+                    username: normalizedUsername,
                     givenName: nil,
                     familyName: nil
                 )
@@ -486,6 +520,7 @@ extension EmailSignUpView {
                 let session = try await service.confirm(email: lockedEmail, password: password, code: verificationCode)
                 await MainActor.run {
                     isConfirmingCode = false
+                    appState.setPendingProfileOverrides(email: lockedEmail, username: normalizedUsername)
                     appState.handleLoginSuccess(session)
                 }
             } catch let apiError as APIError {
@@ -551,6 +586,7 @@ extension EmailSignUpView {
         lockedEmail = ""
         password = ""
         confirmPassword = ""
+        username = ""
         verificationCode = ""
         errorMessage = nil
         codeErrorMessage = nil
@@ -570,11 +606,7 @@ extension EmailSignUpView {
         codeInfoMessage = nil
         resendStatusMessage = nil
         isCodeSectionEnabled = false
-        if preservingEmail {
-            focusedField = .password
-        } else {
-            focusedField = nil
-        }
+        focusedField = preservingEmail ? .username : nil
     }
 
     private func updateResendCooldown() {
@@ -956,6 +988,7 @@ struct PendingConfirmation: Identifiable, Hashable {
 
 private enum SignUpField: Hashable {
     case email
+    case username
     case password
     case confirmPassword
     case verificationCode

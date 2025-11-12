@@ -3,6 +3,7 @@ import Foundation
 struct UserProfile: Codable, Identifiable {
     let appId: String
     let userId: String
+    let username: String?
     let email: String?
     let givenName: String?
     let familyName: String?
@@ -13,6 +14,9 @@ struct UserProfile: Codable, Identifiable {
     var id: String { "\(appId)-\(userId)" }
 
     var displayName: String {
+        if let username, !username.isEmpty {
+            return username
+        }
         if let givenName, let familyName {
             return "\(givenName) \(familyName)"
         }
@@ -32,11 +36,12 @@ struct UserProfileService {
         self.manifest = manifest
     }
 
-    func bootstrapProfile(session: AuthSession) async throws -> UserProfile {
+    func bootstrapProfile(session: AuthSession, overrides: ProfileOverrides? = nil) async throws -> UserProfile {
         let payload = BootstrapPayload(
-            email: session.user.email,
-            givenName: session.user.givenName,
-            familyName: session.user.familyName
+            email: overrides?.email ?? session.user.email,
+            username: overrides?.username,
+            givenName: overrides?.givenName ?? session.user.givenName,
+            familyName: overrides?.familyName ?? session.user.familyName
         )
         return try await send(
             path: "/v1/users/bootstrap",
@@ -96,6 +101,7 @@ struct UserProfileService {
 
     private struct BootstrapPayload: Codable {
         let email: String?
+        let username: String?
         let givenName: String?
         let familyName: String?
     }

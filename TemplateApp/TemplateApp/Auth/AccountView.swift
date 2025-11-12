@@ -52,6 +52,10 @@ struct AccountView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(profile.displayName)
                         .font(.title2.bold())
+                    if let username = profile.username, !username.isEmpty {
+                        Label(username, systemImage: "person.fill")
+                            .foregroundStyle(.secondary)
+                    }
                     if let email = profile.email {
                         Label(email, systemImage: "envelope")
                             .foregroundStyle(.secondary)

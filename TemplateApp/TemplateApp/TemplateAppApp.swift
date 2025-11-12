@@ -17,6 +17,9 @@ final class AppState: ObservableObject {
     @Published var authState: AuthState = .signedOut
     @Published var userProfile: UserProfile?
     @Published var latestLoginSuccessID: UUID?
+    @Published var profileCompletionPrompt: ProfileCompletionPrompt?
+
+    private var pendingProfileOverrides: ProfileOverrides?
 
     init() {
         loadManifest()
@@ -61,6 +64,12 @@ final class AppState: ObservableObject {
         }
     }
 
+    func setPendingProfileOverrides(email: String?, username: String?) {
+        let trimmedEmail = email?.trimmedOrNil
+        let trimmedUsername = username?.trimmedOrNil
+        pendingProfileOverrides = ProfileOverrides(email: trimmedEmail, username: trimmedUsername)
+    }
+
     func performLogout() async {
         if case .signedIn = authState {
             do {
@@ -74,22 +83,51 @@ final class AppState: ObservableObject {
             AuthSessionStorage.shared.clear()
             userProfile = nil
             authState = .signedOut
+            profileCompletionPrompt = nil
+            pendingProfileOverrides = nil
         }
+    }
+
+    func completeProfile(email: String, username: String) async throws {
+        guard case let .signedIn(session) = authState else { return }
+        let overrides = ProfileOverrides(email: email.trimmedOrNil, username: username.trimmedOrNil)
+        let service = UserProfileService(manifest: manifest)
+        _ = try await service.bootstrapProfile(session: session, overrides: overrides)
+        await bootstrapAndFetchProfile(forceBootstrap: false)
     }
 
     private func bootstrapAndFetchProfile(forceBootstrap: Bool) async {
         guard case let .signedIn(session) = authState else { return }
         let service = UserProfileService(manifest: manifest)
         do {
-            if forceBootstrap {
-                _ = try await service.bootstrapProfile(session: session)
+            if forceBootstrap || pendingProfileOverrides != nil {
+                _ = try await service.bootstrapProfile(session: session, overrides: pendingProfileOverrides)
+                await MainActor.run {
+                    pendingProfileOverrides = nil
+                }
             }
             let profile = try await service.fetchProfile(session: session)
             await MainActor.run {
                 self.userProfile = profile
+                self.updateProfileCompletionPrompt(profile: profile, session: session)
             }
         } catch {
             print("[Profile] Failed to sync: \(error)")
+        }
+    }
+
+    private func updateProfileCompletionPrompt(profile: UserProfile, session: AuthSession) {
+        let needsUsername = profile.username?.isEmpty ?? true
+        let needsEmail = profile.email?.isEmpty ?? true
+        if needsUsername || needsEmail {
+            profileCompletionPrompt = ProfileCompletionPrompt(
+                missingEmail: needsEmail,
+                missingUsername: needsUsername,
+                currentEmail: profile.email ?? session.user.email ?? "",
+                currentUsername: profile.username ?? ""
+            )
+        } else {
+            profileCompletionPrompt = nil
         }
     }
 }

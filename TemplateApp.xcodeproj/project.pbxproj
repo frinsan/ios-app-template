@@ -27,6 +27,7 @@
 		942F4A90552450C7454A1238 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ECB9CB87846A4ED8911CB1 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */; };
 		9474F86BD02F63BF5515952D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0911C60AF63C87AD7FE49EE2 /* Localizable.strings */; };
 		990D862AE468C6B939F32CE2 /* TemplateApp/TemplateApp/ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */; };
+		E3C4D9C727CA4E4BB9E6B7A1 /* TemplateApp/TemplateApp/API/ProfileModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C4D9C727CA4E4BB9E6B7A2 /* TemplateApp/TemplateApp/API/ProfileModels.swift */; };
 		A8C7C61359E30BCA1D94176B /* TemplateApp/TemplateApp/Config/ManifestLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D8BA6E5FFA3C646BCE1295 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */; };
 		AEA5218587DE1DCB40151458 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E3BCCA1CBCFD9C5085544FF /* AuthenticationServices.framework */; };
 		B29CEC34F9B66D3B2A8716DB /* TemplateApp/TemplateAppTests/EmailSignUpValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34832141353A8EE5310C4C1F /* TemplateApp/TemplateAppTests/EmailSignUpValidatorTests.swift */; };
@@ -58,6 +59,7 @@
 		272BBFDAABD7B77954B253AB /* TemplateApp/TemplateApp/Auth/LoginView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/LoginView.swift; sourceTree = SOURCE_ROOT; };
 		2AB7EDC3A5F68FFBBB08334B /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift; sourceTree = SOURCE_ROOT; };
 		2E5630E8DE1532EA8141A3D0 /* TemplateApp/TemplateApp/API/UserProfileService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/UserProfileService.swift; sourceTree = SOURCE_ROOT; };
+		E3C4D9C727CA4E4BB9E6B7A2 /* TemplateApp/TemplateApp/API/ProfileModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/ProfileModels.swift; sourceTree = SOURCE_ROOT; };
 		34832141353A8EE5310C4C1F /* TemplateApp/TemplateAppTests/EmailSignUpValidatorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateAppTests/EmailSignUpValidatorTests.swift; sourceTree = SOURCE_ROOT; };
 		3FAB73F040E929758A44C21F /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = "TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json; path = TemplateApp/TemplateApp/Config/app.json; sourceTree = SOURCE_ROOT; };
@@ -128,6 +130,7 @@
 			children = (
 				C1FCE4B6D5EFC45EBDCF6678 /* TemplateApp/TemplateApp/API/APIClient.swift */,
 				2E5630E8DE1532EA8141A3D0 /* TemplateApp/TemplateApp/API/UserProfileService.swift */,
+				E3C4D9C727CA4E4BB9E6B7A2 /* TemplateApp/TemplateApp/API/ProfileModels.swift */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 				CA7E21BC0AA844304826D9C3 /* TemplateApp/TemplateApp/Auth/AccountView.swift in Sources */,
 				942F4A90552450C7454A1238 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift in Sources */,
 				8B4D6429E109AF57B6CF19AE /* TemplateApp/TemplateApp/API/APIClient.swift in Sources */,
+				E3C4D9C727CA4E4BB9E6B7A1 /* TemplateApp/TemplateApp/API/ProfileModels.swift in Sources */,
 				C89E2AC007814D50119D647B /* TemplateApp/TemplateApp/API/UserProfileService.swift in Sources */,
 				72145D93F67770ECA6EFD9A2 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift in Sources */,
 				DDD23B655B830136AB2A4B5B /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift in Sources */,

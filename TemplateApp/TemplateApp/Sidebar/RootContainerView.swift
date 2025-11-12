@@ -67,6 +67,11 @@ struct RootContainerView: View {
                 .presentationDetents([.fraction(0.85)])
                 .presentationDragIndicator(.visible)
         }
+        .sheet(item: profileCompletionBinding) { prompt in
+            ProfileCompletionSheet(prompt: prompt)
+                .presentationDetents([.fraction(0.75)])
+                .presentationDragIndicator(.visible)
+        }
         .lightModeTextColor()
     }
 
@@ -99,6 +104,13 @@ struct RootContainerView: View {
         withAnimation(.easeInOut(duration: 0.25)) {
             isMenuVisible.toggle()
         }
+    }
+
+    private var profileCompletionBinding: Binding<ProfileCompletionPrompt?> {
+        Binding(
+            get: { appState.profileCompletionPrompt },
+            set: { appState.profileCompletionPrompt = $0 }
+        )
     }
 }
 
@@ -143,6 +155,123 @@ private struct LegalDocumentSheet: View {
             }
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
+private struct ProfileCompletionSheet: View {
+    @EnvironmentObject private var appState: AppState
+    let prompt: ProfileCompletionPrompt
+    @State private var username: String
+    @State private var email: String
+    @State private var isSaving = false
+    @State private var errorMessage: String?
+
+    init(prompt: ProfileCompletionPrompt) {
+        self.prompt = prompt
+        _username = State(initialValue: prompt.currentUsername)
+        _email = State(initialValue: prompt.currentEmail)
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    Text("Add a username and email so we know how to reach you. This only needs to be done once per account.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
+                Section("Username") {
+                    TextField("Username", text: $username)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .disabled(isSaving)
+
+                    if let usernameMessage {
+                        Text(usernameMessage)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                    } else {
+                        Text("Use 3-32 letters, numbers, period, underscore, or dash.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                Section("Email") {
+                    TextField("Email", text: $email)
+                        .textInputAutocapitalization(.never)
+                        .keyboardType(.emailAddress)
+                        .autocorrectionDisabled()
+
+                    if let emailMessage {
+                        Text(emailMessage)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                    }
+                }
+
+                if let errorMessage {
+                    Section {
+                        Text(errorMessage)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                    }
+                }
+            }
+            .navigationTitle("Complete your profile")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save", action: save)
+                        .disabled(!isFormValid || isSaving)
+                }
+            }
+        }
+        .interactiveDismissDisabled(true)
+    }
+
+    private var trimmedUsername: String {
+        username.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private var trimmedEmail: String {
+        email.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private var usernameMessage: String? {
+        guard !trimmedUsername.isEmpty else { return "Username is required." }
+        return EmailSignUpValidator.isValidUsername(trimmedUsername)
+            ? nil
+            : "Use 3-32 letters, numbers, period, underscore, or dash."
+    }
+
+    private var emailMessage: String? {
+        guard !trimmedEmail.isEmpty else { return "Email is required." }
+        return EmailSignUpValidator.isValidEmail(trimmedEmail) ? nil : "Enter a valid email address."
+    }
+
+    private var isFormValid: Bool {
+        (usernameMessage == nil) && (emailMessage == nil)
+    }
+
+    private func save() {
+        guard isFormValid else { return }
+        errorMessage = nil
+        isSaving = true
+        Task {
+            do {
+                try await appState.completeProfile(email: trimmedEmail, username: trimmedUsername)
+                await MainActor.run {
+                    isSaving = false
+                }
+            } catch {
+                await MainActor.run {
+                    errorMessage = "Unable to save profile. Please try again."
+                    isSaving = false
+                }
+            }
         }
     }
 }
