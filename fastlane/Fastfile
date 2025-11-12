@@ -1,0 +1,12 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Upload archive to TestFlight"
+  lane :upload_testflight do
+    pilot(
+      ipa: "build/export/TemplateApp.ipa",
+      skip_submission: true,
+      skip_waiting_for_build_processing: true
+    )
+  end
+end
