@@ -54,7 +54,7 @@ struct ForgotPasswordRequestView: View {
         }
         .navigationTitle("Reset password")
         .lightModeTextColor()
-        .onChange(of: appState.latestLoginSuccessID) { _ in
+        .onChange(of: appState.latestLoginSuccessID) { _, _ in
             dismiss()
         }
         .onAppear {
@@ -77,6 +77,17 @@ struct ForgotPasswordRequestView: View {
 
     private var isEmailValid: Bool {
         EmailSignUpValidator.isValidEmail(email.trimmingCharacters(in: .whitespacesAndNewlines))
+    }
+
+    private var newPasswordValidationMessage: String? {
+        guard !newPassword.isEmpty else { return nil }
+        return newPassword.count >= 12 ? nil : "Password must be at least 12 characters."
+    }
+
+    private var confirmPasswordValidationMessage: String? {
+        guard !confirmPassword.isEmpty else { return nil }
+        guard !newPassword.isEmpty else { return nil }
+        return newPassword == confirmPassword ? nil : "Passwords must match."
     }
 
     @ViewBuilder
@@ -153,6 +164,11 @@ struct ForgotPasswordRequestView: View {
                 field: .newPassword
             )
             .disabled(!isCodeSectionEnabled)
+            if let message = newPasswordValidationMessage {
+                Text(message)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
 
             passwordInput(
                 title: "Confirm new password",
@@ -161,6 +177,11 @@ struct ForgotPasswordRequestView: View {
                 field: .confirmPassword
             )
             .disabled(!isCodeSectionEnabled)
+            if let message = confirmPasswordValidationMessage {
+                Text(message)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
 
             if let codeErrorMessage {
                 Text(codeErrorMessage)
@@ -250,8 +271,8 @@ struct ForgotPasswordRequestView: View {
             codeErrorMessage = "Enter the verification code."
             return
         }
-        guard !newPassword.isEmpty else {
-            codeErrorMessage = "Enter a new password."
+        guard newPassword.count >= 12 else {
+            codeErrorMessage = "Password must be at least 12 characters."
             return
         }
         guard newPassword == confirmPassword else {

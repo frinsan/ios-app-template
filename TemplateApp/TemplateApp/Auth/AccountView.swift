@@ -30,6 +30,7 @@ struct AccountView: View {
             DeleteAccountSheet(
                 confirmationText: $deleteConfirmationText,
                 errorMessage: $deleteError,
+                accentColor: accentColor,
                 onConfirm: confirmDeletion,
                 onCancel: { showDeleteConfirm = false }
             )
@@ -153,15 +154,18 @@ private extension AccountView {
 private struct DeleteAccountSheet: View {
     @Binding var confirmationText: String
     @Binding var errorMessage: String?
+    let accentColor: Color
     let onConfirm: () -> Void
     let onCancel: () -> Void
 
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
-                Text("This cannot be undone")
-                    .font(.headline)
-                Text("Type DELETE to permanently remove your account and data.")
+                Text("Deleting your account removes your profile, saved preferences, and any related data from this app. This action is permanent and cannot be undone. Type DELETE to confirm.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
                 TextField("Type DELETE", text: $confirmationText)
                     .textInputAutocapitalization(.characters)
                     .autocorrectionDisabled()
@@ -174,7 +178,8 @@ private struct DeleteAccountSheet: View {
 
                 Button("Delete account", role: .destructive, action: onConfirm)
                     .disabled(confirmationText != "DELETE")
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                    .opacity(confirmationText == "DELETE" ? 1 : 0.65)
 
                 Spacer()
             }

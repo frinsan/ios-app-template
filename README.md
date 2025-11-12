@@ -80,3 +80,87 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 
 - Lightweight analytics hooks fire on email signup/login/resend/delete so downstream apps can route events to their preferred provider.
 - Account view offers “Delete account”, which calls the new backend endpoint and then signs the user out.
+
+## Brand manifest schema
+
+Each branded app supplies an `app.json` that mirrors the template’s config file (`TemplateApp/TemplateApp/Config/app.json`). A minimal manifest looks like this:
+
+```json
+{
+  "appId": "com.learnandbecurious.sample",
+  "displayName": "Template App",
+  "bundleIdSuffix": "template",
+  "theme": {
+    "primary": "#111111",
+    "accent": "#B8E986",
+    "appearance": "system"
+  },
+  "features": {
+    "login": true,
+    "feedback": false
+  },
+  "apiBase": {
+    "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
+    "prod": "https://api.example.com"
+  },
+  "auth": {
+    "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
+    "scheme": "templateapp",
+    "region": "us-west-2",
+    "hostedUIDomain": "learnandbecurious-staging.auth.us-west-2.amazoncognito.com"
+  },
+  "activeEnvironment": "staging"
+}
+```
+
+Required fields:
+
+- `appId` – fully qualified bundle identifier.
+- `displayName` – what appears on the SpringBoard.
+- `bundleIdSuffix` – appended to the shared bundle ID when templating.
+- `theme` – primary/accent colors plus `appearance` (`light`, `dark`, or `system`).
+- `features` – booleans to gate UI elements per brand.
+- `apiBase` – base URLs for staging/prod API Gateway endpoints.
+- `auth` – Cognito client configuration for the brand (client ID, Hosted UI domain, custom URL scheme, AWS region).
+- `activeEnvironment` – which environment the build should target by default (`staging` or `prod`).
+
+Brand repos keep this manifest at the root (`app.json`) and optional asset overrides under `Assets/` (e.g., `Assets/AppIcon.appiconset`). During automation the manifest is copied verbatim into `TemplateApp/TemplateApp/Config/app.json` via `scripts/apply_manifest.sh`.
+
+## Reusable build workflow
+
+The template exports `.github/workflows/reusable-build.yml`, which can be invoked from any brand repo via `workflow_call`. Inputs:
+
+- `manifest_repo` – GitHub slug for the brand repo (e.g., `frinsan/app-sample`).
+- `manifest_ref` – git ref in that repo (`main` by default).
+- `manifest_path` – relative path to the manifest file (defaults to `app.json`).
+- `scheme`, `configuration`, `run_tests` – optional overrides for the Xcode build.
+
+The workflow:
+
+1. Checks out the template repo (this one) and the brand repo side by side.
+2. Runs `scripts/apply_manifest.sh` to copy the manifest into the template.
+3. Optionally runs unit tests via `xcodebuild test` on a simulator.
+4. Archives the iOS app (`xcodebuild archive`) and uploads the `.xcarchive` as a GitHub artifact.
+
+This lays the groundwork for TestFlight distribution—Fastlane or App Store Connect uploads can be layered on once the shared Apple credentials are in place.
+
+### Brand repo example
+
+`app-sample` contains `.github/workflows/build.yml`, which demonstrates how a brand repo triggers the reusable workflow:
+
+```yaml
+name: sample-build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: frinsan/ios-app-template/.github/workflows/reusable-build.yml@main
+    with:
+      manifest_repo: frinsan/app-sample
+      manifest_ref: main
+      manifest_path: app.json
+```
+
+Copy that workflow into each brand repo, adjust the repository/ref/path, and run it from the Actions tab to get a fresh build artifact driven entirely by the manifest.

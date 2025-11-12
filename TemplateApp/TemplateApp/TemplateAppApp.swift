@@ -106,7 +106,9 @@ extension AuthState: Equatable {
         case (.signedOut, .signedOut), (.signingIn, .signingIn):
             return true
         case let (.signedIn(a), .signedIn(b)):
-            return (a.user.subject ?? a.idToken) == (b.user.subject ?? b.idToken)
+            let leftIdentifier = a.user.subject.isEmpty ? a.idToken : a.user.subject
+            let rightIdentifier = b.user.subject.isEmpty ? b.idToken : b.user.subject
+            return leftIdentifier == rightIdentifier
         default:
             return false
         }

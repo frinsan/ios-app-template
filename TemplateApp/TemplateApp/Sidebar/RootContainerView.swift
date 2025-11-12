@@ -51,14 +51,14 @@ struct RootContainerView: View {
                 .shadow(color: .black.opacity(0.2), radius: 10, x: 4, y: 0)
                 .animation(.easeInOut(duration: 0.25), value: isMenuVisible)
         }
-        .onChange(of: appState.authState) { newValue in
+        .onChange(of: appState.authState) { _, newValue in
             if !menuItems.contains(selection) {
                 selection = menuItems.first ?? .home
             } else if selection == .login, case .signedIn = newValue {
                 selection = .home
             }
         }
-        .onChange(of: appState.latestLoginSuccessID) { _ in
+        .onChange(of: appState.latestLoginSuccessID) { _, _ in
             selection = .home
             isMenuVisible = false
         }

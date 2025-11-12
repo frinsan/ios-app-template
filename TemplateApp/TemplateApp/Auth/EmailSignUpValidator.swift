@@ -13,7 +13,7 @@ struct EmailSignUpValidator {
 
     static func isFormValid(email: String, password: String, confirmPassword: String) -> Bool {
         isValidEmail(email)
-            && !password.isEmpty
+            && password.count >= 12
             && !confirmPassword.isEmpty
             && password == confirmPassword
     }

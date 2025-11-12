@@ -133,7 +133,7 @@ struct EmailSignUpView: View {
         .lightModeTextColor()
         .navigationTitle("Sign up with email")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: appState.latestLoginSuccessID) { _ in
+        .onChange(of: appState.latestLoginSuccessID) { _, _ in
             dismiss()
         }
         .onAppear { updateResendCooldown() }
@@ -201,6 +201,17 @@ extension EmailSignUpView {
         EmailSignUpValidator.isFormValid(email: lockedEmail, password: password, confirmPassword: confirmPassword)
     }
 
+    private var passwordValidationMessage: String? {
+        guard !password.isEmpty else { return nil }
+        return password.count >= 12 ? nil : "Password must be at least 12 characters."
+    }
+
+    private var confirmPasswordValidationMessage: String? {
+        guard !confirmPassword.isEmpty else { return nil }
+        guard !password.isEmpty else { return nil }
+        return password == confirmPassword ? nil : "Passwords must match."
+    }
+
     @ViewBuilder
     private var emailEntryStep: some View {
         Section {
@@ -261,6 +272,11 @@ extension EmailSignUpView {
                 isVisible: $isPasswordVisible,
                 field: .password
             )
+            if let message = passwordValidationMessage {
+                Text(message)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
 
             passwordInput(
                 title: "Confirm password",
@@ -268,6 +284,11 @@ extension EmailSignUpView {
                 isVisible: $isConfirmPasswordVisible,
                 field: .confirmPassword
             )
+            if let message = confirmPasswordValidationMessage {
+                Text(message)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
         }
 
         if let errorMessage {
@@ -663,7 +684,7 @@ struct EmailLoginView: View {
         .lightModeTextColor()
         .navigationTitle("Log in with email")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: appState.latestLoginSuccessID) { _ in
+        .onChange(of: appState.latestLoginSuccessID) { _, _ in
             dismiss()
         }
         .toolbar {

@@ -1,4 +1,4 @@
-import AuthenticationServices
+@preconcurrency import AuthenticationServices
 import Foundation
 import SwiftUI
 import UIKit
@@ -66,6 +66,7 @@ struct HostedUILoginController {
         )
     }
 
+    @MainActor
     static func logout(manifest: AppManifest) async throws {
         guard let domain = manifest.auth.hostedUIDomain,
               let clientId = manifest.auth.cognitoClientId,
@@ -89,6 +90,7 @@ struct HostedUILoginController {
         _ = try await presentHostedUI(url: logoutURL, callbackScheme: scheme)
     }
 
+    @MainActor
     private static func presentHostedUI(url: URL, callbackScheme: String) async throws -> URL {
         try await withCheckedThrowingContinuation { continuation in
             let session = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackScheme) { callbackURL, error in
@@ -176,6 +178,7 @@ struct HostedUILoginController {
     }
 }
 
+@MainActor
 private final class HostedUIPresentationAnchor: NSObject, ASWebAuthenticationPresentationContextProviding {
     static let shared = HostedUIPresentationAnchor()
 

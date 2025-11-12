@@ -3,21 +3,80 @@ name: reusable-build
 on:
   workflow_call:
     inputs:
-      app-manifest:
+      manifest_repo:
         required: true
         type: string
-    secrets:
-      APPLE_API_KEY:
+        description: GitHub slug for the brand manifest repo (e.g., frinsan/app-sample)
+      manifest_ref:
         required: false
-      MATCH_PASSWORD:
+        default: main
+        type: string
+        description: Git ref in the manifest repo
+      manifest_path:
         required: false
+        default: app.json
+        type: string
+        description: Path to the manifest JSON inside the brand repo
+      scheme:
+        required: false
+        default: TemplateApp
+        type: string
+      configuration:
+        required: false
+        default: Release
+        type: string
+      run_tests:
+        required: false
+        default: true
+        type: boolean
 
 jobs:
-  build-and-distribute:
+  build-and-archive:
     runs-on: macos-14
     steps:
       - name: Checkout template
         uses: actions/checkout@v4
-      # TODO: fetch brand manifest, apply theming, run fastlane lane
-      - name: Echo manifest path
-        run: echo "Using manifest: ${{ inputs.app-manifest }}"
+
+      - name: Checkout brand manifest
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.manifest_repo }}
+          ref: ${{ inputs.manifest_ref }}
+          path: __brand
+
+      - name: Apply manifest
+        run: ./scripts/apply_manifest.sh "__brand/${{ inputs.manifest_path }}"
+
+      - name: Show applied manifest
+        run: cat TemplateApp/TemplateApp/Config/app.json
+
+      - name: Run unit tests
+        if: inputs.run_tests == true
+        run: |
+          xcodebuild \
+            -project TemplateApp.xcodeproj \
+            -scheme ${{ inputs.scheme }} \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            clean test
+
+      - name: Archive iOS app
+        run: |
+          mkdir -p build
+          xcodebuild \
+            -project TemplateApp.xcodeproj \
+            -scheme ${{ inputs.scheme }} \
+            -configuration ${{ inputs.configuration }} \
+            -sdk iphoneos \
+            -archivePath build/${{ inputs.scheme }}.xcarchive \
+            clean archive
+
+      - name: Zip archive
+        run: |
+          cd build
+          zip -r ${RUNNER_TEMP}/${{ inputs.scheme }}.xcarchive.zip ${{ inputs.scheme }}.xcarchive
+
+      - name: Upload archive artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.scheme }}-xcarchive
+          path: ${RUNNER_TEMP}/${{ inputs.scheme }}.xcarchive.zip
