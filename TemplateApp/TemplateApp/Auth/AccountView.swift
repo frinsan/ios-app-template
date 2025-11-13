@@ -50,9 +50,9 @@ struct AccountView: View {
         VStack(spacing: 20) {
             if let profile = appState.userProfile {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(profile.displayName)
+                    Text(resolvedDisplayName(for: profile))
                         .font(.title2.bold())
-                    if let email = profile.email {
+                    if let email = profile.email ?? sessionEmail {
                         Label(email, systemImage: "envelope")
                             .foregroundStyle(.secondary)
                     }
@@ -148,6 +148,26 @@ struct AccountView: View {
 private extension AccountView {
     var accentColor: Color {
         Color(hex: appState.manifest.theme.accentHex)
+    }
+
+    var sessionEmail: String? {
+        if case let .signedIn(session) = appState.authState {
+            return session.user.email
+        }
+        return nil
+    }
+
+    func resolvedDisplayName(for profile: UserProfile) -> String {
+        let displayName = profile.displayName
+        guard displayName == profile.userId else {
+            return displayName
+        }
+
+        if let email = profile.email ?? sessionEmail {
+            return email
+        }
+
+        return "Email hidden"
     }
 }
 
