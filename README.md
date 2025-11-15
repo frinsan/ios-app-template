@@ -108,7 +108,7 @@ Every branded app provides an `app.json` that mirrors the template config (`Temp
     "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
     "scheme": "templateapp",
     "region": "us-west-2",
-    "hostedUIDomain": "learnandbecurious-staging.auth.us-west-2.amazoncognito.com"
+    "hostedUIDomain": "auth-staging.learnandbecurious.com"
   },
   "activeEnvironment": "staging"
 }
@@ -154,7 +154,7 @@ Each branded app supplies an `app.json` that mirrors the template’s config fil
     "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
     "scheme": "templateapp",
     "region": "us-west-2",
-    "hostedUIDomain": "learnandbecurious-staging.auth.us-west-2.amazoncognito.com"
+    "hostedUIDomain": "auth-staging.learnandbecurious.com"
   },
   "activeEnvironment": "staging"
 }
