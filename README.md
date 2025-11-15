@@ -110,6 +110,14 @@ Every branded app provides an `app.json` that mirrors the template config (`Temp
     "region": "us-west-2",
     "hostedUIDomain": "auth-staging.learnandbecurious.com"
   },
+  "legal": {
+    "privacyUrl": "https://learnandbecurious.com/privacy.html",
+    "termsUrl": "https://learnandbecurious.com/terms.html"
+  },
+  "legal": {
+    "privacyUrl": "https://learnandbecurious.com/privacy.html",
+    "termsUrl": "https://learnandbecurious.com/terms.html"
+  },
   "activeEnvironment": "staging"
 }
 ```

@@ -4,7 +4,7 @@ struct RootContainerView: View {
     @EnvironmentObject private var appState: AppState
     @State private var selection: SidebarItem = .home
     @State private var isMenuVisible = false
-    @State private var sheetType: LegalSheetType?
+    @State private var legalSheet: LegalSheet?
 
     private let drawerWidth: CGFloat = 280
     private var menuItems: [SidebarItem] {
@@ -62,10 +62,15 @@ struct RootContainerView: View {
             selection = .home
             isMenuVisible = false
         }
-        .sheet(item: $sheetType) { sheet in
-            LegalDocumentSheet(title: sheet.title, message: sheet.message)
-                .presentationDetents([.fraction(0.85)])
-                .presentationDragIndicator(.visible)
+        .sheet(item: $legalSheet) { sheet in
+            if let url = sheet.url {
+                SafariWebView(url: url)
+                    .ignoresSafeArea()
+            } else {
+                LegalDocumentSheet(title: sheet.title, message: sheet.placeholderMessage)
+                    .presentationDetents([.fraction(0.85)])
+                    .presentationDragIndicator(.visible)
+            }
         }
         .lightModeTextColor()
     }
@@ -87,9 +92,15 @@ struct RootContainerView: View {
     private func handleSidebarSelection(_ item: SidebarItem) {
         switch item {
         case .terms:
-            sheetType = .terms
+            legalSheet = LegalSheet(
+                document: .terms,
+                url: appState.manifest.legal?.termsUrl
+            )
         case .privacy:
-            sheetType = .privacy
+            legalSheet = LegalSheet(
+                document: .privacy,
+                url: appState.manifest.legal?.privacyUrl
+            )
         default:
             selection = item
         }
@@ -102,26 +113,31 @@ struct RootContainerView: View {
     }
 }
 
-private enum LegalSheetType: Identifiable {
-    case terms
-    case privacy
+private struct LegalSheet: Identifiable {
+    enum Document {
+        case terms
+        case privacy
+    }
+
+    let document: Document
+    let url: URL?
 
     var id: String {
-        switch self {
+        switch document {
         case .terms: return "terms"
         case .privacy: return "privacy"
         }
     }
 
     var title: String {
-        switch self {
+        switch document {
         case .terms: return "Terms of Use"
         case .privacy: return "Privacy Policy"
         }
     }
 
-    var message: String {
-        switch self {
+    var placeholderMessage: String {
+        switch document {
         case .terms:
             return "Placeholder content for Terms of Use. Replace this with your hosted web page."
         case .privacy:

@@ -42,10 +42,7 @@ struct LoginView: View {
                 }
                 .themedCTA(accentColor: accentColor)
 
-                Text("By signing up or logging in you agree to our Terms of Service and Privacy Policy.")
-                    .font(.caption)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
+                legalDisclaimer
                     .padding(.top, 16)
             }
             .padding()
@@ -77,6 +74,23 @@ struct LoginView: View {
 extension LoginView {
     private var accentColor: Color {
         Color(hex: appState.manifest.theme.accentHex)
+    }
+
+    @ViewBuilder
+    private var legalDisclaimer: some View {
+        if let terms = appState.manifest.legal?.termsUrl,
+           let privacy = appState.manifest.legal?.privacyUrl {
+            Text("By signing up or logging in you agree to our [Terms of Service](\(terms.absoluteString)) and [Privacy Policy](\(privacy.absoluteString)).")
+                .font(.caption)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+                .tint(accentColor)
+        } else {
+            Text("By signing up or logging in you agree to our Terms of Service and Privacy Policy.")
+                .font(.caption)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+        }
     }
 
     private func emailDomain(from email: String) -> String {

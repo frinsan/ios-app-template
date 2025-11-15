@@ -36,6 +36,16 @@ struct AppManifest: Codable {
         var hostedUIDomain: String?
     }
 
+    struct LegalConfig: Codable {
+        var privacyUrl: URL?
+        var termsUrl: URL?
+
+        enum CodingKeys: String, CodingKey {
+            case privacyUrl
+            case termsUrl
+        }
+    }
+
     enum Environment: String, Codable {
         case staging
         case prod
@@ -48,6 +58,7 @@ struct AppManifest: Codable {
     var features: FeatureFlags
     var apiBase: APIConfig
     var auth: AuthConfig
+    var legal: LegalConfig?
     var activeEnvironment: Environment
 
     var baseURL: URL {
@@ -68,6 +79,7 @@ struct AppManifest: Codable {
             prod: URL(string: "https://api.example.com")!
         ),
         auth: .init(cognitoClientId: nil, scheme: nil, region: nil, hostedUIDomain: nil),
+        legal: nil,
         activeEnvironment: .staging
     )
 }
