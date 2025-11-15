@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		08F1EEAE7F8863FD1FE9B3E2 /* TemplateApp/TemplateApp/Config/app.json in Resources */ = {isa = PBXBuildFile; fileRef = 44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */; };
+		0C9A2BC3C3F8C7F8B8D8AD45 /* TemplateApp/TemplateApp/Components/SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */; };
 		0E6AAB0163F2F58C2BAEDDC9 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516C27FEE3934B34B6C5FFC4 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */; };
 		1231C568A8652665B77E376A /* TemplateApp/TemplateApp/Auth/LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272BBFDAABD7B77954B253AB /* TemplateApp/TemplateApp/Auth/LoginView.swift */; };
 		176CB109E4A023B9C2F1AED0 /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB7EDC3A5F68FFBBB08334B /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift */; };
@@ -66,6 +67,7 @@
 		6D742626C8EFF18D0B9FF037 /* TemplateApp/TemplateAppTests/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateAppTests/Info.plist; sourceTree = SOURCE_ROOT; };
 		6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AccountView.swift; sourceTree = SOURCE_ROOT; };
 		7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/ContentView.swift; sourceTree = SOURCE_ROOT; };
+		7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/SafariWebView.swift; sourceTree = SOURCE_ROOT; };
 		87A3CDD9D71BF14FA278A4B0 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "TemplateApp/TemplateApp/Config/Color+Hex.swift"; sourceTree = SOURCE_ROOT; };
 		96ECB9CB87846A4ED8911CB1 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/HostedUILoginController.swift; sourceTree = SOURCE_ROOT; };
 		9C5651AE3272EF182001A0AC /* TemplateApp/TemplateApp/Config/AppManifest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/AppManifest.swift; sourceTree = SOURCE_ROOT; };
@@ -207,6 +209,7 @@
 				B1BCBFDDC867D77305995EDA /* Auth */,
 				27D506854BE1072E2B4E08E4 /* API */,
 				6CB140B7B782C150B8D7D0AB /* Sidebar */,
+				7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */,
 				B76082754AC732E97962D267 /* TemplateApp/TemplateApp/TemplateAppApp.swift */,
 				7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */,
 				DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */,
@@ -332,6 +335,7 @@
 				8B4D6429E109AF57B6CF19AE /* TemplateApp/TemplateApp/API/APIClient.swift in Sources */,
 				C89E2AC007814D50119D647B /* TemplateApp/TemplateApp/API/UserProfileService.swift in Sources */,
 				72145D93F67770ECA6EFD9A2 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift in Sources */,
+				0C9A2BC3C3F8C7F8B8D8AD45 /* TemplateApp/TemplateApp/Components/SafariWebView.swift in Sources */,
 				DDD23B655B830136AB2A4B5B /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift in Sources */,
 				0E6AAB0163F2F58C2BAEDDC9 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift in Sources */,
 				4D13282FC59C1626B108F713 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift in Sources */,
