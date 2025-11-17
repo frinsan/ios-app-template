@@ -8,7 +8,7 @@ struct SidebarView: View {
     var onSelect: (SidebarItem) -> Void = { _ in }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 28) {
             header
             ForEach(items) { item in
                 Button {
@@ -20,30 +20,43 @@ struct SidebarView: View {
                 } label: {
                     Label(item.title, systemImage: item.icon)
                         .font(.headline)
-                        .foregroundStyle(selection == item ? Color.primaryText : Color.secondaryText)
+                        .foregroundStyle(selection == item ? Color.white : Color.white.opacity(0.7))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 12)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 14)
                         .background(
                             selection == item
-                            ? Color.primaryAccent.opacity(0.18)
-                            : Color.clear
+                            ? Color.white.opacity(0.08)
+                            : Color.white.opacity(0.02)
                         )
-                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .stroke(selection == item ? Color.white.opacity(0.2) : Color.clear, lineWidth: 1)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
                 .buttonStyle(.plain)
+
+                if item != items.last {
+                    Divider()
+                        .overlay(Color.white.opacity(0.08))
+                        .padding(.leading, 4)
+                }
             }
             Spacer()
         }
         .padding(.top, 60)
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 24)
         .padding(.bottom, 40)
         .frame(maxHeight: .infinity, alignment: .top)
         .background(
             LinearGradient(
-                colors: [Color.cardBackground, Color.appBackground],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                colors: [
+                    Color(red: 3/255, green: 6/255, blue: 15/255),
+                    Color(red: 2/255, green: 8/255, blue: 22/255)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
         )
