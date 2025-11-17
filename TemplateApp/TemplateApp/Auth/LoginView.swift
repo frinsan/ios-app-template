@@ -43,6 +43,8 @@ struct LoginView: View {
             .padding(.horizontal, 24)
             .padding(.vertical, 32)
         }
+        .navigationTitle("Sign up or log in")
+        .navigationBarTitleDisplayMode(.inline)
         .background(
             LinearGradient(
                 colors: [Color.black, Color(red: 0.05, green: 0.05, blue: 0.05)],
