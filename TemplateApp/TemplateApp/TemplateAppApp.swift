@@ -6,7 +6,7 @@ struct TemplateAppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootContainerView()
+            AppEntryView()
                 .environmentObject(appState)
         }
     }
@@ -17,6 +17,7 @@ final class AppState: ObservableObject {
     @Published var authState: AuthState = .signedOut
     @Published var userProfile: UserProfile?
     @Published var latestLoginSuccessID: UUID?
+    @Published var shouldShowWelcome: Bool = true
 
     init() {
         loadManifest()
@@ -34,9 +35,12 @@ final class AppState: ObservableObject {
     private func restoreSession() {
         if let session = AuthSessionStorage.shared.load(), !session.isExpired {
             authState = .signedIn(session)
+            shouldShowWelcome = false
             Task {
                 await bootstrapAndFetchProfile(forceBootstrap: false)
             }
+        } else {
+            shouldShowWelcome = true
         }
     }
 
@@ -48,6 +52,7 @@ final class AppState: ObservableObject {
         }
 
         authState = .signedIn(session)
+        shouldShowWelcome = false
         latestLoginSuccessID = UUID()
         Task {
             await bootstrapAndFetchProfile(forceBootstrap: true)
@@ -74,7 +79,12 @@ final class AppState: ObservableObject {
             AuthSessionStorage.shared.clear()
             userProfile = nil
             authState = .signedOut
+            shouldShowWelcome = true
         }
+    }
+
+    func dismissWelcome() {
+        shouldShowWelcome = false
     }
 
     private func bootstrapAndFetchProfile(forceBootstrap: Bool) async {
@@ -98,6 +108,22 @@ enum AuthState {
     case signedOut
     case signingIn
     case signedIn(AuthSession)
+}
+
+struct AppEntryView: View {
+    @EnvironmentObject private var appState: AppState
+
+    var body: some View {
+        Group {
+            if appState.shouldShowWelcome, case .signedOut = appState.authState {
+                WelcomeView {
+                    appState.dismissWelcome()
+                }
+            } else {
+                RootContainerView()
+            }
+        }
+    }
 }
 
 extension AuthState: Equatable {

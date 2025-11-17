@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		08F1EEAE7F8863FD1FE9B3E2 /* TemplateApp/TemplateApp/Config/app.json in Resources */ = {isa = PBXBuildFile; fileRef = 44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */; };
+		0B465EDA2ECAAC9800FB141F /* neuron_loop.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0B465ED92ECAAC9800FB141F /* neuron_loop.mp4 */; };
 		0C9A2BC3C3F8C7F8B8D8AD45 /* TemplateApp/TemplateApp/Components/SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */; };
 		0E6AAB0163F2F58C2BAEDDC9 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516C27FEE3934B34B6C5FFC4 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */; };
 		1231C568A8652665B77E376A /* TemplateApp/TemplateApp/Auth/LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272BBFDAABD7B77954B253AB /* TemplateApp/TemplateApp/Auth/LoginView.swift */; };
@@ -35,6 +36,7 @@
 		C89E2AC007814D50119D647B /* TemplateApp/TemplateApp/API/UserProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5630E8DE1532EA8141A3D0 /* TemplateApp/TemplateApp/API/UserProfileService.swift */; };
 		CA7E21BC0AA844304826D9C3 /* TemplateApp/TemplateApp/Auth/AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */; };
 		DDD23B655B830136AB2A4B5B /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1526011EB482698FD996D4 /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift */; };
+		EF5F3F7D2F1C1DEB00AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */; };
 		E4E24EA834C7B3268ECE79E2 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8131CE86F3AC635E7BEFD46 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		0911C60AF63C87AD7FE49EE2 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = TemplateApp/TemplateApp/Localization/Base.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		0B465ED92ECAAC9800FB141F /* neuron_loop.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = neuron_loop.mp4; sourceTree = "<group>"; };
 		0B90A7502EBEC8CE009A19A5 /* TemplateApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TemplateApp.entitlements; path = TemplateApp/TemplateApp.entitlements; sourceTree = "<group>"; };
 		0D1526011EB482698FD996D4 /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarItem.swift; sourceTree = SOURCE_ROOT; };
 		0D166ABCE01CC1CDF080F555 /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift; sourceTree = SOURCE_ROOT; };
@@ -66,8 +69,8 @@
 		516C27FEE3934B34B6C5FFC4 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarView.swift; sourceTree = SOURCE_ROOT; };
 		6D742626C8EFF18D0B9FF037 /* TemplateApp/TemplateAppTests/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateAppTests/Info.plist; sourceTree = SOURCE_ROOT; };
 		6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AccountView.swift; sourceTree = SOURCE_ROOT; };
-		7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/SafariWebView.swift; sourceTree = SOURCE_ROOT; };
+		7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		87A3CDD9D71BF14FA278A4B0 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "TemplateApp/TemplateApp/Config/Color+Hex.swift"; sourceTree = SOURCE_ROOT; };
 		96ECB9CB87846A4ED8911CB1 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/HostedUILoginController.swift; sourceTree = SOURCE_ROOT; };
 		9C5651AE3272EF182001A0AC /* TemplateApp/TemplateApp/Config/AppManifest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/AppManifest.swift; sourceTree = SOURCE_ROOT; };
@@ -82,6 +85,7 @@
 		C1FCE4B6D5EFC45EBDCF6678 /* TemplateApp/TemplateApp/API/APIClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/APIClient.swift; sourceTree = SOURCE_ROOT; };
 		DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift; sourceTree = SOURCE_ROOT; };
 		E358DAC25C55EEDB4C40213F /* TemplateAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemplateAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/WelcomeView.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +167,7 @@
 		708E212CA684203F531183FB = {
 			isa = PBXGroup;
 			children = (
+				0B465ED92ECAAC9800FB141F /* neuron_loop.mp4 */,
 				8BD78467CD3F40A80098FDCC /* Products */,
 				A962E39897EED11926CCB70B /* Frameworks */,
 				D6D3092BA1E649A8B7E3E79B /* TemplateApp */,
@@ -209,6 +214,7 @@
 				B1BCBFDDC867D77305995EDA /* Auth */,
 				27D506854BE1072E2B4E08E4 /* API */,
 				6CB140B7B782C150B8D7D0AB /* Sidebar */,
+				F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */,
 				7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */,
 				B76082754AC732E97962D267 /* TemplateApp/TemplateApp/TemplateAppApp.swift */,
 				7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */,
@@ -302,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08F1EEAE7F8863FD1FE9B3E2 /* TemplateApp/TemplateApp/Config/app.json in Resources */,
+				0B465EDA2ECAAC9800FB141F /* neuron_loop.mp4 in Resources */,
 				2F43535785096825F16B9648 /* TemplateApp/TemplateApp/Assets.xcassets in Resources */,
 				9474F86BD02F63BF5515952D /* Localizable.strings in Resources */,
 				3C2C4D402F5960415E97708D /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets in Resources */,
@@ -335,6 +342,7 @@
 				8B4D6429E109AF57B6CF19AE /* TemplateApp/TemplateApp/API/APIClient.swift in Sources */,
 				C89E2AC007814D50119D647B /* TemplateApp/TemplateApp/API/UserProfileService.swift in Sources */,
 				72145D93F67770ECA6EFD9A2 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift in Sources */,
+				EF5F3F7D2F1C1DEB00AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift in Sources */,
 				0C9A2BC3C3F8C7F8B8D8AD45 /* TemplateApp/TemplateApp/Components/SafariWebView.swift in Sources */,
 				DDD23B655B830136AB2A4B5B /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift in Sources */,
 				0E6AAB0163F2F58C2BAEDDC9 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift in Sources */,
@@ -427,18 +435,18 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = TemplateApp/TemplateApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MH94CAVYWW;
 				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.learnandbecurious.template;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
-				VERSIONING_SYSTEM = "apple-generic";
-				CURRENT_PROJECT_VERSION = 1;
-				MARKETING_VERSION = 0.1.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -538,17 +546,17 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = TemplateApp/TemplateApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MH94CAVYWW;
 				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.learnandbecurious.template;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
-				VERSIONING_SYSTEM = "apple-generic";
-				CURRENT_PROJECT_VERSION = 1;
-				MARKETING_VERSION = 0.1.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
