@@ -19,7 +19,7 @@ struct AccountView: View {
             NavigationLink(destination: LoginView()) {
                 Text("Go to Login")
             }
-            .themedCTA(accentColor: accentColor)
+            .themedCTA(accentColor: accentColor, prefersSoftDarkText: true)
         }
             Spacer()
         }
@@ -76,7 +76,7 @@ struct AccountView: View {
                 Button(role: .destructive, action: signOut) {
                     Text("Sign out")
                 }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
             }
 
             if isDeleting {
@@ -89,7 +89,7 @@ struct AccountView: View {
                 }) {
                     Text("Delete account")
                 }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
             }
         }
     }
@@ -198,7 +198,7 @@ private struct DeleteAccountSheet: View {
 
                 Button("Delete account", role: .destructive, action: onConfirm)
                     .disabled(confirmationText != "DELETE")
-                    .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                    .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
                     .opacity(confirmationText == "DELETE" ? 1 : 0.65)
 
                 Spacer()

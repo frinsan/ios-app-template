@@ -48,7 +48,7 @@ struct ForgotPasswordRequestView: View {
                         Text("Update password").frame(maxWidth: .infinity)
                     }
                 }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
                 .disabled(!isCodeSectionEnabled || isSubmitting)
             }
         }
@@ -127,7 +127,7 @@ struct ForgotPasswordRequestView: View {
                         .frame(maxWidth: .infinity)
                 }
             }
-            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
             .disabled(!isEmailValid || isSendingCode || resendCooldownRemaining > 0)
 
             if resendCooldownRemaining > 0 {

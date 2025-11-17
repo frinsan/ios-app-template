@@ -4,6 +4,7 @@ import Combine
 struct LoginView: View {
     @EnvironmentObject private var appState: AppState
     @State private var isLoading = false
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         ScrollView {
@@ -87,9 +88,16 @@ extension LoginView {
                 .font(.headline.weight(.semibold))
             Spacer()
         }
-        .foregroundStyle(Color.primaryText)
+        .foregroundStyle(tealButtonTextColor)
         .padding(.horizontal, 18)
         .frame(height: 56)
+    }
+
+    private var tealButtonTextColor: Color {
+        if colorScheme == .dark {
+            return Color(red: 30 / 255, green: 41 / 255, blue: 59 / 255)
+        }
+        return Color.primaryText
     }
 
     @ViewBuilder
@@ -272,7 +280,7 @@ extension EmailSignUpView {
                     Text("Continue").frame(maxWidth: .infinity)
                 }
             }
-            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
             .disabled(!isEmailInputValid || isCheckingEmail)
         }
     }
@@ -338,7 +346,7 @@ extension EmailSignUpView {
                         Text("Get verification code").frame(maxWidth: .infinity)
                     }
                 }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
                 .disabled(!isDetailsFormValid || isSubmitting)
             }
         }
@@ -386,7 +394,7 @@ extension EmailSignUpView {
                     Text("Confirm code").frame(maxWidth: .infinity)
                 }
             }
-            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
             .disabled(!isCodeSectionEnabled || verificationCode.isEmpty || isConfirmingCode)
 
             Button("Resend code") {
@@ -703,7 +711,7 @@ struct EmailLoginView: View {
                         Text("Log in with email").frame(maxWidth: .infinity)
                     }
                 }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
                 .disabled(isSubmitting)
             }
 
@@ -868,7 +876,7 @@ struct EmailConfirmView: View {
                         Text("Confirm and continue").frame(maxWidth: .infinity)
                     }
                 }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
                 .disabled(isSubmitting)
             }
         }
