@@ -47,7 +47,6 @@ struct LoginView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.cardBackground, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.automatic, for: .navigationBar)
         .background(
             LinearGradient(
                 colors: [Color.appBackground, Color.cardBackground],
