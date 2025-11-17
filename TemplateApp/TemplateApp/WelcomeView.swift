@@ -17,8 +17,15 @@ struct WelcomeView: View {
         ZStack {
             VideoBackgroundView(videoName: "neuron_loop", fileExtension: "mp4")
                 .ignoresSafeArea()
-            Color.appBackground.opacity(0.65)
-                .ignoresSafeArea()
+            LinearGradient(
+                colors: [
+                    Color.black.opacity(0.6),
+                    Color.black.opacity(0.85)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
 
             VStack {
                 topBar
@@ -55,6 +62,7 @@ struct WelcomeView: View {
                 }
             }
         }
+        .preferredColorScheme(.dark)
     }
 
     private var topBar: some View {
@@ -65,13 +73,13 @@ struct WelcomeView: View {
                     .font(.subheadline.bold())
                     .padding(.vertical, 8)
                     .padding(.horizontal, 18)
-                    .background(Color.cardBackground.opacity(0.35), in: Capsule())
+                    .background(Color.black.opacity(0.25), in: Capsule())
                     .overlay(
                         Capsule()
-                            .stroke(Color.dividerColor.opacity(0.6), lineWidth: 1)
+                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
                     )
             }
-            .foregroundStyle(Color.primaryText)
+            .foregroundStyle(.white)
         }
         .padding(.top, 12)
     }
@@ -80,17 +88,17 @@ struct WelcomeView: View {
         VStack(spacing: 12) {
             Text(appSubtitlePlaceholder)
                 .font(.system(size: 18, weight: .light, design: .monospaced))
-                .foregroundStyle(Color.secondaryText)
+                .foregroundStyle(Color.white.opacity(0.8))
                 .multilineTextAlignment(.center)
 
             Text("Learn & Be Curious Apps")
                 .font(.system(size: 38, weight: .bold))
-                .foregroundStyle(Color.primaryText)
+                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
 
             Text("Let’s build.")
                 .font(.system(size: 18, weight: .light, design: .monospaced))
-                .foregroundStyle(Color.secondaryText)
+                .foregroundStyle(Color.white.opacity(0.8))
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal, 16)
@@ -124,9 +132,9 @@ struct WelcomeView: View {
                     .font(.subheadline.weight(.medium))
                     .padding(.vertical, 6)
                     .padding(.horizontal, 20)
-                    .background(Color.cardBackground.opacity(showMoreOptions ? 0.25 : 0.18), in: Capsule())
+                    .background(Color.white.opacity(showMoreOptions ? 0.25 : 0.18), in: Capsule())
             }
-            .foregroundStyle(Color.primaryText)
+            .foregroundStyle(.white.opacity(0.9))
 
             if showMoreOptions {
                 moreOptionsRow
@@ -153,7 +161,7 @@ struct WelcomeView: View {
         VStack(spacing: 4) {
             Text("By continuing you agree to the")
                 .font(.caption2)
-                .foregroundStyle(Color.secondaryText)
+                .foregroundStyle(.white.opacity(0.8))
 
             HStack(spacing: 6) {
                 Button(action: { openLegalLink(.terms) }) {
@@ -164,7 +172,7 @@ struct WelcomeView: View {
 
                 Text("and")
                     .font(.caption2)
-                    .foregroundStyle(Color.secondaryText)
+                    .foregroundStyle(.white.opacity(0.8))
 
                 Button(action: { openLegalLink(.privacy) }) {
                     Text("Privacy Policy")
@@ -172,7 +180,7 @@ struct WelcomeView: View {
                         .underline()
                 }
             }
-            .foregroundStyle(Color.primaryText)
+            .foregroundStyle(.white)
         }
         .multilineTextAlignment(.center)
     }
@@ -247,10 +255,10 @@ private struct PrimaryAuthButton: View {
                         .font(.title3)
                 }
             }
-            .foregroundStyle(Color.primaryText)
+            .foregroundStyle(.white)
             .padding(.horizontal, 20)
             .frame(height: 58)
-            .background(Color.primaryAccent.opacity(0.9), in: Capsule())
+            .background(Color.white.opacity(0.15), in: Capsule())
         }
         .disabled(isLoading)
     }
