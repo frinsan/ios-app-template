@@ -5,6 +5,7 @@ struct LoginView: View {
     @EnvironmentObject private var appState: AppState
     @State private var isLoading = false
     @Environment(\.colorScheme) private var colorScheme
+    @State private var activeLegalLink: LegalLink?
 
     var body: some View {
         ScrollView {
@@ -56,6 +57,12 @@ struct LoginView: View {
             )
             .ignoresSafeArea()
         )
+        .sheet(item: $activeLegalLink) { link in
+            if let url = link.url(from: appState.manifest) {
+                SafariWebView(url: url)
+                    .ignoresSafeArea()
+            }
+        }
     }
 
     private func startLogin(provider: HostedUIProvider) {
@@ -100,25 +107,47 @@ extension LoginView {
         return Color.primaryText
     }
 
-    @ViewBuilder
-    private var legalDisclaimer: some View {
-        if let terms = appState.manifest.legal?.termsUrl,
-           let privacy = appState.manifest.legal?.privacyUrl {
-            Text("By signing up or logging in you agree to our [Terms of Service](\(terms.absoluteString)) and [Privacy Policy](\(privacy.absoluteString)).")
-                .font(.caption2)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(Color.secondaryText)
-                .tint(Color.primaryAccent)
-        } else {
-            Text("By signing up or logging in you agree to our Terms of Service and Privacy Policy.")
-                .font(.caption2)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(Color.secondaryText)
-        }
-    }
+	@ViewBuilder
+	private var legalDisclaimer: some View {
+		if appState.manifest.legal?.termsUrl != nil,
+		   appState.manifest.legal?.privacyUrl != nil {
+			VStack(spacing: 4) {
+				Text("By signing up or logging in you agree to the")
+					.font(.caption2)
+					.foregroundStyle(Color.secondaryText)
+				HStack(spacing: 6) {
+					Button(action: { openLegalLink(.terms) }) {
+						Text("Terms of Service")
+							.font(.caption2.weight(.semibold))
+							.underline()
+					}
+					Text("and")
+						.font(.caption2)
+						.foregroundStyle(Color.secondaryText)
+					Button(action: { openLegalLink(.privacy) }) {
+						Text("Privacy Policy")
+							.font(.caption2.weight(.semibold))
+							.underline()
+					}
+				}
+				.foregroundStyle(Color.primaryAccent)
+			}
+			.multilineTextAlignment(.center)
+		} else {
+			Text("By signing up or logging in you agree to our Terms of Service and Privacy Policy.")
+				.font(.caption2)
+				.multilineTextAlignment(.center)
+				.foregroundStyle(Color.secondaryText)
+		}
+	}
 
     private func emailDomain(from email: String) -> String {
         email.split(separator: "@").last.map(String.init) ?? "unknown"
+    }
+
+    private func openLegalLink(_ link: LegalLink) {
+        guard link.url(from: appState.manifest) != nil else { return }
+        activeLegalLink = link
     }
 }
 
@@ -1015,5 +1044,28 @@ private struct DarkPillButtonStyle: ButtonStyle {
             )
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+private enum LegalLink: Identifiable {
+    case terms
+    case privacy
+
+    var id: String { title }
+
+    var title: String {
+        switch self {
+        case .terms: return "Terms of Service"
+        case .privacy: return "Privacy Policy"
+        }
+    }
+
+    func url(from manifest: AppManifest) -> URL? {
+        switch self {
+        case .terms:
+            return manifest.legal?.termsUrl
+        case .privacy:
+            return manifest.legal?.privacyUrl
+        }
     }
 }
