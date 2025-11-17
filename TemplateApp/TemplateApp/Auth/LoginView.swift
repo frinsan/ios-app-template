@@ -45,6 +45,9 @@ struct LoginView: View {
         }
         .navigationTitle("Sign up or log in")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.black, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         .background(
             LinearGradient(
                 colors: [Color.black, Color(red: 0.05, green: 0.05, blue: 0.05)],
