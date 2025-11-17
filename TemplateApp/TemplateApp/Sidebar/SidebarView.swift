@@ -8,7 +8,7 @@ struct SidebarView: View {
     var onSelect: (SidebarItem) -> Void = { _ in }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 28) {
+        VStack(alignment: .leading, spacing: 20) {
             header
             ForEach(items) { item in
                 Button {
@@ -36,12 +36,6 @@ struct SidebarView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
                 .buttonStyle(.plain)
-
-                if item != items.last {
-                    Divider()
-                        .overlay(Color.white.opacity(0.08))
-                        .padding(.leading, 4)
-                }
             }
             Spacer()
         }
@@ -75,11 +69,18 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(appState.manifest.displayName)
                 .font(.title2.bold())
-                .foregroundStyle(Color.primaryText)
+                .foregroundStyle(titleColor)
             Text(appState.manifest.activeEnvironment.rawValue.uppercased())
                 .font(.caption)
                 .foregroundStyle(Color.secondaryText)
         }
+    }
+
+    private var titleColor: Color {
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            return .white
+        }
+        return Color.white.opacity(0.7)
     }
 }
 
