@@ -20,7 +20,7 @@ struct LoginView: View {
 
                 if isLoading {
                     ProgressView()
-                        .tint(.white)
+                        .tint(Color.primaryText)
                 }
 
                 NavigationLink {
@@ -45,12 +45,12 @@ struct LoginView: View {
         }
         .navigationTitle("Sign up or log in")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(Color.black, for: .navigationBar)
+        .toolbarBackground(Color.cardBackground, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarColorScheme(.automatic, for: .navigationBar)
         .background(
             LinearGradient(
-                colors: [Color.black, Color(red: 0.05, green: 0.05, blue: 0.05)],
+                colors: [Color.appBackground, Color.cardBackground],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -88,7 +88,7 @@ extension LoginView {
                 .font(.headline.weight(.semibold))
             Spacer()
         }
-        .foregroundStyle(.white)
+        .foregroundStyle(Color.primaryText)
         .padding(.horizontal, 18)
         .frame(height: 56)
     }
@@ -100,13 +100,13 @@ extension LoginView {
             Text("By signing up or logging in you agree to our [Terms of Service](\(terms.absoluteString)) and [Privacy Policy](\(privacy.absoluteString)).")
                 .font(.caption2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Color.white.opacity(0.7))
-                .tint(Color.white.opacity(0.8))
+                .foregroundStyle(Color.secondaryText)
+                .tint(Color.primaryAccent)
         } else {
             Text("By signing up or logging in you agree to our Terms of Service and Privacy Policy.")
                 .font(.caption2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(Color.white.opacity(0.7))
+                .foregroundStyle(Color.secondaryText)
         }
     }
 
@@ -221,7 +221,7 @@ private struct MonogramIcon: View {
 }
 extension EmailSignUpView {
     private var accentColor: Color {
-        Color(hex: appState.manifest.theme.accentHex)
+        Color.primaryAccent
     }
 
     private var isEmailInputValid: Bool {
@@ -779,7 +779,7 @@ struct EmailLoginView: View {
     }
 
     private var accentColor: Color {
-        Color(hex: appState.manifest.theme.accentHex)
+        Color.primaryAccent
     }
 
     private func emailDomain(from email: String) -> String {
@@ -919,7 +919,7 @@ struct EmailConfirmView: View {
     }
 
     private var accentColor: Color {
-        Color(hex: appState.manifest.theme.accentHex)
+        Color.primaryAccent
     }
 
     private func resendCode() async {
@@ -997,15 +997,14 @@ private enum LoginField: Hashable {
     case password
 }
 private struct DarkPillButtonStyle: ButtonStyle {
+    var accentColor: Color = .primaryAccent
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(
-                Color.white.opacity(configuration.isPressed ? 0.18 : 0.14),
-                in: Capsule()
-            )
+            .background(accentColor.opacity(configuration.isPressed ? 0.85 : 1), in: Capsule())
             .overlay(
                 Capsule()
-                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                    .stroke(Color.dividerColor.opacity(0.6), lineWidth: 1)
             )
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)

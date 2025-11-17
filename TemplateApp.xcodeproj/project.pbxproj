@@ -36,6 +36,7 @@
 		C89E2AC007814D50119D647B /* TemplateApp/TemplateApp/API/UserProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5630E8DE1532EA8141A3D0 /* TemplateApp/TemplateApp/API/UserProfileService.swift */; };
 		CA7E21BC0AA844304826D9C3 /* TemplateApp/TemplateApp/Auth/AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */; };
 		DDD23B655B830136AB2A4B5B /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1526011EB482698FD996D4 /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift */; };
+		E0F9D9152F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */; };
 		EF5F3F7D2F1C1DEB00AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */; };
 		E4E24EA834C7B3268ECE79E2 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8131CE86F3AC635E7BEFD46 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift */; };
 /* End PBXBuildFile section */
@@ -85,6 +86,7 @@
 		C1FCE4B6D5EFC45EBDCF6678 /* TemplateApp/TemplateApp/API/APIClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/APIClient.swift; sourceTree = SOURCE_ROOT; };
 		DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift; sourceTree = SOURCE_ROOT; };
 		E358DAC25C55EEDB4C40213F /* TemplateAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemplateAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Theme/Theme.swift; sourceTree = SOURCE_ROOT; };
 		F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/WelcomeView.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -221,6 +223,7 @@
 				DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */,
 				2AB7EDC3A5F68FFBBB08334B /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift */,
 				A8131CE86F3AC635E7BEFD46 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift */,
+				E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */,
 				2338971F5BCAE631F2D48EEA /* TemplateApp/TemplateApp/API/EmailAuthService.swift */,
 				46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */,
 				9CC2C3D5F3A304F77B1A6877 /* TemplateApp/TemplateApp/Assets.xcassets */,
@@ -349,6 +352,7 @@
 				4D13282FC59C1626B108F713 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift in Sources */,
 				176CB109E4A023B9C2F1AED0 /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift in Sources */,
 				E4E24EA834C7B3268ECE79E2 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift in Sources */,
+				E0F9D9152F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift in Sources */,
 				8C3E5062E04ED79FE9B0B3CC /* TemplateApp/TemplateApp/API/EmailAuthService.swift in Sources */,
 				2360E4CB03678B365D3AF7FF /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift in Sources */,
 			);

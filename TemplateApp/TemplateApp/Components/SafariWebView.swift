@@ -7,7 +7,7 @@ struct SafariWebView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> SFSafariViewController {
         let controller = SFSafariViewController(url: url)
         controller.dismissButtonStyle = .close
-        controller.preferredControlTintColor = UIColor(Color.accentColor)
+        controller.preferredControlTintColor = UIColor(Color.primaryAccent)
         return controller
     }
 

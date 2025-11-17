@@ -72,7 +72,7 @@ struct ForgotPasswordRequestView: View {
     }
 
     private var accentColor: Color {
-        Color(hex: appState.manifest.theme.accentHex)
+        Color.primaryAccent
     }
 
     private var isEmailValid: Bool {

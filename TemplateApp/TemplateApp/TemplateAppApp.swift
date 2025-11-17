@@ -8,6 +8,7 @@ struct TemplateAppApp: App {
         WindowGroup {
             AppEntryView()
                 .environmentObject(appState)
+                .tint(.primaryAccent)
         }
     }
 }

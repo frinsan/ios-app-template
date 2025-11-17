@@ -15,7 +15,7 @@ struct AccountView: View {
             profileContent()
         default:
             Text("You are not signed in yet.")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondaryText)
             NavigationLink(destination: LoginView()) {
                 Text("Go to Login")
             }
@@ -54,12 +54,12 @@ struct AccountView: View {
                         .font(.title2.bold())
                     if let email = profile.email ?? sessionEmail {
                         Label(email, systemImage: "envelope")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondaryText)
                     }
                     if let environment = profile.environment {
                         Text("Environment: \(environment)")
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondaryText)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -147,7 +147,7 @@ struct AccountView: View {
 
 private extension AccountView {
     var accentColor: Color {
-        Color(hex: appState.manifest.theme.accentHex)
+        Color.primaryAccent
     }
 
     var sessionEmail: String? {
@@ -183,7 +183,7 @@ private struct DeleteAccountSheet: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text("Deleting your account removes your profile, saved preferences, and any related data from this app. This action is permanent and cannot be undone. Type DELETE to confirm.")
                     .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
 
                 TextField("Type DELETE", text: $confirmationText)

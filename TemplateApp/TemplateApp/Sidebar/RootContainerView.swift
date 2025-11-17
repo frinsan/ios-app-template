@@ -31,7 +31,7 @@ struct RootContainerView: View {
                     }
                     .animation(.easeInOut, value: selection)
             }
-            .accentColor(Color(hex: appState.manifest.theme.accentHex))
+            .accentColor(.primaryAccent)
 
             if isMenuVisible {
                 Color.black.opacity(0.35)

@@ -20,11 +20,15 @@ struct SidebarView: View {
                 } label: {
                     Label(item.title, systemImage: item.icon)
                         .font(.headline)
-                        .foregroundStyle(selection == item ? .white : .white.opacity(0.75))
+                        .foregroundStyle(selection == item ? Color.primaryText : Color.secondaryText)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.vertical, 8)
                         .padding(.horizontal, 12)
-                        .background(selection == item ? Color(hex: appState.manifest.theme.primaryHex) : Color.clear)
+                        .background(
+                            selection == item
+                            ? Color.primaryAccent.opacity(0.18)
+                            : Color.clear
+                        )
                         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                 }
                 .buttonStyle(.plain)
@@ -37,10 +41,7 @@ struct SidebarView: View {
         .frame(maxHeight: .infinity, alignment: .top)
         .background(
             LinearGradient(
-                colors: [
-                    Color(hex: appState.manifest.theme.primaryHex).opacity(0.85),
-                    Color(hex: appState.manifest.theme.primaryHex).opacity(0.95)
-                ],
+                colors: [Color.cardBackground, Color.appBackground],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -61,10 +62,10 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(appState.manifest.displayName)
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.primaryText)
             Text(appState.manifest.activeEnvironment.rawValue.uppercased())
                 .font(.caption)
-                .foregroundStyle(.white.opacity(0.7))
+                .foregroundStyle(Color.secondaryText)
         }
     }
 }
