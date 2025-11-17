@@ -78,6 +78,11 @@ struct WelcomeView: View {
 
     private var titleBlock: some View {
         VStack(spacing: 12) {
+            Text(appSubtitlePlaceholder)
+                .font(.system(size: 18, weight: .light, design: .monospaced))
+                .foregroundStyle(.white.opacity(0.85))
+                .multilineTextAlignment(.center)
+
             Text("Learn & Be Curious Apps")
                 .font(.system(size: 38, weight: .bold))
                 .foregroundStyle(.white)
@@ -89,6 +94,13 @@ struct WelcomeView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal, 16)
+    }
+
+    private var appSubtitlePlaceholder: String {
+        if !appState.manifest.displayName.isEmpty {
+            return "\(appState.manifest.displayName) · Subtitle placeholder"
+        }
+        return "Your app subtitle goes here"
     }
 
     private var buttonStack: some View {

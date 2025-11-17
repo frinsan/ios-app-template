@@ -12,6 +12,12 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 - `fastlane/` – automation for build, test, and TestFlight distribution.
 - `.github/workflows/` – CI (unit tests, lint) + CD (TestFlight staging builds, manual prod promote).
 
+## Welcome Screen Preview
+
+- `TemplateApp/TemplateApp/WelcomeView.swift` renders the Grok-style intro screen with the looping `neuron_loop.mp4` background bundled in the repo.
+- It appears only when `AuthState` is `.signedOut`. Tapping **Skip** dismisses it for the current session (not persisted) while Apple/Google/email buttons call the same Hosted UI + email flows already used by `LoginView`.
+- The small placeholder line above the main title uses the manifest’s `displayName` (or a fallback) so each branded app can supply its own subtitle. Update the static strings in this file when you brand a new app.
+
 ## Status — 2025-10-26
 
 - [x] Repository scaffolded with folder structure, README, and workflow placeholders.
@@ -109,10 +115,6 @@ Every branded app provides an `app.json` that mirrors the template config (`Temp
     "scheme": "templateapp",
     "region": "us-west-2",
     "hostedUIDomain": "auth-staging.learnandbecurious.com"
-  },
-  "legal": {
-    "privacyUrl": "https://learnandbecurious.com/privacy.html",
-    "termsUrl": "https://learnandbecurious.com/terms.html"
   },
   "legal": {
     "privacyUrl": "https://learnandbecurious.com/privacy.html",
