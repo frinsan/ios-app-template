@@ -7,47 +7,50 @@ struct LoginView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
-                Text("Sign up or log in")
-                    .font(.largeTitle.bold())
+            VStack(spacing: 20) {
                 Button(action: { startLogin(provider: .apple) }) {
-                    Label(HostedUIProvider.apple.displayName, systemImage: "apple.logo")
+                    pillButtonLabel(icon: "apple.logo", text: HostedUIProvider.apple.displayName)
                 }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .buttonStyle(DarkPillButtonStyle())
 
                 Button(action: { startLogin(provider: .google) }) {
-                    Label {
-                        Text(HostedUIProvider.google.displayName)
-                    } icon: {
-                        MonogramIcon(letter: "G")
-                    }
+                    pillButtonLabel(icon: "g.circle", text: HostedUIProvider.google.displayName)
                 }
-                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor))
+                .buttonStyle(DarkPillButtonStyle())
 
                 if isLoading {
                     ProgressView()
+                        .tint(.white)
                 }
 
                 NavigationLink {
                     EmailSignUpView()
                 } label: {
-                    Label("Continue with Email", systemImage: "envelope.fill")
+                    pillButtonLabel(icon: "envelope.fill", text: "Continue with Email")
                 }
-                .themedCTA(accentColor: accentColor)
+                .buttonStyle(DarkPillButtonStyle())
 
                 NavigationLink {
                     EmailLoginView()
                 } label: {
-                    Label("Log In", systemImage: "key.fill")
+                    pillButtonLabel(icon: "key.fill", text: "Log In")
                 }
-                .themedCTA(accentColor: accentColor)
+                .buttonStyle(DarkPillButtonStyle())
 
                 legalDisclaimer
-                    .padding(.top, 16)
+                    .padding(.top, 12)
             }
-            .padding()
+            .padding(.horizontal, 24)
+            .padding(.vertical, 32)
         }
-        .lightModeTextColor()
+        .background(
+            LinearGradient(
+                colors: [Color.black, Color(red: 0.05, green: 0.05, blue: 0.05)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+        )
     }
 
     private func startLogin(provider: HostedUIProvider) {
@@ -72,8 +75,17 @@ struct LoginView: View {
 }
 
 extension LoginView {
-    private var accentColor: Color {
-        Color(hex: appState.manifest.theme.accentHex)
+    private func pillButtonLabel(icon: String, text: String) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.headline.bold())
+            Text(text)
+                .font(.headline.weight(.semibold))
+            Spacer()
+        }
+        .foregroundStyle(.white)
+        .padding(.horizontal, 18)
+        .frame(height: 56)
     }
 
     @ViewBuilder
@@ -81,15 +93,15 @@ extension LoginView {
         if let terms = appState.manifest.legal?.termsUrl,
            let privacy = appState.manifest.legal?.privacyUrl {
             Text("By signing up or logging in you agree to our [Terms of Service](\(terms.absoluteString)) and [Privacy Policy](\(privacy.absoluteString)).")
-                .font(.caption)
+                .font(.caption2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-                .tint(accentColor)
+                .foregroundStyle(Color.white.opacity(0.7))
+                .tint(Color.white.opacity(0.8))
         } else {
             Text("By signing up or logging in you agree to our Terms of Service and Privacy Policy.")
-                .font(.caption)
+                .font(.caption2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.white.opacity(0.7))
         }
     }
 
@@ -978,4 +990,19 @@ private enum SignUpField: Hashable {
 private enum LoginField: Hashable {
     case email
     case password
+}
+private struct DarkPillButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                Color.white.opacity(configuration.isPressed ? 0.18 : 0.14),
+                in: Capsule()
+            )
+            .overlay(
+                Capsule()
+                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
+            )
+            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+            .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
+    }
 }
