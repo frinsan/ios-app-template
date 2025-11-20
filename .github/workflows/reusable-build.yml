@@ -105,7 +105,10 @@ jobs:
         run: |
           set -euo pipefail
           SIM_JSON=$(xcrun simctl list devices available -j)
-          readarray -t CANDIDATES <<'EOF'
+          CANDIDATES=()
+          while IFS= read -r line; do
+            CANDIDATES+=("$line")
+          done <<'EOF'
           iPhone 16 Pro Max
           iPhone 16 Pro
           iPhone 16
