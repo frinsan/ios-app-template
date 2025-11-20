@@ -108,7 +108,7 @@ jobs:
           xcodebuild \
             -project "$XCODE_PROJECT" \
             -scheme "${{ inputs.scheme }}" \
-            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 15 Pro' \
+            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 16' \
             clean test
 
       - name: Import signing certificate
