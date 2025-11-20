@@ -101,6 +101,14 @@ jobs:
           BUILD_NUMBER=${{ github.run_number }}
           xcrun agvtool new-version -all "$BUILD_NUMBER"
 
+      - name: Capture manifest metadata
+        id: manifest_meta
+        run: |
+          APP_ID=$(jq -r '.appId' TemplateApp/TemplateApp/Config/app.json)
+          DISPLAY_NAME=$(jq -r '.displayName' TemplateApp/TemplateApp/Config/app.json)
+          echo "APP_BUNDLE_ID=$APP_ID" >> "$GITHUB_ENV"
+          echo "APP_DISPLAY_NAME=$DISPLAY_NAME" >> "$GITHUB_ENV"
+
       - name: Select available iOS simulator
         run: |
           set -euo pipefail
@@ -197,7 +205,30 @@ jobs:
 
       - name: Export IPA
         if: inputs.perform_signing == true
+        env:
+          APP_BUNDLE_ID: ${{ env.APP_BUNDLE_ID }}
         run: |
+          cat > exportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>uploadBitcode</key>
+            <false/>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>${APP_BUNDLE_ID}</key>
+              <string>${{ inputs.provisioning_profile_name }}</string>
+            </dict>
+          </dict>
+          </plist>
+          EOF
           set -o pipefail
           xcodebuild \
             -exportArchive \
