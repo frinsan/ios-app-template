@@ -166,6 +166,10 @@ Each branded app supplies an `app.json` that mirrors the template’s config fil
     "region": "us-west-2",
     "hostedUIDomain": "auth-staging.learnandbecurious.com"
   },
+  "build": {
+    "marketingVersion": "1.0.0",
+    "buildNumber": "1"
+  },
   "activeEnvironment": "staging"
 }
 ```
@@ -179,6 +183,7 @@ Required fields:
 - `features` – booleans to gate UI elements per brand.
 - `apiBase` – base URLs for staging/prod API Gateway endpoints.
 - `auth` – Cognito client configuration for the brand (client ID, Hosted UI domain, custom URL scheme, AWS region).
+- `build` (optional) – `marketingVersion` (`CFBundleShortVersionString`) and `buildNumber` (`CFBundleVersion`). Defaults stay at the template values if omitted.
 - `activeEnvironment` – which environment the build should target by default (`staging` or `prod`).
 
 Brand repos keep this manifest at the root (`app.json`) and optional asset overrides under `Assets/` (e.g., `Assets/AppIcon.appiconset`). During automation the manifest is copied verbatim into `TemplateApp/TemplateApp/Config/app.json` via `scripts/apply_manifest.sh`.
@@ -198,6 +203,8 @@ The workflow:
 2. Runs `scripts/apply_manifest.sh` to copy the manifest into the template.
 3. Optionally runs unit tests via `xcodebuild test` on a simulator.
 4. Archives the iOS app (`xcodebuild archive`) and uploads the `.xcarchive` as a GitHub artifact.
+
+The manifest script also updates the Xcode project’s bundle identifier, marketing/build versions, Info.plist display name + URL scheme, and overlays any brand-specific `Assets/` contents (e.g., `AppIcon.appiconset`, `LaunchImage.imageset`) onto `TemplateApp/TemplateApp/Assets.xcassets`. Running it locally before opening Xcode keeps Product settings in sync with the manifest so simulator/device builds already reflect the brand.
 
 This lays the groundwork for TestFlight distribution—Fastlane or App Store Connect uploads can be layered on once the shared Apple credentials are in place.
 
