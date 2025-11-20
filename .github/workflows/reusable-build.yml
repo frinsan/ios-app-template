@@ -101,6 +101,41 @@ jobs:
           BUILD_NUMBER=${{ github.run_number }}
           xcrun agvtool new-version -all "$BUILD_NUMBER"
 
+      - name: Select available iOS simulator
+        run: |
+          set -euo pipefail
+          SIM_JSON=$(xcrun simctl list devices available -j)
+          readarray -t CANDIDATES <<'EOF'
+          iPhone 16 Pro Max
+          iPhone 16 Pro
+          iPhone 16
+          iPhone 15 Pro Max
+          iPhone 15 Pro
+          iPhone 15
+          EOF
+          SELECTED_UDID=""
+          for NAME in "${CANDIDATES[@]}"; do
+            UDID=$(jq -r --arg name "$NAME" '
+              .devices
+              | to_entries[]
+              | .value[]
+              | select(.name == $name and .isAvailable == true)
+              | .udid' <<<"$SIM_JSON" | head -n 1 || true)
+            if [[ -n "$UDID" ]]; then
+              echo "Using simulator: $NAME ($UDID)"
+              {
+                echo "SIMULATOR_NAME=$NAME"
+                echo "SIMULATOR_UDID=$UDID"
+              } >> "$GITHUB_ENV"
+              SELECTED_UDID="$UDID"
+              break
+            fi
+          done
+          if [[ -z "$SELECTED_UDID" ]]; then
+            echo "No matching simulator found." >&2
+            exit 1
+          fi
+
       - name: Run unit tests
         if: inputs.run_tests == true
         run: |
@@ -108,7 +143,7 @@ jobs:
           xcodebuild \
             -project "$XCODE_PROJECT" \
             -scheme "${{ inputs.scheme }}" \
-            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 16' \
+            -destination "platform=iOS Simulator,id=${SIMULATOR_UDID}" \
             clean test
 
       - name: Import signing certificate
