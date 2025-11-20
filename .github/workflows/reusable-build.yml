@@ -205,9 +205,9 @@ jobs:
 
       - name: Export IPA
         if: inputs.perform_signing == true
-        env:
-          APP_BUNDLE_ID: ${{ env.APP_BUNDLE_ID }}
         run: |
+          set -euo pipefail
+          APP_BUNDLE_ID=$(jq -r '.appId' TemplateApp/TemplateApp/Config/app.json)
           cat > exportOptions.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -229,12 +229,18 @@ jobs:
           </dict>
           </plist>
           EOF
-          set -o pipefail
           xcodebuild \
             -exportArchive \
             -archivePath "build/${{ inputs.scheme }}.xcarchive" \
             -exportOptionsPlist exportOptions.plist \
             -exportPath build/export
+          IPA_FILE=$(find build/export -maxdepth 1 -name '*.ipa' | head -n 1 || true)
+          if [[ -z "$IPA_FILE" ]]; then
+            echo "exportArchive did not produce an .ipa in build/export" >&2
+            ls -R build/export || true
+            exit 1
+          fi
+          echo "IPA_PATH=$IPA_FILE" >> "$GITHUB_ENV"
 
       - name: Upload archive artifact
         uses: actions/upload-artifact@v4

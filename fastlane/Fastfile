@@ -3,6 +3,8 @@ default_platform(:ios)
 platform :ios do
   desc "Upload archive to TestFlight"
   lane :upload_testflight do
+    ipa_path = ENV['IPA_PATH']
+    ipa_path = "build/export/TemplateApp.ipa" if ipa_path.to_s.empty?
     api_key = app_store_connect_api_key(
       key_id: ENV['APP_STORE_CONNECT_KEY_ID'],
       issuer_id: ENV['APP_STORE_CONNECT_ISSUER_ID'],
@@ -12,7 +14,7 @@ platform :ios do
 
     pilot(
       api_key: api_key,
-      ipa: "build/export/TemplateApp.ipa",
+      ipa: ipa_path,
       skip_submission: true,
       skip_waiting_for_build_processing: true
     )
