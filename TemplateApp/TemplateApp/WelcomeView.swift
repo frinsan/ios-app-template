@@ -106,7 +106,7 @@ struct WelcomeView: View {
 
     private var appSubtitlePlaceholder: String {
         if !appState.manifest.displayName.isEmpty {
-            return "\(appState.manifest.displayName) · Subtitle placeholder"
+            return appState.manifest.displayName
         }
         return "Your app subtitle goes here"
     }

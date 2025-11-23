@@ -1,7 +1,7 @@
 {
-  "appId": "com.learnandbecurious.sample",
-  "displayName": "Template App",
-  "bundleIdSuffix": "template",
+  "appId": "com.learnandbecurious.visapassportphoto",
+  "displayName": "Visa Photo Maker",
+  "bundleIdSuffix": "visapassportphoto",
   "theme": {
     "primary": "#111111",
     "accent": "#B8E986",
@@ -13,13 +13,17 @@
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
-    "prod": "https://api.example.com"
+    "prod": "https://fhdsv5jl7h.execute-api.us-west-2.amazonaws.com"
   },
   "auth": {
-    "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
-    "scheme": "templateapp",
+    "cognitoClientId": "6a8ffrki3fsq0arqp03pv2dnjm",
+    "scheme": "visaphotomaker",
     "region": "us-west-2",
     "hostedUIDomain": "auth-staging.learnandbecurious.com"
+  },
+  "build": {
+    "marketingVersion": "1.0.0",
+    "buildNumber": "1"
   },
   "legal": {
     "privacyUrl": "https://learnandbecurious.com/privacy.html",

@@ -79,7 +79,7 @@ struct RootContainerView: View {
     private var detailContent: some View {
         switch selection {
         case .home:
-            ContentView()
+            PassportHomeView()
         case .terms, .privacy:
             ContentView()
         case .account:
