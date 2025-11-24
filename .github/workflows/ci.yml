@@ -29,5 +29,5 @@ jobs:
           xcodebuild \
             -project TemplateApp.xcodeproj \
             -scheme TemplateApp \
-            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 16' \
+            -destination 'platform=iOS Simulator,OS=latest' \
             clean test
