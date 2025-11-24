@@ -12,9 +12,11 @@ struct ContentView: View {
                     Text(appState.manifest.displayName)
                         .font(.largeTitle.bold())
                         .foregroundStyle(Color.primaryText)
-                    Text("Environment: \(appState.manifest.activeEnvironment.rawValue.uppercased())")
-                        .font(.subheadline)
-                        .foregroundStyle(Color.secondaryText)
+                    if appState.manifest.activeEnvironment != .prod {
+                        Text("Environment: \(appState.manifest.activeEnvironment.rawValue.uppercased())")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.secondaryText)
+                    }
                 }
 
                 Spacer()

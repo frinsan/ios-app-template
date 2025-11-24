@@ -70,9 +70,11 @@ struct SidebarView: View {
             Text(appState.manifest.displayName)
                 .font(.title2.bold())
                 .foregroundStyle(titleColor)
-            Text(appState.manifest.activeEnvironment.rawValue.uppercased())
-                .font(.caption)
-                .foregroundStyle(Color.secondaryText)
+            if appState.manifest.activeEnvironment != .prod {
+                Text(appState.manifest.activeEnvironment.rawValue.uppercased())
+                    .font(.caption)
+                    .foregroundStyle(Color.secondaryText)
+            }
         }
     }
 
