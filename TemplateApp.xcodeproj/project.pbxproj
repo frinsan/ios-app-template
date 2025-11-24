@@ -21,11 +21,11 @@
 		3E6FA4D6A18453A4A6F0D3C2 /* TemplateApp/TemplateApp/Home/PassportHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60123456789AA /* TemplateApp/TemplateApp/Home/PassportHomeView.swift */; };
 		40BDEC1F4A364047B4D7B9DF /* TemplateApp/TemplateApp/Home/UploadPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5C6D7E8F90123456789B0 /* TemplateApp/TemplateApp/Home/UploadPhotoView.swift */; };
 		41D08E71C1C3E2D9E1439876 /* TemplateApp/TemplateApp/Home/ChooseFormatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B7C8D9E0F10123456789B4 /* TemplateApp/TemplateApp/Home/ChooseFormatView.swift */; };
-		4AF1C2D3E4B50123456789DE /* TemplateApp/TemplateApp/Home/EditAdjustView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B0C1D2E3F40123456789BE /* TemplateApp/TemplateApp/Home/EditAdjustView.swift */; };
-		4AF1C2D3E4B50123456789DF /* TemplateApp/TemplateApp/Home/CropState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD1C2E3F4B50123456789C0 /* TemplateApp/TemplateApp/Home/CropState.swift */; };
 		43E5F5B980A9C2BCE0D8C3F0 /* TemplateApp/TemplateApp/Home/CustomSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B8C9D0E1F20123456789B6 /* TemplateApp/TemplateApp/Home/CustomSizeView.swift */; };
 		43E5F5B980A9C2BCE0D8C3F1 /* TemplateApp/TemplateApp/Home/PhotoPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B9CAD0E1F30123456789B8 /* TemplateApp/TemplateApp/Home/PhotoPreset.swift */; };
 		43E5F5B980A9C2BCE0D8C3F2 /* TemplateApp/TemplateApp/Home/GuideSilhouetteOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF450123456789C2 /* TemplateApp/TemplateApp/Home/GuideSilhouetteOverlay.swift */; };
+		4AF1C2D3E4B50123456789DE /* TemplateApp/TemplateApp/Home/EditAdjustView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B0C1D2E3F40123456789BE /* TemplateApp/TemplateApp/Home/EditAdjustView.swift */; };
+		4AF1C2D3E4B50123456789DF /* TemplateApp/TemplateApp/Home/CropState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD1C2E3F4B50123456789C0 /* TemplateApp/TemplateApp/Home/CropState.swift */; };
 		4D13282FC59C1626B108F713 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */; };
 		593ED67A8E97CD5037B4B889 /* TemplateApp/TemplateApp/Auth/AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF27DD4CBE7EDAD531D9CAAC /* TemplateApp/TemplateApp/Auth/AuthSession.swift */; };
 		5BAEAD64EF113D9734D68854 /* TemplateApp/TemplateApp/TemplateAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76082754AC732E97962D267 /* TemplateApp/TemplateApp/TemplateAppApp.swift */; };
@@ -35,13 +35,13 @@
 		864A99A656B8C0912AB55F95 /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D166ABCE01CC1CDF080F555 /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift */; };
 		8B4D6429E109AF57B6CF19AE /* TemplateApp/TemplateApp/API/APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FCE4B6D5EFC45EBDCF6678 /* TemplateApp/TemplateApp/API/APIClient.swift */; };
 		8C3E5062E04ED79FE9B0B3CC /* TemplateApp/TemplateApp/API/EmailAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2338971F5BCAE631F2D48EEA /* TemplateApp/TemplateApp/API/EmailAuthService.swift */; };
-		AA0C52216A1E066B7B60D951 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B6C7D8E9F00123456789B2 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift */; };
 		92EF6A2D18F9A7D3195E2108 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB9B9701032DAB47B025C5A5 /* Foundation.framework */; };
 		942F4A90552450C7454A1238 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ECB9CB87846A4ED8911CB1 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */; };
 		9474F86BD02F63BF5515952D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0911C60AF63C87AD7FE49EE2 /* Localizable.strings */; };
 		990D862AE468C6B939F32CE2 /* TemplateApp/TemplateApp/ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */; };
 		9F8E7D6C5B4A39281706F5E4 /* TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D2E3F4B5C6D7E890123456 /* TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift */; };
 		A8C7C61359E30BCA1D94176B /* TemplateApp/TemplateApp/Config/ManifestLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D8BA6E5FFA3C646BCE1295 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */; };
+		AA0C52216A1E066B7B60D951 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B6C7D8E9F00123456789B2 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift */; };
 		AEA5218587DE1DCB40151458 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E3BCCA1CBCFD9C5085544FF /* AuthenticationServices.framework */; };
 		B29CEC34F9B66D3B2A8716DB /* TemplateApp/TemplateAppTests/EmailSignUpValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34832141353A8EE5310C4C1F /* TemplateApp/TemplateAppTests/EmailSignUpValidatorTests.swift */; };
 		B2EEFAB70A5D75D9B5FDDD8D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB9B9701032DAB47B025C5A5 /* Foundation.framework */; };
@@ -49,8 +49,8 @@
 		CA7E21BC0AA844304826D9C3 /* TemplateApp/TemplateApp/Auth/AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */; };
 		DDD23B655B830136AB2A4B5B /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1526011EB482698FD996D4 /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift */; };
 		E0F9D9152F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */; };
-		EF5F3F7D2F1C1DEB00AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */; };
 		E4E24EA834C7B3268ECE79E2 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8131CE86F3AC635E7BEFD46 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift */; };
+		EF5F3F7D2F1C1DEB00AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,28 +88,28 @@
 		96ECB9CB87846A4ED8911CB1 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/HostedUILoginController.swift; sourceTree = SOURCE_ROOT; };
 		9C5651AE3272EF182001A0AC /* TemplateApp/TemplateApp/Config/AppManifest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/AppManifest.swift; sourceTree = SOURCE_ROOT; };
 		9CC2C3D5F3A304F77B1A6877 /* TemplateApp/TemplateApp/Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = TemplateApp/TemplateApp/Assets.xcassets; sourceTree = SOURCE_ROOT; };
-		A1D2E3F4B5C6D7E890123456 /* TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift; sourceTree = SOURCE_ROOT; };
 		A1B2C3D4E5F60123456789AA /* TemplateApp/TemplateApp/Home/PassportHomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/PassportHomeView.swift; sourceTree = SOURCE_ROOT; };
+		A1D2E3F4B5C6D7E890123456 /* TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift; sourceTree = SOURCE_ROOT; };
 		A2B3C4D5E6F70123456789AC /* TemplateApp/TemplateApp/Home/PhotoFlowView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/PhotoFlowView.swift; sourceTree = SOURCE_ROOT; };
+		A2D8BA6E5FFA3C646BCE1295 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/ManifestLoader.swift; sourceTree = SOURCE_ROOT; };
 		A4B5C6D7E8F90123456789B0 /* TemplateApp/TemplateApp/Home/UploadPhotoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/UploadPhotoView.swift; sourceTree = SOURCE_ROOT; };
+		A5B6C7D8E9F00123456789B2 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/ImagePickerViews.swift; sourceTree = SOURCE_ROOT; };
+		A694CF26ED0FDABE3AA2092E /* TemplateApp/TemplateApp/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateApp/Info.plist; sourceTree = SOURCE_ROOT; };
 		A6B7C8D9E0F10123456789B4 /* TemplateApp/TemplateApp/Home/ChooseFormatView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/ChooseFormatView.swift; sourceTree = SOURCE_ROOT; };
 		A7B8C9D0E1F20123456789B6 /* TemplateApp/TemplateApp/Home/CustomSizeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/CustomSizeView.swift; sourceTree = SOURCE_ROOT; };
+		A8131CE86F3AC635E7BEFD46 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift; sourceTree = SOURCE_ROOT; };
 		A8B9CAD0E1F30123456789B8 /* TemplateApp/TemplateApp/Home/PhotoPreset.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/PhotoPreset.swift; sourceTree = SOURCE_ROOT; };
-		AB12CD34EF450123456789C2 /* TemplateApp/TemplateApp/Home/GuideSilhouetteOverlay.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/GuideSilhouetteOverlay.swift; sourceTree = SOURCE_ROOT; };
 		A9B0C1D2E3F40123456789BE /* TemplateApp/TemplateApp/Home/EditAdjustView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/EditAdjustView.swift; sourceTree = SOURCE_ROOT; };
 		AAD1C2E3F4B50123456789C0 /* TemplateApp/TemplateApp/Home/CropState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/CropState.swift; sourceTree = SOURCE_ROOT; };
-		A5B6C7D8E9F00123456789B2 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/ImagePickerViews.swift; sourceTree = SOURCE_ROOT; };
-		A2D8BA6E5FFA3C646BCE1295 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/ManifestLoader.swift; sourceTree = SOURCE_ROOT; };
-		A694CF26ED0FDABE3AA2092E /* TemplateApp/TemplateApp/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateApp/Info.plist; sourceTree = SOURCE_ROOT; };
-		A8131CE86F3AC635E7BEFD46 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift; sourceTree = SOURCE_ROOT; };
+		AB12CD34EF450123456789C2 /* TemplateApp/TemplateApp/Home/GuideSilhouetteOverlay.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Home/GuideSilhouetteOverlay.swift; sourceTree = SOURCE_ROOT; };
 		AF27DD4CBE7EDAD531D9CAAC /* TemplateApp/TemplateApp/Auth/AuthSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AuthSession.swift; sourceTree = SOURCE_ROOT; };
 		B76082754AC732E97962D267 /* TemplateApp/TemplateApp/TemplateAppApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/TemplateAppApp.swift; sourceTree = SOURCE_ROOT; };
 		BB9B9701032DAB47B025C5A5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		BE4B7E13F75B52353A706D98 /* TemplateApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1FCE4B6D5EFC45EBDCF6678 /* TemplateApp/TemplateApp/API/APIClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/APIClient.swift; sourceTree = SOURCE_ROOT; };
 		DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift; sourceTree = SOURCE_ROOT; };
-		E358DAC25C55EEDB4C40213F /* TemplateAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemplateAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Theme/Theme.swift; sourceTree = SOURCE_ROOT; };
+		E358DAC25C55EEDB4C40213F /* TemplateAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemplateAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0A1B2C3D4E5F67890123456 /* TemplateApp/TemplateApp/Config/presets_library.json */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json; path = TemplateApp/TemplateApp/Config/presets_library.json; sourceTree = SOURCE_ROOT; };
 		F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/WelcomeView.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -184,22 +184,6 @@
 			name = Sidebar;
 			sourceTree = "<group>";
 		};
-		7D3FEACB917A456BB9F6D44A /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				A1B2C3D4E5F60123456789AA /* TemplateApp/TemplateApp/Home/PassportHomeView.swift */,
-				A2B3C4D5E6F70123456789AC /* TemplateApp/TemplateApp/Home/PhotoFlowView.swift */,
-				A4B5C6D7E8F90123456789B0 /* TemplateApp/TemplateApp/Home/UploadPhotoView.swift */,
-				A6B7C8D9E0F10123456789B4 /* TemplateApp/TemplateApp/Home/ChooseFormatView.swift */,
-				A7B8C9D0E1F20123456789B6 /* TemplateApp/TemplateApp/Home/CustomSizeView.swift */,
-				A8B9CAD0E1F30123456789B8 /* TemplateApp/TemplateApp/Home/PhotoPreset.swift */,
-				A9B0C1D2E3F40123456789BE /* TemplateApp/TemplateApp/Home/EditAdjustView.swift */,
-				AAD1C2E3F4B50123456789C0 /* TemplateApp/TemplateApp/Home/CropState.swift */,
-				AB12CD34EF450123456789C2 /* TemplateApp/TemplateApp/Home/GuideSilhouetteOverlay.swift */,
-			);
-			name = Home;
-			sourceTree = "<group>";
-		};
 		6D5199B2B4568790357B5148 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +202,22 @@
 				53B09225F85CE62951FE5899 /* Preview Content */,
 				177A5CE67AA19EBE5FBBE326 /* TemplateAppTests */,
 			);
+			sourceTree = "<group>";
+		};
+		7D3FEACB917A456BB9F6D44A /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60123456789AA /* TemplateApp/TemplateApp/Home/PassportHomeView.swift */,
+				A2B3C4D5E6F70123456789AC /* TemplateApp/TemplateApp/Home/PhotoFlowView.swift */,
+				A4B5C6D7E8F90123456789B0 /* TemplateApp/TemplateApp/Home/UploadPhotoView.swift */,
+				A6B7C8D9E0F10123456789B4 /* TemplateApp/TemplateApp/Home/ChooseFormatView.swift */,
+				A7B8C9D0E1F20123456789B6 /* TemplateApp/TemplateApp/Home/CustomSizeView.swift */,
+				A8B9CAD0E1F30123456789B8 /* TemplateApp/TemplateApp/Home/PhotoPreset.swift */,
+				A9B0C1D2E3F40123456789BE /* TemplateApp/TemplateApp/Home/EditAdjustView.swift */,
+				AAD1C2E3F4B50123456789C0 /* TemplateApp/TemplateApp/Home/CropState.swift */,
+				AB12CD34EF450123456789C2 /* TemplateApp/TemplateApp/Home/GuideSilhouetteOverlay.swift */,
+			);
+			name = Home;
 			sourceTree = "<group>";
 		};
 		8BD78467CD3F40A80098FDCC /* Products */ = {
@@ -498,6 +498,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MH94CAVYWW;
 				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Visa Photo";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.0;
@@ -609,6 +610,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MH94CAVYWW;
 				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Visa Photo";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.0;
