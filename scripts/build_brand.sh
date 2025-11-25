@@ -31,6 +31,10 @@ rsync -a --delete --exclude '.git' --exclude 'DerivedData' "${TEMPLATE_ROOT}/" "
 if [[ -d "${OVERLAY_DIR}" ]]; then
   echo "Applying overlay from ${OVERLAY_DIR}..."
   rsync -a "${OVERLAY_DIR}/" "${SCRATCH_DIR}/TemplateApp/"
+  if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
+    echo "Using overlay project file from ${OVERLAY_DIR}/TemplateApp.xcodeproj"
+    cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${SCRATCH_DIR}/TemplateApp/TemplateApp.xcodeproj/project.pbxproj"
+  fi
 else
   echo "No overlay found at ${OVERLAY_DIR}; skipping overlay step."
 fi
