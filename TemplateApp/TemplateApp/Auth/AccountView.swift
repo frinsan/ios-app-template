@@ -56,7 +56,7 @@ struct AccountView: View {
                         Label(email, systemImage: "envelope")
                             .foregroundStyle(Color.secondaryText)
                     }
-                    if let environment = profile.environment {
+                    if let environment = profile.environment?.lowercased(), environment != "prod" {
                         Text("Environment: \(environment)")
                             .font(.footnote)
                             .foregroundStyle(Color.secondaryText)
