@@ -20,6 +20,7 @@ SCRATCH_DIR="${SCRATCH_ROOT}/$(basename "${BRAND_DIR}")"
 
 TEMPLATE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OVERLAY_DIR="${BRAND_DIR}/Overlay/TemplateApp"
+OVERLAY_APP_DIR="${OVERLAY_DIR}/TemplateApp"
 
 echo "Recreating scratch workspace at ${SCRATCH_DIR}"
 rm -rf "${SCRATCH_DIR}"
@@ -36,10 +37,10 @@ if [[ -d "${OVERLAY_DIR}" ]]; then
     echo "Using overlay project file from ${OVERLAY_DIR}/TemplateApp.xcodeproj"
     cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj"
   fi
-  if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config" ]]; then
-    rsync -a --delete "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
-    cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/presets_library.json" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
-    cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
+  if [[ -d "${OVERLAY_APP_DIR}/TemplateApp/Config" ]]; then
+    rsync -a --delete "${OVERLAY_APP_DIR}/TemplateApp/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
+    cp "${OVERLAY_APP_DIR}/TemplateApp/Config/presets_library.json" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
+    cp "${OVERLAY_APP_DIR}/TemplateApp/Config/PresetLibraryLoader.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
   fi
 else
   echo "No overlay found at ${OVERLAY_DIR}; skipping overlay step."
@@ -49,7 +50,7 @@ echo "Applying manifest ${MANIFEST_PATH}..."
 (cd "${SCRATCH_DIR}" && ./scripts/apply_manifest.sh "${MANIFEST_PATH}")
 
 # Ensure overlay config files are present after manifest step.
-PRESETS_SRC="${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/presets_library.json"
+PRESETS_SRC="${OVERLAY_APP_DIR}/TemplateApp/Config/presets_library.json"
 PRESETS_DST="${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/presets_library.json"
 if [[ -f "${PRESETS_SRC}" ]]; then
   cp "${PRESETS_SRC}" "${PRESETS_DST}"
@@ -57,7 +58,7 @@ else
   echo '{"presets":[]}' > "${PRESETS_DST}"
 fi
 
-LOADER_SRC="${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift"
+LOADER_SRC="${OVERLAY_APP_DIR}/TemplateApp/Config/PresetLibraryLoader.swift"
 LOADER_DST="${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift"
 if [[ -f "${LOADER_SRC}" ]]; then
   cp "${LOADER_SRC}" "${LOADER_DST}"
@@ -76,16 +77,16 @@ SWIFT
 fi
 
 # Ensure overlay app sources (Home/Components/Config) are present after manifest step.
-if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp" ]]; then
-  rsync -a --delete "${OVERLAY_DIR}/TemplateApp/TemplateApp/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
+if [[ -d "${OVERLAY_APP_DIR}/TemplateApp" ]]; then
+  rsync -a --delete "${OVERLAY_APP_DIR}/TemplateApp/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
 # Force critical overlay files to override template defaults.
-if [[ -f "${OVERLAY_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift" ]]; then
-  cp -f "${OVERLAY_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift"
+if [[ -f "${OVERLAY_APP_DIR}/TemplateApp/Sidebar/RootContainerView.swift" ]]; then
+  cp -f "${OVERLAY_APP_DIR}/TemplateApp/Sidebar/RootContainerView.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift"
 fi
-if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" ]]; then
+if [[ -d "${OVERLAY_APP_DIR}/TemplateApp/Home" ]]; then
   rm -rf "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home"
-  cp -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
+  cp -a "${OVERLAY_APP_DIR}/TemplateApp/Home" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
 
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
