@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		08F1EEAE7F8863FD1FE9B3E2 /* TemplateApp/TemplateApp/Config/app.json in Resources */ = {isa = PBXBuildFile; fileRef = 44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */; };
-		0A1B2C3D4E5F60718293A4B5 /* TemplateApp/TemplateApp/Config/presets_library.json in Resources */ = {isa = PBXBuildFile; fileRef = F0A1B2C3D4E5F67890123456 /* TemplateApp/TemplateApp/Config/presets_library.json */; };
 		0B465EDA2ECAAC9800FB141F /* neuron_loop.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0B465ED92ECAAC9800FB141F /* neuron_loop.mp4 */; };
 		0C9A2BC3C3F8C7F8B8D8AD45 /* TemplateApp/TemplateApp/Components/SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */; };
 		0E6AAB0163F2F58C2BAEDDC9 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516C27FEE3934B34B6C5FFC4 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */; };
@@ -90,7 +89,6 @@
 		DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift; sourceTree = SOURCE_ROOT; };
 		E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Theme/Theme.swift; sourceTree = SOURCE_ROOT; };
 		E358DAC25C55EEDB4C40213F /* TemplateAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemplateAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F0A1B2C3D4E5F67890123456 /* TemplateApp/TemplateApp/Config/presets_library.json */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json; path = TemplateApp/TemplateApp/Config/presets_library.json; sourceTree = SOURCE_ROOT; };
 		F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/WelcomeView.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -131,7 +129,6 @@
 				A2D8BA6E5FFA3C646BCE1295 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */,
 				87A3CDD9D71BF14FA278A4B0 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */,
 				44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */,
-				F0A1B2C3D4E5F67890123456 /* TemplateApp/TemplateApp/Config/presets_library.json */,
 			);
 			name = Config;
 			sourceTree = "<group>";
@@ -325,7 +322,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				08F1EEAE7F8863FD1FE9B3E2 /* TemplateApp/TemplateApp/Config/app.json in Resources */,
-				0A1B2C3D4E5F60718293A4B5 /* TemplateApp/TemplateApp/Config/presets_library.json in Resources */,
 				0B465EDA2ECAAC9800FB141F /* neuron_loop.mp4 in Resources */,
 				2F43535785096825F16B9648 /* TemplateApp/TemplateApp/Assets.xcassets in Resources */,
 				9474F86BD02F63BF5515952D /* Localizable.strings in Resources */,
