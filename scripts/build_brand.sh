@@ -86,6 +86,9 @@ fi
 if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Components" ]]; then
   rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Components/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Components/"
 fi
+if [[ ! -f "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home/PassportHomeView.swift" ]] && [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" ]]; then
+  cp -R "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home/"
+fi
 
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
 if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
