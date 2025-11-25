@@ -30,13 +30,13 @@ rsync -a --delete --exclude '.git' --exclude 'DerivedData' "${TEMPLATE_ROOT}/" "
 
 if [[ -d "${OVERLAY_DIR}" ]]; then
   echo "Applying overlay from ${OVERLAY_DIR}..."
-  rsync -a "${OVERLAY_DIR}/" "${SCRATCH_DIR}/"
+  rsync -a --delete "${OVERLAY_DIR}/" "${SCRATCH_DIR}/"
   if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
     echo "Using overlay project file from ${OVERLAY_DIR}/TemplateApp.xcodeproj"
     cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj"
   fi
   if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config" ]]; then
-    rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
+    rsync -a --delete "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
     cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/presets_library.json" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
     cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
   fi
@@ -76,23 +76,7 @@ fi
 
 # Ensure overlay app sources (Home/Components/Config) are present after manifest step.
 if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp" ]]; then
-  rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
-fi
-
-# Final guard: ensure Home and Components from overlay exist in scratch.
-if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" ]]; then
-  rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home/"
-fi
-if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Components" ]]; then
-  rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Components/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Components/"
-fi
-if [[ ! -f "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home/PassportHomeView.swift" ]] && [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" ]]; then
-  cp -R "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home/"
-fi
-# If Home ended up at TemplateApp/Home, move it into TemplateApp/TemplateApp/Home.
-if [[ -d "${SCRATCH_DIR}/TemplateApp/Home" ]]; then
-  rsync -a "${SCRATCH_DIR}/TemplateApp/Home/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home/"
-  rm -rf "${SCRATCH_DIR}/TemplateApp/Home"
+  rsync -a --delete "${OVERLAY_DIR}/TemplateApp/TemplateApp/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
 
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
