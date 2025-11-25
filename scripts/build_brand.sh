@@ -42,6 +42,23 @@ fi
 echo "Applying manifest ${MANIFEST_PATH}..."
 (cd "${SCRATCH_DIR}" && ./scripts/apply_manifest.sh "${MANIFEST_PATH}")
 
+# Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
+if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
+  APP_ID=$(jq -r '.appId' "${MANIFEST_PATH}")
+  MARKETING_VERSION=$(jq -r '.build.marketingVersion // empty' "${MANIFEST_PATH}")
+  BUILD_NUMBER=$(jq -r '.build.buildNumber // empty' "${MANIFEST_PATH}")
+  PROJ_PATH="${SCRATCH_DIR}/TemplateApp/TemplateApp.xcodeproj/project.pbxproj"
+
+  cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${PROJ_PATH}"
+  perl -0pi -e 's/PRODUCT_BUNDLE_IDENTIFIER = [^;]+;/PRODUCT_BUNDLE_IDENTIFIER = '"${APP_ID}"';/g' "${PROJ_PATH}"
+  if [[ -n "${MARKETING_VERSION}" ]]; then
+    perl -0pi -e 's/MARKETING_VERSION = [^;]+;/MARKETING_VERSION = '"${MARKETING_VERSION}"';/g' "${PROJ_PATH}"
+  fi
+  if [[ -n "${BUILD_NUMBER}" ]]; then
+    perl -0pi -e 's/CURRENT_PROJECT_VERSION = [^;]+;/CURRENT_PROJECT_VERSION = '"${BUILD_NUMBER}"';/g' "${PROJ_PATH}"
+  fi
+fi
+
 cat <<'EOF'
 ----------
 Scratch build ready.
