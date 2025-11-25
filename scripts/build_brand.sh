@@ -79,6 +79,14 @@ fi
 if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp" ]]; then
   rsync -a --delete "${OVERLAY_DIR}/TemplateApp/TemplateApp/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
+# Force critical overlay files to override template defaults.
+if [[ -f "${OVERLAY_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift" ]]; then
+  cp -f "${OVERLAY_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift"
+fi
+if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" ]]; then
+  rm -rf "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home"
+  cp -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
+fi
 
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
 if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
