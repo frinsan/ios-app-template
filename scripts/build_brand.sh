@@ -48,8 +48,31 @@ echo "Applying manifest ${MANIFEST_PATH}..."
 (cd "${SCRATCH_DIR}" && ./scripts/apply_manifest.sh "${MANIFEST_PATH}")
 
 # Ensure overlay config files are present after manifest step.
-cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/presets_library.json" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
-cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
+PRESETS_SRC="${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/presets_library.json"
+PRESETS_DST="${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/presets_library.json"
+if [[ -f "${PRESETS_SRC}" ]]; then
+  cp "${PRESETS_SRC}" "${PRESETS_DST}"
+else
+  echo '{"presets":[]}' > "${PRESETS_DST}"
+fi
+
+LOADER_SRC="${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift"
+LOADER_DST="${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift"
+if [[ -f "${LOADER_SRC}" ]]; then
+  cp "${LOADER_SRC}" "${LOADER_DST}"
+else
+  cat > "${LOADER_DST}" <<'SWIFT'
+import Foundation
+
+struct PresetLibrary: Decodable {
+    let presets: [PhotoPreset]
+}
+
+enum PresetLibraryLoader {
+    static func loadPresets() -> [PhotoPreset] { [] }
+}
+SWIFT
+fi
 
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
 if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
