@@ -74,6 +74,14 @@ enum PresetLibraryLoader {
 SWIFT
 fi
 
+# Ensure overlay Home/Components files are present after manifest step.
+if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" ]]; then
+  rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home/"
+fi
+if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Components" ]]; then
+  rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Components/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Components/"
+fi
+
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
 if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
   APP_ID=$(jq -r '.appId' "${MANIFEST_PATH}")
