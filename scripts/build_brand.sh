@@ -74,16 +74,9 @@ enum PresetLibraryLoader {
 SWIFT
 fi
 
-# Ensure overlay Home/Components files are present after manifest step.
-if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home" ]]; then
-  rm -rf "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home"
-  mkdir -p "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home"
-  cp -R "${OVERLAY_DIR}/TemplateApp/TemplateApp/Home/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home/"
-fi
-if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Components" ]]; then
-  rm -rf "${SCRATCH_DIR}/TemplateApp/TemplateApp/Components"
-  mkdir -p "${SCRATCH_DIR}/TemplateApp/TemplateApp/Components"
-  cp -R "${OVERLAY_DIR}/TemplateApp/TemplateApp/Components/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Components/"
+# Ensure overlay app sources (Home/Components/Config) are present after manifest step.
+if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp" ]]; then
+  rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
 
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
