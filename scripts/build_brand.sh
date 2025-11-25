@@ -35,6 +35,9 @@ if [[ -d "${OVERLAY_DIR}" ]]; then
     echo "Using overlay project file from ${OVERLAY_DIR}/TemplateApp.xcodeproj"
     cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj"
   fi
+  if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config" ]]; then
+    rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
+  fi
 else
   echo "No overlay found at ${OVERLAY_DIR}; skipping overlay step."
 fi
