@@ -47,6 +47,14 @@ fi
 echo "Applying manifest ${MANIFEST_PATH}..."
 (cd "${SCRATCH_DIR}" && ./scripts/apply_manifest.sh "${MANIFEST_PATH}")
 
+# Ensure overlay config files are present after manifest step.
+if [[ -f "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/presets_library.json" ]]; then
+  cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/presets_library.json" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
+fi
+if [[ -f "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift" ]]; then
+  cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
+fi
+
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
 if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
   APP_ID=$(jq -r '.appId' "${MANIFEST_PATH}")
