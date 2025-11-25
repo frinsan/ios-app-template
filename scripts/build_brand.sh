@@ -77,16 +77,16 @@ SWIFT
 fi
 
 # Ensure overlay app sources (Home/Components/Config) are present after manifest step.
-if [[ -d "${OVERLAY_APP_DIR}/TemplateApp" ]]; then
-  rsync -a --delete "${OVERLAY_APP_DIR}/TemplateApp/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
+if [[ -d "${OVERLAY_APP_DIR}" ]]; then
+  rsync -a --delete "${OVERLAY_APP_DIR}/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
 # Force critical overlay files to override template defaults.
-if [[ -f "${OVERLAY_APP_DIR}/TemplateApp/Sidebar/RootContainerView.swift" ]]; then
-  cp -f "${OVERLAY_APP_DIR}/TemplateApp/Sidebar/RootContainerView.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift"
+if [[ -f "${OVERLAY_APP_DIR}/Sidebar/RootContainerView.swift" ]]; then
+  cp -f "${OVERLAY_APP_DIR}/Sidebar/RootContainerView.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Sidebar/RootContainerView.swift"
 fi
-if [[ -d "${OVERLAY_APP_DIR}/TemplateApp/Home" ]]; then
+if [[ -d "${OVERLAY_APP_DIR}/Home" ]]; then
   rm -rf "${SCRATCH_DIR}/TemplateApp/TemplateApp/Home"
-  cp -a "${OVERLAY_APP_DIR}/TemplateApp/Home" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
+  cp -a "${OVERLAY_APP_DIR}/Home" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
 
 # Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
