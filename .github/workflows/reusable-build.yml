@@ -85,6 +85,15 @@ jobs:
       - name: Validate manifest JSON
         run: jq . "__brand/${{ inputs.manifest_path }}"
 
+      - name: Apply brand overlay (if present)
+        run: |
+          if [ -d "__brand/Overlay/TemplateApp" ]; then
+            echo "Applying brand overlay from __brand/Overlay/TemplateApp"
+            rsync -a __brand/Overlay/TemplateApp/ TemplateApp/
+          else
+            echo "No brand overlay found; skipping."
+          fi
+
       - name: Apply manifest
         run: ./scripts/apply_manifest.sh "__brand/${{ inputs.manifest_path }}"
 
