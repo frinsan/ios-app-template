@@ -30,10 +30,10 @@ rsync -a --delete --exclude '.git' --exclude 'DerivedData' "${TEMPLATE_ROOT}/" "
 
 if [[ -d "${OVERLAY_DIR}" ]]; then
   echo "Applying overlay from ${OVERLAY_DIR}..."
-  rsync -a "${OVERLAY_DIR}/" "${SCRATCH_DIR}/TemplateApp/"
+  rsync -a "${OVERLAY_DIR}/" "${SCRATCH_DIR}/"
   if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
     echo "Using overlay project file from ${OVERLAY_DIR}/TemplateApp.xcodeproj"
-    cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${SCRATCH_DIR}/TemplateApp/TemplateApp.xcodeproj/project.pbxproj"
+    cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj"
   fi
 else
   echo "No overlay found at ${OVERLAY_DIR}; skipping overlay step."
@@ -47,7 +47,7 @@ if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
   APP_ID=$(jq -r '.appId' "${MANIFEST_PATH}")
   MARKETING_VERSION=$(jq -r '.build.marketingVersion // empty' "${MANIFEST_PATH}")
   BUILD_NUMBER=$(jq -r '.build.buildNumber // empty' "${MANIFEST_PATH}")
-  PROJ_PATH="${SCRATCH_DIR}/TemplateApp/TemplateApp.xcodeproj/project.pbxproj"
+  PROJ_PATH="${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj"
 
   cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${PROJ_PATH}"
   perl -0pi -e 's/PRODUCT_BUNDLE_IDENTIFIER = [^;]+;/PRODUCT_BUNDLE_IDENTIFIER = '"${APP_ID}"';/g' "${PROJ_PATH}"
