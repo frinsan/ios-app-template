@@ -78,7 +78,8 @@ fi
 
 # Ensure overlay app sources (Home/Components/Config) are present after manifest step.
 if [[ -d "${OVERLAY_APP_DIR}" ]]; then
-  rsync -a --delete "${OVERLAY_APP_DIR}/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
+  # Overlay app sources; do not --delete to avoid removing template-only files (e.g., Localization).
+  rsync -a "${OVERLAY_APP_DIR}/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
 # Force critical overlay files to override template defaults.
 if [[ -f "${OVERLAY_APP_DIR}/Sidebar/RootContainerView.swift" ]]; then
