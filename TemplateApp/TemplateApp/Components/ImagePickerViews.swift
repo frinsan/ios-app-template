@@ -115,14 +115,16 @@ struct CameraCaptureView: View {
 
     var body: some View {
         GeometryReader { proxy in
-            let frameRect = PreviewLayout.frame(in: proxy.size, safeAreaInsets: proxy.safeAreaInsets)
             ZStack {
                 CameraPickerView(onImagePicked: onImagePicked, showOverlay: $showOverlay)
                     .ignoresSafeArea()
 
-                GuideSilhouetteOverlay(frame: frameRect)
-                    .opacity(showOverlay ? 1 : 0)
-                    .ignoresSafeArea()
+                if showOverlay {
+                    Rectangle()
+                        .strokeBorder(Color.white.opacity(0.4), lineWidth: 2)
+                        .padding()
+                        .ignoresSafeArea()
+                }
             }
         }
         .background(Color.black.ignoresSafeArea())
