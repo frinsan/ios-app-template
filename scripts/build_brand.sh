@@ -37,6 +37,8 @@ if [[ -d "${OVERLAY_DIR}" ]]; then
   fi
   if [[ -d "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config" ]]; then
     rsync -a "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
+    cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/presets_library.json" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
+    cp "${OVERLAY_DIR}/TemplateApp/TemplateApp/Config/PresetLibraryLoader.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
   fi
 else
   echo "No overlay found at ${OVERLAY_DIR}; skipping overlay step."
