@@ -38,7 +38,7 @@ if [[ -d "${OVERLAY_DIR}" ]]; then
     cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj"
   fi
   if [[ -d "${OVERLAY_APP_DIR}/Config" ]]; then
-    rsync -a --delete "${OVERLAY_APP_DIR}/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
+    rsync -a "${OVERLAY_APP_DIR}/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
     cp "${OVERLAY_APP_DIR}/Config/presets_library.json" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
     cp "${OVERLAY_APP_DIR}/Config/PresetLibraryLoader.swift" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
   fi
