@@ -29,5 +29,5 @@
     "privacyUrl": "https://learnandbecurious.com/privacy.html",
     "termsUrl": "https://learnandbecurious.com/terms.html"
   },
-  "activeEnvironment": "prod"
+  "activeEnvironment": "staging"
 }
