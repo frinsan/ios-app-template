@@ -6,6 +6,9 @@ struct UserProfile: Codable, Identifiable {
     let email: String?
     let givenName: String?
     let familyName: String?
+    let emailVerified: Bool?
+    let idp: String?
+    let lastLoginAt: String?
     let createdAt: String
     let updatedAt: String
     let environment: String?
@@ -20,6 +23,16 @@ struct UserProfile: Codable, Identifiable {
             return givenName
         }
         return email ?? userId
+    }
+
+    var providerLabel: String? {
+        guard let idp else { return nil }
+        return idp
+    }
+
+    var emailVerificationLabel: String? {
+        guard let emailVerified else { return nil }
+        return emailVerified ? "Email verified" : "Email unverified"
     }
 }
 

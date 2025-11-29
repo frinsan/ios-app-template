@@ -56,6 +56,18 @@ struct AccountView: View {
                         Label(email, systemImage: "envelope")
                             .foregroundStyle(Color.secondaryText)
                     }
+                    if let provider = profile.providerLabel {
+                        Label("Signed in with \(provider)", systemImage: "person.crop.circle.badge.checkmark")
+                            .foregroundStyle(Color.secondaryText)
+                    }
+                    if let verification = profile.emailVerificationLabel {
+                        Label(verification, systemImage: "checkmark.seal")
+                            .foregroundStyle(Color.secondaryText)
+                    }
+                    if let lastLogin = formattedDate(profile.lastLoginAt) {
+                        Label("Last login: \(lastLogin)", systemImage: "clock")
+                            .foregroundStyle(Color.secondaryText)
+                    }
                     if let environment = profile.environment?.lowercased(), environment != "prod" {
                         Text("Environment: \(environment)")
                             .font(.footnote)
@@ -168,6 +180,19 @@ private extension AccountView {
         }
 
         return "Email hidden"
+    }
+
+    func formattedDate(_ isoString: String?) -> String? {
+        guard let isoString else { return nil }
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = formatter.date(from: isoString) ?? ISO8601DateFormatter().date(from: isoString) {
+            let display = DateFormatter()
+            display.dateStyle = .medium
+            display.timeStyle = .short
+            return display.string(from: date)
+        }
+        return nil
     }
 }
 

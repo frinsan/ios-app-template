@@ -1,7 +1,7 @@
 {
-  "appId": "com.learnandbecurious.visapassportphoto",
-  "displayName": "Visa Photo",
-  "bundleIdSuffix": "visapassportphoto",
+  "appId": "com.learnandbecurious.sample",
+  "displayName": "Template App",
+  "bundleIdSuffix": "template",
   "theme": {
     "primary": "#111111",
     "accent": "#B8E986",
@@ -16,14 +16,10 @@
     "prod": "https://fhdsv5jl7h.execute-api.us-west-2.amazonaws.com"
   },
   "auth": {
-    "cognitoClientId": "6015im7debva15kg0ib0pociju",
-    "scheme": "visaphotomaker",
+    "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
+    "scheme": "templateapp",
     "region": "us-west-2",
-    "hostedUIDomain": "auth.learnandbecurious.com"
-  },
-  "build": {
-    "marketingVersion": "1.0.0",
-    "buildNumber": "1"
+    "hostedUIDomain": "auth-staging.learnandbecurious.com"
   },
   "legal": {
     "privacyUrl": "https://learnandbecurious.com/privacy.html",

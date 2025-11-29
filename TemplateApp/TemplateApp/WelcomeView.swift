@@ -1,5 +1,6 @@
 import SwiftUI
 import AVKit
+import UIKit
 
 struct WelcomeView: View {
     @EnvironmentObject private var appState: AppState
@@ -301,6 +302,7 @@ private struct VideoBackgroundView: UIViewRepresentable {
 private final class LoopingPlayerUIView: UIView {
     private var playerLooper: AVPlayerLooper?
     private var queuePlayer: AVQueuePlayer?
+    private var notificationObservers: [NSObjectProtocol] = []
 
     init(videoName: String, fileExtension: String) {
         super.init(frame: .zero)
@@ -312,6 +314,7 @@ private final class LoopingPlayerUIView: UIView {
         let queuePlayer = AVQueuePlayer(playerItem: playerItem)
         queuePlayer.isMuted = true
         queuePlayer.play()
+        resumeWhenActive()
 
         let playerLayer = AVPlayerLayer(player: queuePlayer)
         playerLayer.videoGravity = .resizeAspectFill
@@ -328,6 +331,19 @@ private final class LoopingPlayerUIView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.sublayers?.forEach { $0.frame = bounds }
+    }
+
+    deinit {
+        notificationObservers.forEach { NotificationCenter.default.removeObserver($0) }
+    }
+
+    private func resumeWhenActive() {
+        let center = NotificationCenter.default
+        let handler: (Notification) -> Void = { [weak self] _ in
+            self?.queuePlayer?.play()
+        }
+        notificationObservers.append(center.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main, using: handler))
+        notificationObservers.append(center.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main, using: handler))
     }
 }
 
