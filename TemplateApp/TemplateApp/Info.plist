@@ -36,11 +36,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Visa Photo Maker uses the camera to capture passport and visa photos.</string>
+	<string>This app uses the camera to capture photos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Visa Photo Maker saves your passport and visa photos to your library.</string>
+	<string>This app saves your photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Visa Photo Maker needs photo library access to import and save passport and visa photos.</string>
+	<string>This app needs photo library access to import and save photos.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
