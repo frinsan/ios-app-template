@@ -13,7 +13,8 @@
     "push": true,
     "share": true,
     "pushDeepLink": false,
-    "imageCapture": false
+    "imageCapture": false,
+    "loadingOverlay": true
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",

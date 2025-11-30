@@ -78,6 +78,13 @@ struct RootContainerView: View {
             }
         }
         .lightModeTextColor()
+        .overlay(
+            Group {
+                if appState.manifest.features.loadingOverlay {
+                    LoadingOverlay(isVisible: appState.isLoading, message: appState.loadingMessage)
+                }
+            }
+        )
     }
 
     @ViewBuilder

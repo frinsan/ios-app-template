@@ -29,6 +29,8 @@ final class AppState: ObservableObject {
     @Published var pushToken: String?
     @Published var pushRegisterStatus: String?
     @Published var pendingRoute: String?
+    @Published var isLoading: Bool = false
+    @Published var loadingMessage: String?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -79,7 +81,9 @@ final class AppState: ObservableObject {
         shouldShowWelcome = false
         latestLoginSuccessID = UUID()
         Task {
-            await bootstrapAndFetchProfile(forceBootstrap: true)
+            await withLoading(message: "Syncing profile...") {
+                await bootstrapAndFetchProfile(forceBootstrap: true)
+            }
             await registerPushTokenIfNeeded()
         }
     }
@@ -161,6 +165,21 @@ final class AppState: ObservableObject {
                 self.pushRegisterStatus = "Register failed: \(error.localizedDescription)"
             }
         }
+    }
+
+    @discardableResult
+    func withLoading<T>(message: String? = nil, operation: () async throws -> T) async rethrows -> T {
+        await MainActor.run {
+            self.isLoading = true
+            self.loadingMessage = message
+        }
+        defer {
+            Task { @MainActor in
+                self.isLoading = false
+                self.loadingMessage = nil
+            }
+        }
+        return try await operation()
     }
 }
 
