@@ -31,6 +31,16 @@ struct ContentView: View {
                         .font(.callout)
                         .foregroundStyle(Color.secondaryText)
                         .multilineTextAlignment(.center)
+                    if appState.manifest.features.imageCapture {
+                        Divider()
+                            .background(Color.dividerColor)
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Image capture test")
+                                .font(.subheadline.bold())
+                                .foregroundStyle(Color.primaryText)
+                            ImageCaptureTester()
+                        }
+                    }
                     if appState.manifest.features.share {
                         ShareButton(
                             title: "Share this app",

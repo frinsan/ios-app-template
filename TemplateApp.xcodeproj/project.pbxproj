@@ -16,6 +16,7 @@
 		176CB109E4A023B9C2F1AED0 /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB7EDC3A5F68FFBBB08334B /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift */; };
 		2360E4CB03678B365D3AF7FF /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */; };
 		7B9E4F2C5E7D4D1F8C1A2B3C /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */; };
+		2B7A7F1D4B2E4C8E9F1A2B3C /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1C2B3A4D5E6F708192A3B4 /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift */; };
 		2DD904D87AD9DAAC495DD297 /* TemplateApp/TemplateApp/Config/Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A3CDD9D71BF14FA278A4B0 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */; };
 		2F43535785096825F16B9648 /* TemplateApp/TemplateApp/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CC2C3D5F3A304F77B1A6877 /* TemplateApp/TemplateApp/Assets.xcassets */; };
 		32F91B7DB5E2492EA3E99731 /* TemplateApp/TemplateApp/API/PushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4D9F96E26245F6A0B7AA55 /* TemplateApp/TemplateApp/API/PushService.swift */; };
@@ -73,6 +74,7 @@
 		44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json; path = TemplateApp/TemplateApp/Config/app.json; sourceTree = SOURCE_ROOT; };
 		46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift; sourceTree = SOURCE_ROOT; };
 		9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift; sourceTree = SOURCE_ROOT; };
+		4F1C2B3A4D5E6F708192A3B4 /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/ImageCaptureTester.swift; sourceTree = SOURCE_ROOT; };
 		516C27FEE3934B34B6C5FFC4 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarView.swift; sourceTree = SOURCE_ROOT; };
 		6D742626C8EFF18D0B9FF037 /* TemplateApp/TemplateAppTests/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateAppTests/Info.plist; sourceTree = SOURCE_ROOT; };
 		6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AccountView.swift; sourceTree = SOURCE_ROOT; };
@@ -239,6 +241,7 @@
 				7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */,
 				6F2B7A4D5E6C471F8A2B9C0D /* TemplateApp/TemplateApp/Components/ShareSheet.swift */,
 				A5B6C7D8E9F00123456789B2 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift */,
+				4F1C2B3A4D5E6F708192A3B4 /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift */,
 				B76082754AC732E97962D267 /* TemplateApp/TemplateApp/TemplateAppApp.swift */,
 				7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */,
 				DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */,
@@ -383,6 +386,7 @@
 				8C3E5062E04ED79FE9B0B3CC /* TemplateApp/TemplateApp/API/EmailAuthService.swift in Sources */,
 				2360E4CB03678B365D3AF7FF /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift in Sources */,
 				7B9E4F2C5E7D4D1F8C1A2B3C /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift in Sources */,
+				2B7A7F1D4B2E4C8E9F1A2B3C /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

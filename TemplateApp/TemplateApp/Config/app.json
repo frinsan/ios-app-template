@@ -12,7 +12,8 @@
     "feedback": false,
     "push": true,
     "share": true,
-    "pushDeepLink": false
+    "pushDeepLink": false,
+    "imageCapture": false
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
