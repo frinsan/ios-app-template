@@ -28,12 +28,20 @@ final class AppState: ObservableObject {
     @Published var shouldShowWelcome: Bool = true
     @Published var pushToken: String?
     @Published var pushRegisterStatus: String?
+    @Published var pendingRoute: String?
 
     private var cancellables = Set<AnyCancellable>()
 
     init() {
         loadManifest()
-        PushManager.shared.configure()
+        PushManager.shared.configure(
+            deepLinkEnabled: manifest.features.pushDeepLink,
+            routeHandler: { [weak self] route in
+                DispatchQueue.main.async {
+                    self?.pendingRoute = route
+                }
+            }
+        )
         observePushTokens()
         restoreSession()
     }

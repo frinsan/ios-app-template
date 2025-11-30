@@ -24,6 +24,7 @@ struct AppManifest: Codable {
         var feedback: Bool
         var push: Bool
         var share: Bool
+        var pushDeepLink: Bool
     }
 
     struct APIConfig: Codable {
@@ -87,7 +88,7 @@ struct AppManifest: Codable {
         displayName: "Template App",
         bundleIdSuffix: "template",
         theme: .init(primaryHex: "#111111", accentHex: "#B8E986", appearance: .system),
-        features: .init(login: true, feedback: false, push: false, share: false),
+        features: .init(login: true, feedback: false, push: false, share: false, pushDeepLink: false),
         apiBase: .init(
             staging: URL(string: "https://staging.api.example.com")!,
             prod: URL(string: "https://api.example.com")!

@@ -8,12 +8,16 @@ final class PushManager: NSObject, ObservableObject {
     @Published var authorizationStatus: UNAuthorizationStatus = .notDetermined
     @Published var deviceToken: String?
     @Published var lastError: String?
+    private var deepLinkEnabled: Bool = false
+    private var routeHandler: ((String) -> Void)?
 
     private override init() {
         super.init()
     }
 
-    func configure() {
+    func configure(deepLinkEnabled: Bool = false, routeHandler: ((String) -> Void)? = nil) {
+        self.deepLinkEnabled = deepLinkEnabled
+        self.routeHandler = routeHandler
         UNUserNotificationCenter.current().delegate = self
         refreshAuthorizationStatus()
     }
@@ -61,6 +65,10 @@ final class PushManager: NSObject, ObservableObject {
 
     func handleRemoteNotification(_ userInfo: [AnyHashable: Any]) {
         print("[Push] Received notification: \(userInfo)")
+        guard deepLinkEnabled else { return }
+        if let route = userInfo["route"] as? String {
+            routeHandler?(route)
+        }
     }
 }
 

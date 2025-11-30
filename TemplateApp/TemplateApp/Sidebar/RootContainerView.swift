@@ -62,6 +62,11 @@ struct RootContainerView: View {
             selection = .home
             isMenuVisible = false
         }
+        .onChange(of: appState.pendingRoute) { _, newValue in
+            guard let route = newValue else { return }
+            handleRoute(route)
+            appState.pendingRoute = nil
+        }
         .sheet(item: $legalSheet) { sheet in
             if let url = sheet.url {
                 SafariWebView(url: url)
@@ -103,6 +108,14 @@ struct RootContainerView: View {
             )
         default:
             selection = item
+        }
+    }
+
+    private func handleRoute(_ route: String) {
+        // Only supporting home for now; fallback is home.
+        selection = .home
+        withAnimation(.easeInOut(duration: 0.2)) {
+            isMenuVisible = false
         }
     }
 
