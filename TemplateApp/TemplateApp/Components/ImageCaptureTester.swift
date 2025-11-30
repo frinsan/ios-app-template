@@ -5,6 +5,7 @@ struct ImageCaptureTester: View {
     @State private var showPicker = false
     @State private var pickerSource: PickerSource = .library
     @State private var selectedImage: UIImage?
+    @State private var showCameraUnavailableAlert = false
 
     var body: some View {
         VStack(spacing: 12) {
@@ -31,9 +32,18 @@ struct ImageCaptureTester: View {
                 CameraPicker(selectedImage: $selectedImage)
             }
         }
+        .alert("Camera unavailable", isPresented: $showCameraUnavailableAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Camera is not available on this device. Please try the photo library instead.")
+        }
     }
 
     private func presentPicker(_ source: PickerSource) {
+        if source == .camera, !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            showCameraUnavailableAlert = true
+            return
+        }
         pickerSource = source
         showPicker = true
     }
