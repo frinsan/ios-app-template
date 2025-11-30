@@ -15,6 +15,7 @@
 		1231C568A8652665B77E376A /* TemplateApp/TemplateApp/Auth/LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272BBFDAABD7B77954B253AB /* TemplateApp/TemplateApp/Auth/LoginView.swift */; };
 		176CB109E4A023B9C2F1AED0 /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB7EDC3A5F68FFBBB08334B /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift */; };
 		2360E4CB03678B365D3AF7FF /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */; };
+		7B9E4F2C5E7D4D1F8C1A2B3C /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */; };
 		2DD904D87AD9DAAC495DD297 /* TemplateApp/TemplateApp/Config/Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A3CDD9D71BF14FA278A4B0 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */; };
 		2F43535785096825F16B9648 /* TemplateApp/TemplateApp/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CC2C3D5F3A304F77B1A6877 /* TemplateApp/TemplateApp/Assets.xcassets */; };
 		32F91B7DB5E2492EA3E99731 /* TemplateApp/TemplateApp/API/PushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4D9F96E26245F6A0B7AA55 /* TemplateApp/TemplateApp/API/PushService.swift */; };
@@ -71,6 +72,7 @@
 		3FAB73F040E929758A44C21F /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = "TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json; path = TemplateApp/TemplateApp/Config/app.json; sourceTree = SOURCE_ROOT; };
 		46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift; sourceTree = SOURCE_ROOT; };
+		9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift; sourceTree = SOURCE_ROOT; };
 		516C27FEE3934B34B6C5FFC4 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarView.swift; sourceTree = SOURCE_ROOT; };
 		6D742626C8EFF18D0B9FF037 /* TemplateApp/TemplateAppTests/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateAppTests/Info.plist; sourceTree = SOURCE_ROOT; };
 		6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AccountView.swift; sourceTree = SOURCE_ROOT; };
@@ -246,6 +248,7 @@
 				2338971F5BCAE631F2D48EEA /* TemplateApp/TemplateApp/API/EmailAuthService.swift */,
 				6A4D9F96E26245F6A0B7AA55 /* TemplateApp/TemplateApp/API/PushService.swift */,
 				46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */,
+				9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */,
 				9CC2C3D5F3A304F77B1A6877 /* TemplateApp/TemplateApp/Assets.xcassets */,
 				A694CF26ED0FDABE3AA2092E /* TemplateApp/TemplateApp/Info.plist */,
 				0911C60AF63C87AD7FE49EE2 /* Localizable.strings */,
@@ -379,6 +382,7 @@
 				E0F9D9152F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift in Sources */,
 				8C3E5062E04ED79FE9B0B3CC /* TemplateApp/TemplateApp/API/EmailAuthService.swift in Sources */,
 				2360E4CB03678B365D3AF7FF /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift in Sources */,
+				7B9E4F2C5E7D4D1F8C1A2B3C /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

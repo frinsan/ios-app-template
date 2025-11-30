@@ -42,6 +42,7 @@ final class AppState: ObservableObject {
                 }
             }
         )
+        AnalyticsManager.shared.configure(with: self)
         observePushTokens()
         restoreSession()
     }
