@@ -53,6 +53,9 @@ struct ContentView: View {
             .padding()
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                AnalyticsManager.shared.track(.screenView(name: "Home"))
+            }
         }
     }
 

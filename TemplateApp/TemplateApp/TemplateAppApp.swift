@@ -12,6 +12,10 @@ struct TemplateAppApp: App {
             AppEntryView()
                 .environmentObject(appState)
                 .tint(.primaryAccent)
+                .onAppear {
+                    AnalyticsManager.shared.configure(with: appState)
+                    AnalyticsManager.shared.track(.screenView(name: "AppEntry"))
+                }
         }
     }
 }

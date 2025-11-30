@@ -57,6 +57,9 @@ struct LoginView: View {
             )
             .ignoresSafeArea()
         )
+        .onAppear {
+            AnalyticsManager.shared.track(.screenView(name: "Login"))
+        }
         .sheet(item: $activeLegalLink) { link in
             if let url = link.url(from: appState.manifest) {
                 SafariWebView(url: url)
@@ -67,6 +70,7 @@ struct LoginView: View {
 
     private func startLogin(provider: HostedUIProvider) {
         guard case .signedOut = appState.authState else { return }
+        AnalyticsManager.shared.track(.buttonTap(name: "login_\(provider.rawValue)"))
         isLoading = true
         Task {
             do {

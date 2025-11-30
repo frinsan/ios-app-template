@@ -64,6 +64,9 @@ struct WelcomeView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .onAppear {
+            AnalyticsManager.shared.track(.screenView(name: "Welcome"))
+        }
     }
 
     private var topBar: some View {
@@ -188,6 +191,7 @@ struct WelcomeView: View {
 
     private func startLogin(provider: HostedUIProvider) {
         guard case .signedOut = appState.authState else { return }
+        AnalyticsManager.shared.track(.buttonTap(name: "welcome_login_\(provider.rawValue)"))
         currentProvider = provider
         isAuthenticating = true
         Task {

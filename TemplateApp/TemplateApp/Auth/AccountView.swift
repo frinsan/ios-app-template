@@ -29,6 +29,9 @@ struct AccountView: View {
         .padding()
         .navigationTitle("Account")
         .lightModeTextColor()
+        .onAppear {
+            AnalyticsManager.shared.track(.screenView(name: "Account"))
+        }
         .sheet(isPresented: $showDeleteConfirm) {
             DeleteAccountSheet(
                 confirmationText: $deleteConfirmationText,
