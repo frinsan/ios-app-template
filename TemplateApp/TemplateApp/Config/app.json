@@ -9,7 +9,9 @@
   },
   "features": {
     "login": true,
-    "feedback": false
+    "feedback": false,
+    "push": true,
+    "share": true
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
@@ -25,5 +27,11 @@
     "privacyUrl": "https://learnandbecurious.com/privacy.html",
     "termsUrl": "https://learnandbecurious.com/terms.html"
   },
+  "share": {
+    "text": "Check out Template App",
+    "url": "https://learnandbecurious.com",
+    "icon": "square.and.arrow.up"
+  },
+  "push": {},
   "activeEnvironment": "staging"
 }

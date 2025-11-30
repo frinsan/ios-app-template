@@ -1,8 +1,10 @@
 import SwiftUI
 import UIKit
+import Combine
 
 @main
 struct TemplateAppApp: App {
+    @UIApplicationDelegateAdaptor(PushAppDelegate.self) var pushDelegate
     @StateObject private var appState = AppState()
 
     var body: some Scene {
@@ -20,9 +22,15 @@ final class AppState: ObservableObject {
     @Published var userProfile: UserProfile?
     @Published var latestLoginSuccessID: UUID?
     @Published var shouldShowWelcome: Bool = true
+    @Published var pushToken: String?
+    @Published var pushRegisterStatus: String?
+
+    private var cancellables = Set<AnyCancellable>()
 
     init() {
         loadManifest()
+        PushManager.shared.configure()
+        observePushTokens()
         restoreSession()
     }
 
@@ -40,6 +48,7 @@ final class AppState: ObservableObject {
             shouldShowWelcome = false
             Task {
                 await bootstrapAndFetchProfile(forceBootstrap: false)
+                await registerPushTokenIfNeeded()
             }
         } else {
             shouldShowWelcome = true
@@ -58,6 +67,7 @@ final class AppState: ObservableObject {
         latestLoginSuccessID = UUID()
         Task {
             await bootstrapAndFetchProfile(forceBootstrap: true)
+            await registerPushTokenIfNeeded()
         }
     }
 
@@ -69,7 +79,11 @@ final class AppState: ObservableObject {
     }
 
     func performLogout() async {
-        if case .signedIn = authState {
+        if case let .signedIn(session) = authState {
+            if manifest.features.push, let token = pushToken {
+                let service = PushService(manifest: manifest)
+                try? await service.unregister(token: token, session: session)
+            }
             do {
                 try await HostedUILoginController.logout(manifest: manifest)
             } catch {
@@ -82,11 +96,24 @@ final class AppState: ObservableObject {
             userProfile = nil
             authState = .signedOut
             shouldShowWelcome = true
+            pushRegisterStatus = nil
         }
     }
 
     func dismissWelcome() {
         shouldShowWelcome = false
+    }
+
+    private func observePushTokens() {
+        PushManager.shared.$deviceToken
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] token in
+                self?.pushToken = token
+                Task {
+                    await self?.registerPushTokenIfNeeded()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func bootstrapAndFetchProfile(forceBootstrap: Bool) async {
@@ -102,6 +129,24 @@ final class AppState: ObservableObject {
             }
         } catch {
             print("[Profile] Failed to sync: \(error)")
+        }
+    }
+
+    private func registerPushTokenIfNeeded() async {
+        guard manifest.features.push else { return }
+        guard let token = pushToken else { return }
+        guard case let .signedIn(session) = authState else { return }
+        let service = PushService(manifest: manifest)
+        do {
+            try await service.register(token: token, session: session)
+            await MainActor.run {
+                self.pushRegisterStatus = "Push token registered."
+            }
+        } catch {
+            NSLog("[Push] Failed to register token: \(error.localizedDescription)")
+            await MainActor.run {
+                self.pushRegisterStatus = "Register failed: \(error.localizedDescription)"
+            }
         }
     }
 }
@@ -140,5 +185,30 @@ extension AuthState: Equatable {
         default:
             return false
         }
+    }
+}
+
+final class PushAppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        PushManager.shared.handleDeviceToken(deviceToken)
+    }
+
+    func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
+        PushManager.shared.handleRegistrationError(error)
+    }
+
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        PushManager.shared.handleRemoteNotification(userInfo)
+        completionHandler(.noData)
     }
 }

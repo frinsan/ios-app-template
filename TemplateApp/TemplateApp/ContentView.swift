@@ -31,6 +31,14 @@ struct ContentView: View {
                         .font(.callout)
                         .foregroundStyle(Color.secondaryText)
                         .multilineTextAlignment(.center)
+                    if appState.manifest.features.share {
+                        ShareButton(
+                            title: "Share this app",
+                            systemImage: appState.manifest.share?.icon ?? "square.and.arrow.up",
+                            items: shareItems()
+                        )
+                        .padding(.top, 8)
+                    }
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
@@ -46,6 +54,16 @@ struct ContentView: View {
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
         }
+    }
+
+    private func shareItems() -> [Any] {
+        var items: [Any] = []
+        let shareText = appState.manifest.share?.text ?? "Check out \(appState.manifest.displayName)"
+        items.append(shareText)
+        if let url = appState.manifest.share?.url {
+            items.append(url)
+        }
+        return items
     }
 }
 

@@ -22,6 +22,8 @@ struct AppManifest: Codable {
     struct FeatureFlags: Codable {
         var login: Bool
         var feedback: Bool
+        var push: Bool
+        var share: Bool
     }
 
     struct APIConfig: Codable {
@@ -46,6 +48,16 @@ struct AppManifest: Codable {
         }
     }
 
+    struct ShareConfig: Codable {
+        var text: String?
+        var url: URL?
+        var icon: String?
+    }
+
+    struct PushConfig: Codable {
+        var categories: [String]?
+    }
+
     enum Environment: String, Codable {
         case staging
         case prod
@@ -59,6 +71,8 @@ struct AppManifest: Codable {
     var apiBase: APIConfig
     var auth: AuthConfig
     var legal: LegalConfig?
+    var push: PushConfig?
+    var share: ShareConfig?
     var activeEnvironment: Environment
 
     var baseURL: URL {
@@ -73,13 +87,15 @@ struct AppManifest: Codable {
         displayName: "Template App",
         bundleIdSuffix: "template",
         theme: .init(primaryHex: "#111111", accentHex: "#B8E986", appearance: .system),
-        features: .init(login: true, feedback: false),
+        features: .init(login: true, feedback: false, push: false, share: false),
         apiBase: .init(
             staging: URL(string: "https://staging.api.example.com")!,
             prod: URL(string: "https://api.example.com")!
         ),
         auth: .init(cognitoClientId: nil, scheme: nil, region: nil, hostedUIDomain: nil),
         legal: nil,
+        push: nil,
+        share: nil,
         activeEnvironment: .staging
     )
 }

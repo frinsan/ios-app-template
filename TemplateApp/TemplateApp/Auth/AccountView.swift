@@ -2,11 +2,14 @@ import SwiftUI
 
 struct AccountView: View {
     @EnvironmentObject private var appState: AppState
+    @ObservedObject private var pushManager = PushManager.shared
     @State private var isLoggingOut = false
     @State private var isDeleting = false
     @State private var showDeleteConfirm = false
     @State private var deleteConfirmationText = ""
     @State private var deleteError: String?
+    @State private var isSendingTestPush = false
+    @State private var pushTestStatus: String?
 
     var body: some View {
         VStack(spacing: 24) {
@@ -72,6 +75,9 @@ struct AccountView: View {
                         Text("Environment: \(environment)")
                             .font(.footnote)
                             .foregroundStyle(Color.secondaryText)
+                    }
+                    if appState.manifest.features.push {
+                        pushSection()
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -193,6 +199,93 @@ private extension AccountView {
             return display.string(from: date)
         }
         return nil
+    }
+
+    func pushSection() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Notifications")
+                .font(.headline)
+            Label(authorizationText, systemImage: "bell.badge")
+                .foregroundStyle(Color.secondaryText)
+            if let token = pushManager.deviceToken {
+                Text("Device token: \(token)")
+                    .font(.footnote.monospaced())
+                    .foregroundStyle(Color.secondaryText)
+            }
+            if let registerStatus = appState.pushRegisterStatus {
+                Text(registerStatus)
+                    .font(.footnote)
+                    .foregroundStyle(Color.secondaryText)
+            }
+            if let error = pushManager.lastError {
+                Text(error)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
+            if let status = pushTestStatus {
+                Text(status)
+                    .font(.footnote)
+                    .foregroundStyle(Color.secondaryText)
+            }
+            Button("Request notifications") {
+                Task {
+                    await pushManager.requestAuthorizationAndRegister()
+                }
+            }
+            .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
+            if case let .signedIn(session) = appState.authState {
+                Button(isSendingTestPush ? "Sending…" : "Send test push") {
+                    Task {
+                        await sendTestPush(session: session)
+                    }
+                }
+                .disabled(isSendingTestPush)
+                .buttonStyle(ConsistentButtonStyle(accentColor: accentColor, prefersSoftDarkText: true))
+            }
+        }
+        .padding()
+        .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .onAppear {
+            pushManager.refreshAuthorizationStatus()
+        }
+    }
+
+    var authorizationText: String {
+        switch pushManager.authorizationStatus {
+        case .notDetermined: return "Not requested"
+        case .denied: return "Denied"
+        case .authorized, .provisional, .ephemeral: return "Allowed"
+        @unknown default: return "Unknown"
+        }
+    }
+
+    func sendTestPush(session: AuthSession) async {
+        guard appState.manifest.features.push else { return }
+        isSendingTestPush = true
+        pushTestStatus = nil
+        let service = PushService(manifest: appState.manifest)
+        do {
+            try await service.sendTest(session: session)
+            await MainActor.run {
+                pushTestStatus = "Test push requested."
+                isSendingTestPush = false
+            }
+        } catch let apiError as APIError {
+            await MainActor.run {
+                switch apiError {
+                case let .responseError(message, _):
+                    pushTestStatus = message ?? "Failed to send test push."
+                    NSLog("[Push] Test push error: \(message ?? "unknown")")
+                }
+                isSendingTestPush = false
+            }
+        } catch {
+            await MainActor.run {
+                pushTestStatus = "Failed to send test push."
+                isSendingTestPush = false
+            }
+            NSLog("[Push] Test push error: \(error.localizedDescription)")
+        }
     }
 }
 
