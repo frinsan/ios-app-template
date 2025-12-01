@@ -29,6 +29,58 @@ struct AppManifest: Codable {
         var loadingOverlay: Bool
         var errorBanner: Bool
         var ratePrompt: Bool
+        var aiPlayground: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case login
+            case feedback
+            case push
+            case share
+            case pushDeepLink
+            case imageCapture
+            case loadingOverlay
+            case errorBanner
+            case ratePrompt
+            case aiPlayground
+        }
+
+        init(
+            login: Bool = true,
+            feedback: Bool = false,
+            push: Bool = false,
+            share: Bool = false,
+            pushDeepLink: Bool = false,
+            imageCapture: Bool = false,
+            loadingOverlay: Bool = true,
+            errorBanner: Bool = true,
+            ratePrompt: Bool = false,
+            aiPlayground: Bool = false
+        ) {
+            self.login = login
+            self.feedback = feedback
+            self.push = push
+            self.share = share
+            self.pushDeepLink = pushDeepLink
+            self.imageCapture = imageCapture
+            self.loadingOverlay = loadingOverlay
+            self.errorBanner = errorBanner
+            self.ratePrompt = ratePrompt
+            self.aiPlayground = aiPlayground
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.login = try container.decodeIfPresent(Bool.self, forKey: .login) ?? true
+            self.feedback = try container.decodeIfPresent(Bool.self, forKey: .feedback) ?? false
+            self.push = try container.decodeIfPresent(Bool.self, forKey: .push) ?? false
+            self.share = try container.decodeIfPresent(Bool.self, forKey: .share) ?? false
+            self.pushDeepLink = try container.decodeIfPresent(Bool.self, forKey: .pushDeepLink) ?? false
+            self.imageCapture = try container.decodeIfPresent(Bool.self, forKey: .imageCapture) ?? false
+            self.loadingOverlay = try container.decodeIfPresent(Bool.self, forKey: .loadingOverlay) ?? true
+            self.errorBanner = try container.decodeIfPresent(Bool.self, forKey: .errorBanner) ?? true
+            self.ratePrompt = try container.decodeIfPresent(Bool.self, forKey: .ratePrompt) ?? false
+            self.aiPlayground = try container.decodeIfPresent(Bool.self, forKey: .aiPlayground) ?? false
+        }
     }
 
     struct APIConfig: Codable {
@@ -101,7 +153,8 @@ struct AppManifest: Codable {
             imageCapture: false,
             loadingOverlay: true,
             errorBanner: true,
-            ratePrompt: false
+            ratePrompt: false,
+            aiPlayground: false
         ),
         apiBase: .init(
             staging: URL(string: "https://staging.api.example.com")!,

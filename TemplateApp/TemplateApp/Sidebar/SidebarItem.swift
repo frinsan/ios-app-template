@@ -3,6 +3,7 @@ import SwiftUI
 
 enum SidebarItem: Hashable, CaseIterable, Identifiable {
     case home
+    case aiPlayground
     case terms
     case privacy
     case account
@@ -13,6 +14,7 @@ enum SidebarItem: Hashable, CaseIterable, Identifiable {
     var icon: String {
         switch self {
         case .home: return "house.fill"
+        case .aiPlayground: return "sparkles"
         case .terms: return "doc.text"
         case .privacy: return "hand.raised"
         case .account: return "person.circle.fill"
@@ -23,6 +25,7 @@ enum SidebarItem: Hashable, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .home: return "Home"
+        case .aiPlayground: return "AI Playground"
         case .terms: return "Terms of Use"
         case .privacy: return "Privacy Policy"
         case .account: return "Account"
@@ -33,6 +36,7 @@ enum SidebarItem: Hashable, CaseIterable, Identifiable {
     var color: Color {
         switch self {
         case .home: return .accentColor
+        case .aiPlayground: return .purple
         case .terms: return .indigo
         case .privacy: return .mint
         case .account: return .teal

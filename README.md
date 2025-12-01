@@ -77,6 +77,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 
 ## Handoff Notes
 
+- **When you add new template Swift files under `TemplateApp/TemplateApp` (for example new screens, services, or shared components), you must also add them to the `TemplateApp` target in `TemplateApp.xcodeproj` via Xcode’s “Add Files…” / Target Membership UI.** The `ios-app-template/scripts/build_brand.sh` script copies the Xcode project from this template into `brand-builds/app-<brand>`, so any files that aren’t part of the `TemplateApp` target won’t exist in the generated brand projects and will cause “Cannot find X in scope” errors even if the `.swift` file is present on disk.
 - Always build with the latest stable Xcode release (right now 26.11) so local runs, CI, and TestFlight uploads all match the same toolchain/iOS SDK combo.
 - Build numbers are auto-incremented via `agvtool new-version -all <run#>` inside CI/CD, so you never have to bump `CFBundleVersion` manually before TestFlight.
 - Record any secrets required for CI (Apple API key, App Store Connect credentials) once workflows are wired.

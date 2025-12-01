@@ -8,7 +8,14 @@ struct RootContainerView: View {
 
     private let drawerWidth: CGFloat = 280
     private var menuItems: [SidebarItem] {
-        var items: [SidebarItem] = [.home, .terms, .privacy]
+        var items: [SidebarItem] = [.home]
+
+        if appState.manifest.features.aiPlayground {
+            items.append(.aiPlayground)
+        }
+
+        items.append(contentsOf: [.terms, .privacy])
+
         if case .signedIn = appState.authState {
             items.append(.account)
         } else {
@@ -95,6 +102,8 @@ struct RootContainerView: View {
         switch selection {
         case .home:
             ContentView()
+        case .aiPlayground:
+            AIPlaygroundView()
         case .terms, .privacy:
             ContentView()
         case .account:

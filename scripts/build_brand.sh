@@ -32,11 +32,17 @@ rsync -a --delete --exclude '.git' --exclude 'DerivedData' "${TEMPLATE_ROOT}/" "
 if [[ -d "${OVERLAY_DIR}" ]]; then
   echo "Applying overlay from ${OVERLAY_DIR}..."
   # Do NOT delete at the root level so we keep template scripts and tooling.
-  rsync -a "${OVERLAY_DIR}/" "${SCRATCH_DIR}/"
+  # Exclude TemplateApp.xcodeproj on the first pass; if a brand-specific project exists, we copy it explicitly below.
+  rsync -a --exclude 'TemplateApp.xcodeproj' "${OVERLAY_DIR}/" "${SCRATCH_DIR}/"
+
+  # If the brand provides its own TemplateApp.xcodeproj, prefer that over the base template project file
+  # so that the scratch build reflects the brand's real app structure (Home flows, entry points, etc.).
   if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
-    echo "Using overlay project file from ${OVERLAY_DIR}/TemplateApp.xcodeproj"
-    cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj"
+    echo "Overlay TemplateApp.xcodeproj detected; using brand project file instead of template default."
+    rm -rf "${SCRATCH_DIR}/TemplateApp.xcodeproj"
+    cp -R "${OVERLAY_DIR}/TemplateApp.xcodeproj" "${SCRATCH_DIR}/TemplateApp.xcodeproj"
   fi
+
   if [[ -d "${OVERLAY_APP_DIR}/Config" ]]; then
     rsync -a "${OVERLAY_APP_DIR}/Config/" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/"
     cp "${OVERLAY_APP_DIR}/Config/presets_library.json" "${SCRATCH_DIR}/TemplateApp/TemplateApp/Config/" 2>/dev/null || true
@@ -90,14 +96,13 @@ if [[ -d "${OVERLAY_APP_DIR}/Home" ]]; then
   cp -a "${OVERLAY_APP_DIR}/Home" "${SCRATCH_DIR}/TemplateApp/TemplateApp/"
 fi
 
-# Re-apply overlay project file after manifest tweaks and set bundle/version values explicitly.
-if [[ -f "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
+# Re-apply bundle/version values explicitly on the scratch project file without replacing it.
+if [[ -f "${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj" ]]; then
   APP_ID=$(jq -r '.appId' "${MANIFEST_PATH}")
   MARKETING_VERSION=$(jq -r '.build.marketingVersion // empty' "${MANIFEST_PATH}")
   BUILD_NUMBER=$(jq -r '.build.buildNumber // empty' "${MANIFEST_PATH}")
   PROJ_PATH="${SCRATCH_DIR}/TemplateApp.xcodeproj/project.pbxproj"
 
-  cp "${OVERLAY_DIR}/TemplateApp.xcodeproj/project.pbxproj" "${PROJ_PATH}"
   perl -0pi -e 's/PRODUCT_BUNDLE_IDENTIFIER = [^;]+;/PRODUCT_BUNDLE_IDENTIFIER = '"${APP_ID}"';/g' "${PROJ_PATH}"
   if [[ -n "${MARKETING_VERSION}" ]]; then
     perl -0pi -e 's/MARKETING_VERSION = [^;]+;/MARKETING_VERSION = '"${MARKETING_VERSION}"';/g' "${PROJ_PATH}"

@@ -9,26 +9,28 @@
 /* Begin PBXBuildFile section */
 		08F1EEAE7F8863FD1FE9B3E2 /* TemplateApp/TemplateApp/Config/app.json in Resources */ = {isa = PBXBuildFile; fileRef = 44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */; };
 		0B465EDA2ECAAC9800FB141F /* neuron_loop.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0B465ED92ECAAC9800FB141F /* neuron_loop.mp4 */; };
+		0B8EFCE02EDE4DBE008410BE /* AIPlaygroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8EFCDD2EDE4DBE008410BE /* AIPlaygroundView.swift */; };
+		0B8EFCE12EDE4DBE008410BE /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8EFCDE2EDE4DBE008410BE /* AIService.swift */; };
 		0C9A2BC3C3F8C7F8B8D8AD45 /* TemplateApp/TemplateApp/Components/SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */; };
 		0D7E5F4A3C214D2E8FA2C1B7 /* TemplateApp/TemplateApp/Components/ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2B7A4D5E6C471F8A2B9C0D /* TemplateApp/TemplateApp/Components/ShareSheet.swift */; };
 		0E6AAB0163F2F58C2BAEDDC9 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516C27FEE3934B34B6C5FFC4 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */; };
 		1066A4BEBF1346799F4BAA37 /* TemplateApp/TemplateApp/Components/ErrorBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A27A5F4E9B9483C8B7C0F31 /* TemplateApp/TemplateApp/Components/ErrorBannerView.swift */; };
-		1D2E3F4A5B60718293A4B5C6 /* TemplateApp/TemplateApp/Components/RatePromptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F7D8C9B0A1F2E3D4C5B6A /* TemplateApp/TemplateApp/Components/RatePromptManager.swift */; };
 		1231C568A8652665B77E376A /* TemplateApp/TemplateApp/Auth/LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272BBFDAABD7B77954B253AB /* TemplateApp/TemplateApp/Auth/LoginView.swift */; };
 		176CB109E4A023B9C2F1AED0 /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB7EDC3A5F68FFBBB08334B /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift */; };
+		1D2E3F4A5B60718293A4B5C6 /* TemplateApp/TemplateApp/Components/RatePromptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F7D8C9B0A1F2E3D4C5B6A /* TemplateApp/TemplateApp/Components/RatePromptManager.swift */; };
 		2360E4CB03678B365D3AF7FF /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */; };
-		7B9E4F2C5E7D4D1F8C1A2B3C /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */; };
-		2C1D3E4F5A6B708192A3B4C5 /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F8A9B0C1D2E3F4A5B6C7D /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift */; };
 		2B7A7F1D4B2E4C8E9F1A2B3C /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1C2B3A4D5E6F708192A3B4 /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift */; };
+		2C1D3E4F5A6B708192A3B4C5 /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F8A9B0C1D2E3F4A5B6C7D /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift */; };
 		2DD904D87AD9DAAC495DD297 /* TemplateApp/TemplateApp/Config/Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A3CDD9D71BF14FA278A4B0 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */; };
 		2F43535785096825F16B9648 /* TemplateApp/TemplateApp/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CC2C3D5F3A304F77B1A6877 /* TemplateApp/TemplateApp/Assets.xcassets */; };
 		32F91B7DB5E2492EA3E99731 /* TemplateApp/TemplateApp/API/PushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A4D9F96E26245F6A0B7AA55 /* TemplateApp/TemplateApp/API/PushService.swift */; };
 		3C2C4D402F5960415E97708D /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FAB73F040E929758A44C21F /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets */; };
 		4D13282FC59C1626B108F713 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */; };
 		593ED67A8E97CD5037B4B889 /* TemplateApp/TemplateApp/Auth/AuthSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF27DD4CBE7EDAD531D9CAAC /* TemplateApp/TemplateApp/Auth/AuthSession.swift */; };
-		5C4F1B1F7EF3402D9C6C9EBE /* TemplateApp/TemplateApp/Auth/PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC9F0B27D5F4E38B02A6D94 /* TemplateApp/TemplateApp/Auth/PushManager.swift */; };
 		5BAEAD64EF113D9734D68854 /* TemplateApp/TemplateApp/TemplateAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76082754AC732E97962D267 /* TemplateApp/TemplateApp/TemplateAppApp.swift */; };
+		5C4F1B1F7EF3402D9C6C9EBE /* TemplateApp/TemplateApp/Auth/PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC9F0B27D5F4E38B02A6D94 /* TemplateApp/TemplateApp/Auth/PushManager.swift */; };
 		72145D93F67770ECA6EFD9A2 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A06C4352C85B3B8134E94F3 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift */; };
+		7B9E4F2C5E7D4D1F8C1A2B3C /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */; };
 		7FA1254490553C057013F413 /* TemplateApp/TemplateApp/Config/AppManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5651AE3272EF182001A0AC /* TemplateApp/TemplateApp/Config/AppManifest.swift */; };
 		864A99A656B8C0912AB55F95 /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D166ABCE01CC1CDF080F555 /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift */; };
 		8B4D6429E109AF57B6CF19AE /* TemplateApp/TemplateApp/API/APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FCE4B6D5EFC45EBDCF6678 /* TemplateApp/TemplateApp/API/APIClient.swift */; };
@@ -62,11 +64,13 @@
 
 /* Begin PBXFileReference section */
 		0911C60AF63C87AD7FE49EE2 /* Localizable.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = TemplateApp/TemplateApp/Localization/Base.lproj/Localizable.strings; sourceTree = SOURCE_ROOT; };
+		0A27A5F4E9B9483C8B7C0F31 /* TemplateApp/TemplateApp/Components/ErrorBannerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/ErrorBannerView.swift; sourceTree = SOURCE_ROOT; };
 		0B465ED92ECAAC9800FB141F /* neuron_loop.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = neuron_loop.mp4; sourceTree = "<group>"; };
+		0B8EFCDD2EDE4DBE008410BE /* AIPlaygroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPlaygroundView.swift; sourceTree = "<group>"; };
+		0B8EFCDE2EDE4DBE008410BE /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
 		0B90A7502EBEC8CE009A19A5 /* TemplateApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TemplateApp.entitlements; path = TemplateApp/TemplateApp.entitlements; sourceTree = "<group>"; };
 		0D1526011EB482698FD996D4 /* TemplateApp/TemplateApp/Sidebar/SidebarItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarItem.swift; sourceTree = SOURCE_ROOT; };
 		0D166ABCE01CC1CDF080F555 /* TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AuthSessionStorage.swift; sourceTree = SOURCE_ROOT; };
-		0A27A5F4E9B9483C8B7C0F31 /* TemplateApp/TemplateApp/Components/ErrorBannerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/ErrorBannerView.swift; sourceTree = SOURCE_ROOT; };
 		1A06C4352C85B3B8134E94F3 /* TemplateApp/TemplateApp/Sidebar/RootContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/RootContainerView.swift; sourceTree = SOURCE_ROOT; };
 		1E3BCCA1CBCFD9C5085544FF /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = "<group>"; };
 		2338971F5BCAE631F2D48EEA /* TemplateApp/TemplateApp/API/EmailAuthService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/EmailAuthService.swift; sourceTree = SOURCE_ROOT; };
@@ -77,22 +81,22 @@
 		3FAB73F040E929758A44C21F /* TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = "TemplateApp/TemplateApp/Preview Content/Preview Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		44CF73BA81ED2B919E091B05 /* TemplateApp/TemplateApp/Config/app.json */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json; path = TemplateApp/TemplateApp/Config/app.json; sourceTree = SOURCE_ROOT; };
 		46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift; sourceTree = SOURCE_ROOT; };
-		9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift; sourceTree = SOURCE_ROOT; };
-		5E7F8A9B0C1D2E3F4A5B6C7D /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/LoadingOverlay.swift; sourceTree = SOURCE_ROOT; };
-		6E5F7D8C9B0A1F2E3D4C5B6A /* TemplateApp/TemplateApp/Components/RatePromptManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/RatePromptManager.swift; sourceTree = SOURCE_ROOT; };
 		4F1C2B3A4D5E6F708192A3B4 /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/ImageCaptureTester.swift; sourceTree = SOURCE_ROOT; };
 		516C27FEE3934B34B6C5FFC4 /* TemplateApp/TemplateApp/Sidebar/SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Sidebar/SidebarView.swift; sourceTree = SOURCE_ROOT; };
-		6D742626C8EFF18D0B9FF037 /* TemplateApp/TemplateAppTests/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateAppTests/Info.plist; sourceTree = SOURCE_ROOT; };
-		6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AccountView.swift; sourceTree = SOURCE_ROOT; };
 		5CC9F0B27D5F4E38B02A6D94 /* TemplateApp/TemplateApp/Auth/PushManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/PushManager.swift; sourceTree = SOURCE_ROOT; };
+		5E7F8A9B0C1D2E3F4A5B6C7D /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/LoadingOverlay.swift; sourceTree = SOURCE_ROOT; };
 		6A4D9F96E26245F6A0B7AA55 /* TemplateApp/TemplateApp/API/PushService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/PushService.swift; sourceTree = SOURCE_ROOT; };
-		7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/SafariWebView.swift; sourceTree = SOURCE_ROOT; };
+		6D742626C8EFF18D0B9FF037 /* TemplateApp/TemplateAppTests/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateAppTests/Info.plist; sourceTree = SOURCE_ROOT; };
+		6E5F7D8C9B0A1F2E3D4C5B6A /* TemplateApp/TemplateApp/Components/RatePromptManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/RatePromptManager.swift; sourceTree = SOURCE_ROOT; };
+		6EBFD0C49461BD13DA772A4F /* TemplateApp/TemplateApp/Auth/AccountView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AccountView.swift; sourceTree = SOURCE_ROOT; };
 		6F2B7A4D5E6C471F8A2B9C0D /* TemplateApp/TemplateApp/Components/ShareSheet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/ShareSheet.swift; sourceTree = SOURCE_ROOT; };
+		7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/SafariWebView.swift; sourceTree = SOURCE_ROOT; };
 		7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		87A3CDD9D71BF14FA278A4B0 /* TemplateApp/TemplateApp/Config/Color+Hex.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "TemplateApp/TemplateApp/Config/Color+Hex.swift"; sourceTree = SOURCE_ROOT; };
 		96ECB9CB87846A4ED8911CB1 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/HostedUILoginController.swift; sourceTree = SOURCE_ROOT; };
 		9C5651AE3272EF182001A0AC /* TemplateApp/TemplateApp/Config/AppManifest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/AppManifest.swift; sourceTree = SOURCE_ROOT; };
 		9CC2C3D5F3A304F77B1A6877 /* TemplateApp/TemplateApp/Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = TemplateApp/TemplateApp/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		9F4A3B2C1D0E5F6A7B8C9D0E /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift; sourceTree = SOURCE_ROOT; };
 		A2D8BA6E5FFA3C646BCE1295 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Config/ManifestLoader.swift; sourceTree = SOURCE_ROOT; };
 		A5B6C7D8E9F00123456789B2 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/ImagePickerViews.swift; sourceTree = SOURCE_ROOT; };
 		A694CF26ED0FDABE3AA2092E /* TemplateApp/TemplateApp/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateApp/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -129,6 +133,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B8EFCDF2EDE4DBE008410BE /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				0B8EFCDD2EDE4DBE008410BE /* AIPlaygroundView.swift */,
+				0B8EFCDE2EDE4DBE008410BE /* AIService.swift */,
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
 		177A5CE67AA19EBE5FBBE326 /* TemplateAppTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				0B90A7502EBEC8CE009A19A5 /* TemplateApp.entitlements */,
+				0B8EFCDF2EDE4DBE008410BE /* AI */,
 				1980260E7BD78F26871B6E60 /* Config */,
 				B1BCBFDDC867D77305995EDA /* Auth */,
 				27D506854BE1072E2B4E08E4 /* API */,
@@ -368,6 +382,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BAEAD64EF113D9734D68854 /* TemplateApp/TemplateApp/TemplateAppApp.swift in Sources */,
+				0B8EFCE02EDE4DBE008410BE /* AIPlaygroundView.swift in Sources */,
+				0B8EFCE12EDE4DBE008410BE /* AIService.swift in Sources */,
 				990D862AE468C6B939F32CE2 /* TemplateApp/TemplateApp/ContentView.swift in Sources */,
 				7FA1254490553C057013F413 /* TemplateApp/TemplateApp/Config/AppManifest.swift in Sources */,
 				A8C7C61359E30BCA1D94176B /* TemplateApp/TemplateApp/Config/ManifestLoader.swift in Sources */,
