@@ -192,15 +192,12 @@ final class AppState: ObservableObject {
                 self.isErrorBannerVisible = true
             }
         }
-        Task.detached { [weak self] in
-            try? await Task.sleep(nanoseconds: 3_000_000_000)
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    self.isErrorBannerVisible = false
-                }
-                self.errorBannerMessage = nil
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+            guard let self else { return }
+            withAnimation(.easeInOut(duration: 0.2)) {
+                self.isErrorBannerVisible = false
             }
+            self.errorBannerMessage = nil
         }
     }
 }
