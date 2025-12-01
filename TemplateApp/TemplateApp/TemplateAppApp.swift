@@ -31,6 +31,8 @@ final class AppState: ObservableObject {
     @Published var pendingRoute: String?
     @Published var isLoading: Bool = false
     @Published var loadingMessage: String?
+    @Published var errorBannerMessage: String?
+    @Published var isErrorBannerVisible: Bool = false
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -180,6 +182,24 @@ final class AppState: ObservableObject {
             }
         }
         return try await operation()
+    }
+
+    func showError(_ message: String) {
+        Task { @MainActor in
+            self.errorBannerMessage = message
+            withAnimation(.easeInOut(duration: 0.2)) {
+                self.isErrorBannerVisible = true
+            }
+        }
+        Task.detached { [weak self] in
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            await MainActor.run {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    self?.isErrorBannerVisible = false
+                }
+                self?.errorBannerMessage = nil
+            }
+        }
     }
 }
 

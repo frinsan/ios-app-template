@@ -83,6 +83,9 @@ struct RootContainerView: View {
                 if appState.manifest.features.loadingOverlay {
                     LoadingOverlay(isVisible: appState.isLoading, message: appState.loadingMessage)
                 }
+                if appState.manifest.features.errorBanner, let message = appState.errorBannerMessage {
+                    ErrorBannerView(message: message, isVisible: appState.isErrorBannerVisible)
+                }
             }
         )
     }
