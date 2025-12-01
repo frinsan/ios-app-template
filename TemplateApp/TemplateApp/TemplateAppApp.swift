@@ -185,7 +185,7 @@ final class AppState: ObservableObject {
     }
 
     func showError(_ message: String) {
-        Task { [weak self] @MainActor in
+        DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.errorBannerMessage = message
             withAnimation(.easeInOut(duration: 0.2)) {
@@ -194,7 +194,7 @@ final class AppState: ObservableObject {
         }
         Task.detached { [weak self] in
             try? await Task.sleep(nanoseconds: 3_000_000_000)
-            await MainActor.run { [weak self] in
+            DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 withAnimation(.easeInOut(duration: 0.2)) {
                     self.isErrorBannerVisible = false
