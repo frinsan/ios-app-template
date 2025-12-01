@@ -15,7 +15,8 @@
     "pushDeepLink": false,
     "imageCapture": false,
     "loadingOverlay": true,
-    "errorBanner": true
+    "errorBanner": true,
+    "ratePrompt": false
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",

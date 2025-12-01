@@ -65,6 +65,22 @@ struct ContentView: View {
                         }
                         .padding(.top, 8)
                     }
+                    if appState.manifest.features.ratePrompt {
+                        Button {
+                            RatePromptManager.shared.requestReviewIfAllowed()
+                        } label: {
+                            Text("Request App Rating")
+                                .font(.subheadline.weight(.semibold))
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(Color.dividerColor, lineWidth: 1)
+                                )
+                        }
+                        .padding(.top, 8)
+                    }
                 }
                 .padding()
                 .frame(maxWidth: .infinity)

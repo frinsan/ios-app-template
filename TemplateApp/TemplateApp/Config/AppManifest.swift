@@ -28,6 +28,7 @@ struct AppManifest: Codable {
         var imageCapture: Bool
         var loadingOverlay: Bool
         var errorBanner: Bool
+        var ratePrompt: Bool
     }
 
     struct APIConfig: Codable {
@@ -99,7 +100,8 @@ struct AppManifest: Codable {
             pushDeepLink: false,
             imageCapture: false,
             loadingOverlay: true,
-            errorBanner: true
+            errorBanner: true,
+            ratePrompt: false
         ),
         apiBase: .init(
             staging: URL(string: "https://staging.api.example.com")!,
