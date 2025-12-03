@@ -178,14 +178,35 @@ Each branded app supplies an `app.json` that mirrors the template’s config fil
 Required fields:
 
 - `appId` – fully qualified bundle identifier.
-- `displayName` – what appears on the SpringBoard.
+- `displayName` – what appears on the SpringBoard and is used as the main title on the welcome screen.
 - `bundleIdSuffix` – appended to the shared bundle ID when templating.
 - `theme` – primary/accent colors plus `appearance` (`light`, `dark`, or `system`).
-- `features` – booleans to gate UI elements per brand.
+- `features` – booleans to gate UI elements per brand (see `aiPlayground` notes below).
 - `apiBase` – base URLs for staging/prod API Gateway endpoints.
 - `auth` – Cognito client configuration for the brand (client ID, Hosted UI domain, custom URL scheme, AWS region).
 - `build` (optional) – `marketingVersion` (`CFBundleShortVersionString`) and `buildNumber` (`CFBundleVersion`). Defaults stay at the template values if omitted.
 - `activeEnvironment` – which environment the build should target by default (`staging` or `prod`).
+
+### AI Playground feature flag
+
+The template exposes an optional AI Playground screen controlled entirely by a feature flag:
+
+- Template config (`TemplateApp/TemplateApp/Config/app.json`) and brand manifests must include:
+
+  ```json
+  "features": {
+    "aiPlayground": true | false,
+    "login": true,
+    "feedback": false,
+    ...
+  }
+  ```
+
+- `features.aiPlayground` **must be explicitly set** for every brand:
+  - Example (sample app): `"aiPlayground": true`
+  - Example (Visa app): `"aiPlayground": false`
+- The sidebar menu adds an `AI Playground` item only when `features.aiPlayground` is `true`.
+- The `SidebarItem` enum includes an `.aiPlayground` case. Any `switch` on `SidebarItem` (including brand overlays under `Overlay/TemplateApp/...`) must handle `.aiPlayground` to remain exhaustive, even if the feature is currently disabled for that brand.
 
 Brand repos keep this manifest at the root (`app.json`) and optional asset overrides under `Assets/` (e.g., `Assets/AppIcon.appiconset`). During automation the manifest is copied verbatim into `TemplateApp/TemplateApp/Config/app.json` via `scripts/apply_manifest.sh`.
 
