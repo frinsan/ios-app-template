@@ -88,6 +88,7 @@ SwiftUI starter app with sidebar navigation, Cognito Hosted UI login (Apple + Go
 
 - Lightweight analytics hooks fire on email signup/login/resend/delete so downstream apps can route events to their preferred provider.
 - Account view offers “Delete account”, which calls the new backend endpoint and then signs the user out.
+- New app onboarding: before opening Xcode, run `./scripts/build_brand.sh ../app-<brand> brand-builds` to apply the manifest, then follow `platform-backend/docs/how-to.md` to ensure the backend manifest + API authorizer audiences include the new Cognito client IDs.
 
 ## Brand manifest + automation
 

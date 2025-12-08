@@ -131,9 +131,10 @@ struct AppleOnDeviceAIService: AIService {
 
         // Call the on-device foundation model via the system language model session.
         // Per Apple docs: this suspends while the on-device model generates a response.
-        let response: String = try await session.respond(to: prompt)
-        // Return the generated text directly; the SDK provides it as the response value.
-        return response
+        let response = try await session.respond(to: prompt)
+        // Fallback: stringify the response. To use just the text, update this to the
+        // appropriate property once the Response<String> API surface is known.
+        return String(describing: response)
     }
 }
 #endif
