@@ -14,8 +14,9 @@ if [[ ! -f "${MANIFEST_PATH}" ]]; then
   exit 1
 fi
 
-# Optional second arg overrides the scratch root; default is ~/Documents/brand-builds/<brand>
-SCRATCH_ROOT="${2:-${HOME}/Documents/brand-builds}"
+# Optional second arg overrides the scratch root; default is <repo>/brand-builds/<brand>
+DEFAULT_SCRATCH_ROOT="$(cd "$(dirname "$0")/../.." && pwd)/brand-builds"
+SCRATCH_ROOT="${2:-${DEFAULT_SCRATCH_ROOT}}"
 SCRATCH_DIR="${SCRATCH_ROOT}/$(basename "${BRAND_DIR}")"
 
 TEMPLATE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
