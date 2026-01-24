@@ -47,6 +47,11 @@ on:
         default: false
         type: boolean
         description: Requires perform_signing + App Store Connect API secrets
+      xcode_version:
+        required: false
+        default: "26.0"
+        type: string
+        description: Xcode version to use for builds (e.g., 26.0)
     secrets:
       APPLE_CERTIFICATE:
         required: false
@@ -100,10 +105,13 @@ jobs:
       - name: Show applied manifest
         run: cat TemplateApp/TemplateApp/Config/app.json
 
-      - name: Select latest Xcode
-        run: |
-          sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          xcodebuild -version
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ inputs.xcode_version }}
+
+      - name: Show Xcode version
+        run: xcodebuild -version
 
       - name: Set build number
         run: |
