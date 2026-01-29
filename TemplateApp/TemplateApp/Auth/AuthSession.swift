@@ -27,6 +27,10 @@ struct AuthSession: Codable, Identifiable {
     var isExpired: Bool {
         Date() >= expiresAt
     }
+
+    var isExpiringSoon: Bool {
+        Date().addingTimeInterval(300) >= expiresAt
+    }
 }
 
 struct AuthenticatedUser: Codable {

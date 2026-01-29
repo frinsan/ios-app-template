@@ -90,6 +90,44 @@ struct HostedUILoginController {
         _ = try await presentHostedUI(url: logoutURL, callbackScheme: scheme)
     }
 
+    static func refreshSession(manifest: AppManifest, refreshToken: String) async throws -> AuthSession {
+        guard let domain = manifest.auth.hostedUIDomain,
+              let clientId = manifest.auth.cognitoClientId else {
+            throw HostedUILoginError.invalidConfiguration
+        }
+
+        var request = URLRequest(url: URL(string: "https://\(domain)/oauth2/token")!)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        let body = "grant_type=refresh_token&client_id=\(clientId)&refresh_token=\(refreshToken)"
+        request.httpBody = body.data(using: .utf8)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            if let payload = String(data: data, encoding: .utf8) {
+                print("[Auth] Refresh token failed: \(payload)")
+            }
+            throw HostedUILoginError.tokenExchangeFailed
+        }
+
+        let payload = try JSONDecoder().decode(TokenRefreshResponse.self, from: data)
+        let idTokenClaims = try decodeJWTClaims(payload.idToken)
+        let user = AuthenticatedUser(
+            subject: idTokenClaims["sub"] as? String ?? UUID().uuidString,
+            email: idTokenClaims["email"] as? String,
+            givenName: idTokenClaims["given_name"] as? String,
+            familyName: idTokenClaims["family_name"] as? String
+        )
+
+        return AuthSession(
+            accessToken: payload.accessToken,
+            refreshToken: payload.refreshToken ?? refreshToken,
+            idToken: payload.idToken,
+            expiresAt: Date().addingTimeInterval(TimeInterval(payload.expiresIn)),
+            user: user
+        )
+    }
+
     @MainActor
     private static func presentHostedUI(url: URL, callbackScheme: String) async throws -> URL {
         try await withCheckedThrowingContinuation { continuation in
@@ -190,6 +228,20 @@ private final class HostedUIPresentationAnchor: NSObject, ASWebAuthenticationPre
 }
 
 private struct TokenExchangeResponse: Decodable {
+    let accessToken: String
+    let refreshToken: String?
+    let idToken: String
+    let expiresIn: Int
+
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case refreshToken = "refresh_token"
+        case idToken = "id_token"
+        case expiresIn = "expires_in"
+    }
+}
+
+private struct TokenRefreshResponse: Decodable {
     let accessToken: String
     let refreshToken: String?
     let idToken: String

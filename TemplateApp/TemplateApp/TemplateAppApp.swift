@@ -34,6 +34,7 @@ final class AppState: ObservableObject {
     @Published var errorBannerMessage: String?
     @Published var isErrorBannerVisible: Bool = false
 
+    private var isRefreshingSession: Bool = false
     private var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -48,6 +49,7 @@ final class AppState: ObservableObject {
         )
         AnalyticsManager.shared.configure(with: self)
         observePushTokens()
+        observeAppLifecycle()
         restoreSession()
     }
 
@@ -60,13 +62,25 @@ final class AppState: ObservableObject {
     }
 
     private func restoreSession() {
-        if let session = AuthSessionStorage.shared.load(), !session.isExpired {
-            authState = .signedIn(session)
-            shouldShowWelcome = false
-            Task {
-                await bootstrapAndFetchProfile(forceBootstrap: false)
-                await registerPushTokenIfNeeded()
+        if let session = AuthSessionStorage.shared.load() {
+            if !session.isExpired {
+                authState = .signedIn(session)
+                shouldShowWelcome = false
+                Task {
+                    await bootstrapAndFetchProfile(forceBootstrap: false)
+                    await registerPushTokenIfNeeded()
+                }
+                return
             }
+            if let refreshToken = session.refreshToken {
+                authState = .signingIn
+                shouldShowWelcome = false
+                Task {
+                    await refreshSession(using: session, refreshToken: refreshToken)
+                }
+                return
+            }
+            shouldShowWelcome = true
         } else {
             shouldShowWelcome = true
         }
@@ -133,6 +147,50 @@ final class AppState: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    private func observeAppLifecycle() {
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                Task {
+                    await self?.refreshSessionIfNeeded()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func refreshSessionIfNeeded() async {
+        guard case let .signedIn(session) = authState else { return }
+        guard session.isExpiringSoon, let refreshToken = session.refreshToken else { return }
+        await refreshSession(using: session, refreshToken: refreshToken)
+    }
+
+    private func refreshSession(using session: AuthSession, refreshToken: String) async {
+        guard !isRefreshingSession else { return }
+        isRefreshingSession = true
+        defer { isRefreshingSession = false }
+
+        do {
+            let refreshed = try await HostedUILoginController.refreshSession(
+                manifest: manifest,
+                refreshToken: refreshToken
+            )
+            try AuthSessionStorage.shared.store(refreshed)
+            await MainActor.run {
+                self.authState = .signedIn(refreshed)
+                self.shouldShowWelcome = false
+            }
+            await bootstrapAndFetchProfile(forceBootstrap: false)
+            await registerPushTokenIfNeeded()
+        } catch {
+            print("[Auth] Session refresh failed: \(error)")
+            await MainActor.run {
+                AuthSessionStorage.shared.clear()
+                self.userProfile = nil
+                self.authState = .signedOut
+                self.shouldShowWelcome = true
+            }
+        }
     }
 
     private func bootstrapAndFetchProfile(forceBootstrap: Bool) async {
