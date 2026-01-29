@@ -306,6 +306,10 @@ private final class LoopingPlayerUIView: UIView {
             return
         }
 
+        let audioSession = AVAudioSession.sharedInstance()
+        try? audioSession.setCategory(.ambient, options: [.mixWithOthers])
+        try? audioSession.setActive(true, options: [])
+
         let playerItem = AVPlayerItem(url: url)
         let queuePlayer = AVQueuePlayer(playerItem: playerItem)
         queuePlayer.isMuted = true
