@@ -183,6 +183,14 @@ final class AppState: ObservableObject {
             await bootstrapAndFetchProfile(forceBootstrap: false)
             await registerPushTokenIfNeeded()
         } catch {
+            if isTransientRefreshError(error) {
+                print("[Auth] Session refresh deferred: \(error)")
+                await MainActor.run {
+                    self.authState = .signedIn(session)
+                    self.shouldShowWelcome = false
+                }
+                return
+            }
             print("[Auth] Session refresh failed: \(error)")
             await MainActor.run {
                 AuthSessionStorage.shared.clear()
@@ -191,6 +199,29 @@ final class AppState: ObservableObject {
                 self.shouldShowWelcome = true
             }
         }
+    }
+
+    private func isTransientRefreshError(_ error: Error) -> Bool {
+        if error is URLError {
+            return true
+        }
+        if let refreshError = error as? RefreshTokenError {
+            switch refreshError {
+            case .transient:
+                return true
+            case .authFailed:
+                return false
+            }
+        }
+        if let hostedError = error as? HostedUILoginError {
+            switch hostedError {
+            case .invalidConfiguration:
+                return true
+            case .tokenExchangeFailed, .cancelled, .missingCallback:
+                return false
+            }
+        }
+        return false
     }
 
     private func bootstrapAndFetchProfile(forceBootstrap: Bool) async {

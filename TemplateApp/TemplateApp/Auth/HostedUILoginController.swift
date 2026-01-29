@@ -29,6 +29,11 @@ enum HostedUILoginError: Error {
     case tokenExchangeFailed
 }
 
+enum RefreshTokenError: Error {
+    case authFailed
+    case transient
+}
+
 struct HostedUILoginController {
     @MainActor
     static func signIn(provider: HostedUIProvider, manifest: AppManifest) async throws -> AuthSession {
@@ -103,11 +108,18 @@ struct HostedUILoginController {
         request.httpBody = body.data(using: .utf8)
 
         let (data, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw RefreshTokenError.transient
+        }
+        guard httpResponse.statusCode == 200 else {
+            if let errorPayload = try? JSONDecoder().decode(TokenErrorResponse.self, from: data),
+               errorPayload.error == "invalid_grant" {
+                throw RefreshTokenError.authFailed
+            }
             if let payload = String(data: data, encoding: .utf8) {
                 print("[Auth] Refresh token failed: \(payload)")
             }
-            throw HostedUILoginError.tokenExchangeFailed
+            throw RefreshTokenError.transient
         }
 
         let payload = try JSONDecoder().decode(TokenRefreshResponse.self, from: data)
@@ -238,6 +250,16 @@ private struct TokenExchangeResponse: Decodable {
         case refreshToken = "refresh_token"
         case idToken = "id_token"
         case expiresIn = "expires_in"
+    }
+}
+
+private struct TokenErrorResponse: Decodable {
+    let error: String?
+    let errorDescription: String?
+
+    enum CodingKeys: String, CodingKey {
+        case error
+        case errorDescription = "error_description"
     }
 }
 
