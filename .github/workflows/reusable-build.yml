@@ -120,6 +120,16 @@ jobs:
               sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
             fi
           fi
+          if ! xcodebuild -showsdks | grep -q "iphoneos"; then
+            echo "Selected Xcode is missing iOS platform; falling back to latest available Xcode."
+            /bin/ls -1 /Applications | grep -E '^Xcode_.*\\.app$' || true
+            LATEST_XCODE="$(/bin/ls -1 /Applications | grep -E '^Xcode_.*\\.app$' | sort -V | tail -n 1 || true)"
+            if [[ -n "$LATEST_XCODE" ]]; then
+              sudo xcode-select -s "/Applications/${LATEST_XCODE}/Contents/Developer"
+            else
+              sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
+            fi
+          fi
 
       - name: Show Xcode version
         run: xcodebuild -version
