@@ -151,10 +151,7 @@ jobs:
               | .udid' <<<"$SIM_JSON" | head -n 1 || true)
             if [[ -n "$UDID" ]]; then
               echo "Using simulator: $NAME ($UDID)"
-              {
-                echo "SIMULATOR_NAME=$NAME"
-                echo "SIMULATOR_UDID=$UDID"
-              } >> "$GITHUB_ENV"
+              echo "SIMULATOR_NAME=$NAME" >> "$GITHUB_ENV"
               SELECTED_UDID="$UDID"
               break
             fi
@@ -171,7 +168,7 @@ jobs:
           xcodebuild \
             -project "$XCODE_PROJECT" \
             -scheme "${{ inputs.scheme }}" \
-            -destination "platform=iOS Simulator,id=${SIMULATOR_UDID}" \
+            -destination "platform=iOS Simulator,name=${SIMULATOR_NAME},OS=latest" \
             clean test
 
       - name: Import signing certificate
