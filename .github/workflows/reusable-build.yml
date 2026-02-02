@@ -176,60 +176,28 @@ jobs:
             echo "Unable to determine simulator OS version." >&2
             exit 1
           fi
-          CANDIDATES=()
-          while IFS= read -r line; do
-            CANDIDATES+=("$line")
-          done <<'EOF'
-          iPhone 16 Pro Max
-          iPhone 16 Pro
-          iPhone 16
-          iPhone 15 Pro Max
-          iPhone 15 Pro
-          iPhone 15
-          EOF
-          SELECTED_UDID=""
-          for NAME in "${CANDIDATES[@]}"; do
-            UDID=$(jq -r --arg name "$NAME" '
-              .devices
-              | to_entries[]
-              | select(.key == "'"$SELECTED_RUNTIME"'")
-              | .value[]
-              | select(.name == $name and .isAvailable == true)
-              | .udid' <<<"$SIM_JSON" | head -n 1 || true)
-            if [[ -n "$UDID" ]]; then
-              echo "Using simulator: $NAME ($UDID)"
-              echo "SIMULATOR_NAME=$NAME" >> "$GITHUB_ENV"
-              echo "SIMULATOR_RUNTIME=$SELECTED_RUNTIME" >> "$GITHUB_ENV"
-              SELECTED_UDID="$UDID"
-              break
-            fi
-          done
-          if [[ -z "$SELECTED_UDID" ]]; then
-            NAME=$(jq -r '
-              .devices
-              | to_entries[]
-              | select(.key == "'"$SELECTED_RUNTIME"'")
-              | .value[]
-              | select(.isAvailable == true)
-              | .name' <<<"$SIM_JSON" | head -n 1 || true)
-            UDID=$(jq -r '
-              .devices
-              | to_entries[]
-              | select(.key == "'"$SELECTED_RUNTIME"'")
-              | .value[]
-              | select(.isAvailable == true)
-              | .udid' <<<"$SIM_JSON" | head -n 1 || true)
-            if [[ -n "$UDID" && -n "$NAME" ]]; then
-              echo "Using fallback simulator: $NAME ($UDID)"
-              echo "SIMULATOR_NAME=$NAME" >> "$GITHUB_ENV"
-              echo "SIMULATOR_RUNTIME=$SELECTED_RUNTIME" >> "$GITHUB_ENV"
-              SELECTED_UDID="$UDID"
-            fi
-          fi
+          NAME=$(jq -r '
+            .devices
+            | to_entries[]
+            | select(.key == "'"$SELECTED_RUNTIME"'")
+            | .value[]
+            | select(.isAvailable == true)
+            | .name' <<<"$SIM_JSON" | head -n 1 || true)
+          UDID=$(jq -r '
+            .devices
+            | to_entries[]
+            | select(.key == "'"$SELECTED_RUNTIME"'")
+            | .value[]
+            | select(.isAvailable == true)
+            | .udid' <<<"$SIM_JSON" | head -n 1 || true)
           if [[ -z "$SELECTED_UDID" ]]; then
             echo "No matching simulator found for runtime ${SELECTED_RUNTIME}." >&2
             exit 1
           fi
+          echo "Using simulator: $NAME ($UDID)"
+          echo "SIMULATOR_NAME=$NAME" >> "$GITHUB_ENV"
+          echo "SIMULATOR_RUNTIME=$SELECTED_RUNTIME" >> "$GITHUB_ENV"
+          SELECTED_UDID="$UDID"
           echo "SIMULATOR_OS=$OS_VERSION" >> "$GITHUB_ENV"
           echo "SKIP_TESTS=false" >> "$GITHUB_ENV"
 
