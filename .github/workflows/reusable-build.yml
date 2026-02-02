@@ -176,6 +176,7 @@ jobs:
             echo "Unable to determine simulator OS version." >&2
             exit 1
           fi
+          SELECTED_UDID=""
           NAME=$(jq -r '
             .devices
             | to_entries[]
@@ -190,6 +191,7 @@ jobs:
             | .value[]
             | select(.isAvailable == true)
             | .udid' <<<"$SIM_JSON" | head -n 1 || true)
+          SELECTED_UDID="$UDID"
           if [[ -z "$SELECTED_UDID" ]]; then
             echo "No matching simulator found for runtime ${SELECTED_RUNTIME}." >&2
             exit 1
@@ -198,6 +200,7 @@ jobs:
           echo "SIMULATOR_NAME=$NAME" >> "$GITHUB_ENV"
           echo "SIMULATOR_RUNTIME=$SELECTED_RUNTIME" >> "$GITHUB_ENV"
           SELECTED_UDID="$UDID"
+          echo "SIMULATOR_UDID=$SELECTED_UDID" >> "$GITHUB_ENV"
           echo "SIMULATOR_OS=$OS_VERSION" >> "$GITHUB_ENV"
           echo "SKIP_TESTS=false" >> "$GITHUB_ENV"
 
@@ -208,7 +211,7 @@ jobs:
           xcodebuild \
             -project "$XCODE_PROJECT" \
             -scheme "${{ inputs.scheme }}" \
-            -destination "platform=iOS Simulator,name=${SIMULATOR_NAME},OS=${SIMULATOR_OS}" \
+            -destination "platform=iOS Simulator,id=${SIMULATOR_UDID}" \
             clean test
 
       - name: Import signing certificate
