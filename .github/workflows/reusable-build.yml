@@ -143,8 +143,9 @@ jobs:
           SIM_JSON=$(xcrun simctl list devices available -j)
           RUNTIME_KEYS=$(jq -r '.devices | keys[]' <<<"$SIM_JSON" | grep -E '^com\.apple\.CoreSimulator\.SimRuntime\.iOS-' || true)
           if [[ -z "$RUNTIME_KEYS" ]]; then
-            echo "No iOS simulator runtimes found." >&2
-            exit 1
+            echo "No iOS simulator runtimes found; skipping tests."
+            echo "SKIP_TESTS=true" >> "$GITHUB_ENV"
+            exit 0
           fi
           LATEST_RUNTIME=$(printf '%s\n' "$RUNTIME_KEYS" | sed -E 's/^com\.apple\.CoreSimulator\.SimRuntime\.//' | sort -V | tail -n 1)
           if [[ -z "$LATEST_RUNTIME" ]]; then
@@ -212,9 +213,10 @@ jobs:
             exit 1
           fi
           echo "SIMULATOR_OS=$OS_VERSION" >> "$GITHUB_ENV"
+          echo "SKIP_TESTS=false" >> "$GITHUB_ENV"
 
       - name: Run unit tests
-        if: inputs.run_tests == true
+        if: inputs.run_tests == true && env.SKIP_TESTS != 'true'
         run: |
           set -o pipefail
           xcodebuild \
