@@ -124,6 +124,20 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
+      - name: Install iOS simulator runtime (optional)
+        if: env.INSTALL_SIM_RUNTIME == 'true'
+        env:
+          XCODE_INSTALL_USER: ${{ secrets.XCODE_INSTALL_USER }}
+          XCODE_INSTALL_PASSWORD: ${{ secrets.XCODE_INSTALL_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${XCODE_INSTALL_USER:-}" || -z "${XCODE_INSTALL_PASSWORD:-}" ]]; then
+            echo "XCODE_INSTALL_USER / XCODE_INSTALL_PASSWORD not set; cannot install simulator runtime." >&2
+            exit 1
+          fi
+          sudo gem install xcode-install
+          xcversion simulators --install="iOS 26.2"
+
       - name: Set build number
         run: |
           BUILD_NUMBER=${{ github.run_number }}
