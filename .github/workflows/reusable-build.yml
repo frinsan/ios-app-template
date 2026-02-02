@@ -141,6 +141,17 @@ jobs:
         run: |
           set -euo pipefail
           SIM_JSON=$(xcrun simctl list devices available -j)
+          RUNTIME_KEYS=$(jq -r '.devices | keys[]' <<<"$SIM_JSON" | grep -E '^com\.apple\.CoreSimulator\.SimRuntime\.iOS-' || true)
+          if [[ -z "$RUNTIME_KEYS" ]]; then
+            echo "No iOS simulator runtimes found." >&2
+            exit 1
+          fi
+          LATEST_RUNTIME=$(printf '%s\n' "$RUNTIME_KEYS" | sed -E 's/^com\.apple\.CoreSimulator\.SimRuntime\.iOS-//' | sort -V | tail -n 1)
+          if [[ -z "$LATEST_RUNTIME" ]]; then
+            echo "Unable to determine latest iOS simulator runtime." >&2
+            exit 1
+          fi
+          SELECTED_RUNTIME="com.apple.CoreSimulator.SimRuntime.iOS-${LATEST_RUNTIME}"
           CANDIDATES=()
           while IFS= read -r line; do
             CANDIDATES+=("$line")
@@ -153,23 +164,16 @@ jobs:
           iPhone 15
           EOF
           SELECTED_UDID=""
-          SELECTED_RUNTIME=""
           for NAME in "${CANDIDATES[@]}"; do
             UDID=$(jq -r --arg name "$NAME" '
               .devices
               | to_entries[]
+              | select(.key == "'"$SELECTED_RUNTIME"'")
               | .value[]
               | select(.name == $name and .isAvailable == true)
               | .udid' <<<"$SIM_JSON" | head -n 1 || true)
             if [[ -n "$UDID" ]]; then
               echo "Using simulator: $NAME ($UDID)"
-              SELECTED_RUNTIME=$(jq -r --arg name "$NAME" '
-                .devices
-                | to_entries[]
-                | . as $runtime
-                | $runtime.value[]
-                | select(.name == $name and .isAvailable == true)
-                | $runtime.key' <<<"$SIM_JSON" | head -n 1 || true)
               echo "SIMULATOR_NAME=$NAME" >> "$GITHUB_ENV"
               echo "SIMULATOR_RUNTIME=$SELECTED_RUNTIME" >> "$GITHUB_ENV"
               SELECTED_UDID="$UDID"
@@ -177,11 +181,7 @@ jobs:
             fi
           done
           if [[ -z "$SELECTED_UDID" ]]; then
-            echo "No matching simulator found." >&2
-            exit 1
-          fi
-          if [[ -z "$SELECTED_RUNTIME" ]]; then
-            echo "No runtime found for selected simulator." >&2
+            echo "No matching simulator found for runtime ${SELECTED_RUNTIME}." >&2
             exit 1
           fi
           OS_VERSION=$(sed -E 's/^com\\.apple\\.CoreSimulator\\.SimRuntime\\.iOS-([0-9]+)-([0-9]+)$/\\1.\\2/' <<<"$SELECTED_RUNTIME")
