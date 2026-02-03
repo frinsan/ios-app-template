@@ -8,7 +8,7 @@ struct LoadingOverlay: View {
         Group {
             if isVisible {
                 ZStack {
-                    Color.black.opacity(0.3)
+                    Color.overlayScrim.opacity(0.3)
                         .ignoresSafeArea()
                     VStack(spacing: 12) {
                         ProgressView()

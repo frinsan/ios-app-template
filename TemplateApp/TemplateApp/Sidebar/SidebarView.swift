@@ -20,18 +20,18 @@ struct SidebarView: View {
                 } label: {
                     Label(item.title, systemImage: item.icon)
                         .font(.headline)
-                        .foregroundStyle(selection == item ? Color.white : Color.white.opacity(0.7))
+                        .foregroundStyle(selection == item ? Color.overlayText : Color.overlayText.opacity(0.7))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 14)
                         .background(
                             selection == item
-                            ? Color.white.opacity(0.08)
-                            : Color.white.opacity(0.02)
+                            ? Color.overlayText.opacity(0.08)
+                            : Color.overlayText.opacity(0.02)
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .stroke(selection == item ? Color.white.opacity(0.2) : Color.clear, lineWidth: 1)
+                                .stroke(selection == item ? Color.overlayText.opacity(0.2) : Color.clear, lineWidth: 1)
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
@@ -80,9 +80,9 @@ struct SidebarView: View {
 
     private var titleColor: Color {
         if UITraitCollection.current.userInterfaceStyle == .dark {
-            return .white
+            return Color.overlayText
         }
-        return Color.white.opacity(0.7)
+        return Color.overlayText.opacity(0.7)
     }
 }
 

@@ -41,7 +41,7 @@ struct RootContainerView: View {
             .accentColor(.primaryAccent)
 
             if isMenuVisible {
-                Color.black.opacity(0.35)
+                Color.overlayScrim.opacity(0.35)
                     .ignoresSafeArea()
                     .onTapGesture { toggleMenu() }
                     .transition(.opacity)

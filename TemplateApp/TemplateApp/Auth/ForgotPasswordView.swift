@@ -133,17 +133,17 @@ struct ForgotPasswordRequestView: View {
             if resendCooldownRemaining > 0 {
                 Text("You can resend in \(resendCooldownRemaining)s.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
             if let infoMessage {
                 Text(infoMessage)
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
             if let resendStatusMessage {
                 Text(resendStatusMessage)
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
         }
     }
@@ -364,7 +364,7 @@ struct ForgotPasswordRequestView: View {
 
             Button(action: { isVisible.wrappedValue.toggle() }) {
                 Image(systemName: isVisible.wrappedValue ? "eye" : "eye.slash")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
         }
     }

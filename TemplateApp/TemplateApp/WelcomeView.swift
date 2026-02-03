@@ -20,8 +20,8 @@ struct WelcomeView: View {
                 .ignoresSafeArea()
             LinearGradient(
                 colors: [
-                    Color.black.opacity(0.6),
-                    Color.black.opacity(0.85)
+                    Color.overlayScrim.opacity(0.6),
+                    Color.overlayScrim.opacity(0.85)
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -77,10 +77,10 @@ struct WelcomeView: View {
                     .font(.subheadline.bold())
                     .padding(.vertical, 8)
                     .padding(.horizontal, 18)
-                    .background(Color.black.opacity(0.25), in: Capsule())
+                    .background(Color.overlayScrim.opacity(0.25), in: Capsule())
                     .overlay(
                         Capsule()
-                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                            .stroke(Color.overlayText.opacity(0.3), lineWidth: 1)
                     )
             }
             .foregroundStyle(.white)
@@ -101,7 +101,7 @@ struct WelcomeView: View {
 
             Text("by Learn & Be Curious Apps")
                 .font(.system(size: 18, weight: .light, design: .monospaced))
-                .foregroundStyle(Color.white.opacity(0.8))
+                .foregroundStyle(Color.overlayText.opacity(0.8))
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal, 16)
@@ -128,7 +128,7 @@ struct WelcomeView: View {
                     .font(.subheadline.weight(.medium))
                     .padding(.vertical, 6)
                     .padding(.horizontal, 20)
-                    .background(Color.white.opacity(showMoreOptions ? 0.25 : 0.18), in: Capsule())
+                    .background(Color.overlayText.opacity(showMoreOptions ? 0.25 : 0.18), in: Capsule())
             }
             .foregroundStyle(.white.opacity(0.9))
 
@@ -255,7 +255,7 @@ private struct PrimaryAuthButton: View {
             .foregroundStyle(.white)
             .padding(.horizontal, 20)
             .frame(height: 58)
-            .background(Color.white.opacity(0.15), in: Capsule())
+            .background(Color.overlayText.opacity(0.15), in: Capsule())
         }
         .disabled(isLoading)
     }

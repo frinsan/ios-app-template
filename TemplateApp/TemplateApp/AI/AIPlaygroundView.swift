@@ -38,7 +38,7 @@ struct AIPlaygroundView: View {
                 .font(.title2.bold())
             Text("Type some text, pick a style, and let the AI helper produce an alternative version. This is a test screen used to validate the platform's AI plumbing.")
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(Color.secondaryText)
         }
     }
 
@@ -55,7 +55,7 @@ struct AIPlaygroundView: View {
 
             Text(selectedStyle.description)
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundStyle(Color.secondaryText)
         }
     }
 
@@ -69,7 +69,7 @@ struct AIPlaygroundView: View {
                 .padding(8)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color(.secondarySystemBackground))
+                        .fill(Color.cardBackground)
                 )
         }
     }
@@ -90,8 +90,8 @@ struct AIPlaygroundView: View {
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color.accentColor)
-            .foregroundColor(.white)
+            .background(Color.primaryAccent)
+            .foregroundStyle(Color.overlayText)
             .cornerRadius(12)
         }
         .disabled(isProcessing)
@@ -105,12 +105,12 @@ struct AIPlaygroundView: View {
             if outputText.isEmpty {
                 Text("Rewritten text will appear here.")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(Color.secondaryText)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(8)
                     .background(
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .strokeBorder(Color(.separator), lineWidth: 1)
+                            .strokeBorder(Color.dividerColor, lineWidth: 1)
                     )
             } else {
                 VStack(alignment: .leading, spacing: 8) {
@@ -130,7 +130,7 @@ struct AIPlaygroundView: View {
                 .padding(8)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(Color(.secondarySystemBackground))
+                        .fill(Color.cardBackground)
                 )
             }
         }
@@ -139,12 +139,12 @@ struct AIPlaygroundView: View {
     private func errorBanner(_ message: String) -> some View {
         Text(message)
             .font(.footnote)
-            .foregroundColor(.white)
+            .foregroundStyle(Color.overlayText)
             .padding(8)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(Color.red.opacity(0.9))
+                    .fill(Color.errorBackground)
             )
             .padding(.top, 4)
     }

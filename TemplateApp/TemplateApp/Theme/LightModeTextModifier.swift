@@ -17,14 +17,14 @@ struct ConsistentButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.headline)
+            .font(.system(size: 16, weight: .medium))
             .foregroundStyle(labelColor)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .padding(.horizontal, 12)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 16)
             .background(
                 accentColor.opacity(configuration.isPressed ? 0.85 : 1),
-                in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+                in: RoundedRectangle(cornerRadius: 14, style: .continuous)
             )
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
@@ -32,9 +32,9 @@ struct ConsistentButtonStyle: ButtonStyle {
 
     private var labelColor: Color {
         if prefersSoftDarkText, colorScheme == .dark {
-            return Color(red: 30 / 255, green: 41 / 255, blue: 59 / 255)
+            return Color.overlayText
         }
-        return Color.primaryText
+        return Color.overlayText
     }
 }
 
@@ -60,18 +60,18 @@ private struct ThemedCTAModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .font(.headline)
+            .font(.system(size: 16, weight: .medium))
             .foregroundStyle(labelColor)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .padding(.horizontal, 12)
-            .background(accentColor, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .padding(.vertical, 16)
+            .padding(.horizontal, 16)
+            .background(accentColor, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     private var labelColor: Color {
         if prefersSoftDarkText, colorScheme == .dark {
-            return Color(red: 30 / 255, green: 41 / 255, blue: 59 / 255)
+            return Color.overlayText
         }
-        return Color.primaryText
+        return Color.overlayText
     }
 }

@@ -7,4 +7,7 @@ extension Color {
     static let primaryText = Color("PrimaryText")
     static let secondaryText = Color("SecondaryText")
     static let dividerColor = Color("DividerColor")
+    static let overlayScrim = Color("OverlayScrim")
+    static let overlayText = Color("OverlayText")
+    static let errorBackground = Color("ErrorBackground")
 }

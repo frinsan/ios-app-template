@@ -105,10 +105,7 @@ extension LoginView {
     }
 
     private var tealButtonTextColor: Color {
-        if colorScheme == .dark {
-            return Color(red: 30 / 255, green: 41 / 255, blue: 59 / 255)
-        }
-        return Color.primaryText
+        return Color.overlayText
     }
 
 	@ViewBuilder
@@ -240,7 +237,7 @@ private struct ForgotPasswordLinkRow: View {
             Text("Forgot password?")
                 .frame(maxWidth: .infinity)
         }
-        .foregroundStyle(.secondary)
+        .foregroundStyle(Color.secondaryText)
     }
 }
 
@@ -251,11 +248,11 @@ private struct MonogramIcon: View {
         Text(letter)
             .font(.headline)
             .fontWeight(.semibold)
-            .foregroundColor(.primary)
+            .foregroundStyle(Color.primaryText)
             .frame(width: 28, height: 28)
             .overlay(
                 Circle()
-                    .stroke(Color.primary, lineWidth: 2)
+                    .stroke(Color.primaryText, lineWidth: 2)
             )
     }
 }
@@ -294,7 +291,7 @@ extension EmailSignUpView {
         } footer: {
             Text("We'll check if this email already has an account before continuing.")
                 .font(.footnote)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.secondaryText)
         }
 
         if let errorMessage {
@@ -332,7 +329,7 @@ extension EmailSignUpView {
             Section {
                 Text("We found a pending sign-up. Enter the verification code we sent to \(description ?? lockedEmail) to finish.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
         }
 
@@ -405,19 +402,19 @@ extension EmailSignUpView {
             if let codeInfoMessage {
                 Text(codeInfoMessage)
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
 
             if let resendStatusMessage {
                 Text(resendStatusMessage)
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
 
             if resendCooldownRemaining > 0 {
                 Text("You can resend in \(resendCooldownRemaining)s.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
 
             Button(action: confirmCode) {
@@ -682,7 +679,7 @@ extension EmailSignUpView {
 
             Button(action: { isVisible.wrappedValue.toggle() }) {
                 Image(systemName: isVisible.wrappedValue ? "eye" : "eye.slash")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.secondaryText)
             }
         }
     }
@@ -723,7 +720,7 @@ struct EmailLoginView: View {
 
                     Button(action: { isPasswordVisible.toggle() }) {
                         Image(systemName: isPasswordVisible ? "eye" : "eye.slash")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondaryText)
                     }
                 }
             }
@@ -891,12 +888,12 @@ struct EmailConfirmView: View {
                     if resendCooldownRemaining > 0 {
                         Text("You can resend in \(resendCooldownRemaining)s.")
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondaryText)
                     }
                     if let resendStatus {
                         Text(resendStatus)
                             .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.secondaryText)
                     }
                 }
             }

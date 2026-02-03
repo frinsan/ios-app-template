@@ -121,12 +121,12 @@ struct CameraCaptureView: View {
 
                 if showOverlay {
                     Rectangle()
-                        .strokeBorder(Color.white.opacity(0.4), lineWidth: 2)
+                        .strokeBorder(Color.overlayText.opacity(0.4), lineWidth: 2)
                         .padding()
                         .ignoresSafeArea()
                 }
             }
         }
-        .background(Color.black.ignoresSafeArea())
+        .background(Color.overlayScrim.ignoresSafeArea())
     }
 }
