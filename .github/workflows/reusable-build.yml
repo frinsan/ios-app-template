@@ -49,7 +49,7 @@ on:
         description: Requires perform_signing + App Store Connect API secrets
       xcode_version:
         required: false
-        default: "26.0"
+        default: "latest"
         type: string
         description: Xcode version to use for builds (e.g., 26.0)
     secrets:
@@ -108,9 +108,12 @@ jobs:
       - name: Set up Xcode (prefer requested, fallback to latest with iOS SDK)
         run: |
           set -euo pipefail
-          REQUESTED="/Applications/Xcode_${{ inputs.xcode_version }}.app/Contents/Developer"
-          if [[ -d "$REQUESTED" ]]; then
-            sudo xcode-select -s "$REQUESTED"
+          REQUESTED_VERSION="${{ inputs.xcode_version }}"
+          if [[ "$REQUESTED_VERSION" != "latest" ]]; then
+            REQUESTED="/Applications/Xcode_${REQUESTED_VERSION}.app/Contents/Developer"
+            if [[ -d "$REQUESTED" ]]; then
+              sudo xcode-select -s "$REQUESTED"
+            fi
           fi
           if ! xcodebuild -showsdks | grep -q "iphoneos"; then
             echo "Requested Xcode lacks iOS SDK; selecting highest Xcode with iOS SDK."
@@ -131,6 +134,8 @@ jobs:
             else
               echo "Selected Xcode app: $SELECTED"
             fi
+          else
+            echo "Selected Xcode app: $(xcodebuild -version | head -n 1)"
           fi
 
       - name: Show Xcode version
