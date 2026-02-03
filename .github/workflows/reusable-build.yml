@@ -105,29 +105,31 @@ jobs:
       - name: Show applied manifest
         run: cat TemplateApp/TemplateApp/Config/app.json
 
-      - name: Set up Xcode (prefer requested, fallback to latest)
+      - name: Set up Xcode (prefer requested, fallback to latest with iOS SDK)
         run: |
           set -euo pipefail
-          echo "Attempting Xcode ${{ inputs.xcode_version }}..."
-          if ! sudo xcode-select -s "/Applications/Xcode_${{ inputs.xcode_version }}.app/Contents/Developer"; then
-            echo "Xcode ${{ inputs.xcode_version }} not found; falling back to latest."
-            /bin/ls -1 /Applications | grep -E '^Xcode_.*\\.app$' || true
-            LATEST_XCODE="$(/bin/ls -1 /Applications | grep -E '^Xcode_.*\\.app$' | sort -V | tail -n 1 || true)"
-            if [[ -n "$LATEST_XCODE" ]]; then
-              sudo xcode-select -s "/Applications/${LATEST_XCODE}/Contents/Developer"
-            else
-              echo "No Xcode_*.app found; using system default."
-              sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
-            fi
+          REQUESTED="/Applications/Xcode_${{ inputs.xcode_version }}.app/Contents/Developer"
+          if [[ -d "$REQUESTED" ]]; then
+            sudo xcode-select -s "$REQUESTED"
           fi
           if ! xcodebuild -showsdks | grep -q "iphoneos"; then
-            echo "Selected Xcode is missing iOS platform; falling back to latest available Xcode."
-            /bin/ls -1 /Applications | grep -E '^Xcode_.*\\.app$' || true
-            LATEST_XCODE="$(/bin/ls -1 /Applications | grep -E '^Xcode_.*\\.app$' | sort -V | tail -n 1 || true)"
-            if [[ -n "$LATEST_XCODE" ]]; then
-              sudo xcode-select -s "/Applications/${LATEST_XCODE}/Contents/Developer"
-            else
+            echo "Requested Xcode lacks iOS SDK; selecting highest Xcode with iOS SDK."
+            SELECTED=""
+            while IFS= read -r APP; do
+              DEV="/Applications/${APP}/Contents/Developer"
+              if [[ -d "$DEV" ]]; then
+                sudo xcode-select -s "$DEV"
+                if xcodebuild -showsdks | grep -q "iphoneos"; then
+                  SELECTED="$APP"
+                  break
+                fi
+              fi
+            done < <(/bin/ls -1 /Applications | grep -E '^Xcode_.*\\.app$' | sort -Vr)
+            if [[ -z "$SELECTED" ]]; then
+              echo "No Xcode with iOS SDK found; using system default."
               sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
+            else
+              echo "Selected Xcode app: $SELECTED"
             fi
           fi
 
