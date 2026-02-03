@@ -49,7 +49,7 @@ on:
         description: Requires perform_signing + App Store Connect API secrets
       xcode_version:
         required: false
-        default: "26.0"
+        default: "latest"
         type: string
         description: Xcode version to use for builds (e.g., 26.0)
     secrets:
@@ -106,9 +106,37 @@ jobs:
         run: cat TemplateApp/TemplateApp/Config/app.json
 
       - name: Set up Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: ${{ inputs.xcode_version }}
+        run: |
+          set -euo pipefail
+          REQUESTED_VERSION="${{ inputs.xcode_version }}"
+          if [[ "$REQUESTED_VERSION" != "latest" ]]; then
+            REQUESTED="/Applications/Xcode_${REQUESTED_VERSION}.app/Contents/Developer"
+            if [[ -d "$REQUESTED" ]]; then
+              sudo xcode-select -s "$REQUESTED"
+            fi
+          fi
+          if ! xcodebuild -showsdks | grep -q "iphoneos"; then
+            echo "Requested Xcode lacks iOS SDK; selecting highest Xcode with iOS SDK."
+            SELECTED=""
+            while IFS= read -r APP; do
+              DEV="/Applications/${APP}/Contents/Developer"
+              if [[ -d "$DEV" ]]; then
+                sudo xcode-select -s "$DEV"
+                if xcodebuild -showsdks | grep -q "iphoneos"; then
+                  SELECTED="$APP"
+                  break
+                fi
+              fi
+            done < <(/bin/ls -1 /Applications | grep -E '^Xcode_.*\\.app$' | sort -Vr)
+            if [[ -z "$SELECTED" ]]; then
+              echo "No Xcode with iOS SDK found; using system default."
+              sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
+            else
+              echo "Selected Xcode app: $SELECTED"
+            fi
+          else
+            echo "Selected Xcode app: $(xcodebuild -version | head -n 1)"
+          fi
 
       - name: Show Xcode version
         run: xcodebuild -version
