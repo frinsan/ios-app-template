@@ -28,6 +28,7 @@ struct AccountView: View {
         }
         .padding()
         .navigationTitle("Account")
+        .navigationBarTitleDisplayMode(.inline)
         .lightModeTextColor()
         .onAppear {
             AnalyticsManager.shared.track(.screenView(name: "Account"))
@@ -79,9 +80,10 @@ struct AccountView: View {
                             .font(.footnote)
                             .foregroundStyle(Color.secondaryText)
                     }
-                    if appState.manifest.features.push {
-                        pushSection()
-                    }
+                    // Temporarily hidden until push notification UX is finalized.
+                    // if appState.manifest.features.push {
+                    //     pushSection()
+                    // }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
