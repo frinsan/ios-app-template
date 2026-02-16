@@ -108,6 +108,7 @@ update_build_setting() {
 }
 
 update_build_setting "PRODUCT_BUNDLE_IDENTIFIER" "$APP_ID"
+update_build_setting "INFOPLIST_KEY_CFBundleDisplayName" "\"$DISPLAY_NAME\""
 
 if [[ -n "$MARKETING_VERSION" ]]; then
   update_build_setting "MARKETING_VERSION" "$MARKETING_VERSION"
