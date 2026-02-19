@@ -28,6 +28,7 @@ struct AccountView: View {
         }
         .padding()
         .navigationTitle("Account")
+        .navigationBarTitleDisplayMode(.inline)
         .lightModeTextColor()
         .onAppear {
             AnalyticsManager.shared.track(.screenView(name: "Account"))
