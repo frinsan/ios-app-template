@@ -164,7 +164,9 @@ fi
 /usr/libexec/PlistBuddy -c "Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 $URL_SCHEME" "$INFO_PLIST" >/dev/null
 
 get_background_modes_json() {
-  plutil -extract UIBackgroundModes json -o - "$INFO_PLIST" 2>/dev/null || echo "[]"
+  plutil -convert json -o - "$INFO_PLIST" 2>/dev/null \
+    | jq -c '(.UIBackgroundModes // []) | if type == "array" then . else [] end' 2>/dev/null \
+    || echo "[]"
 }
 
 set_background_modes_from_json_array() {
