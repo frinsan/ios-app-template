@@ -52,6 +52,11 @@ on:
         default: "latest"
         type: string
         description: Xcode version to use for builds (e.g., 26.0)
+      minimum_build_number:
+        required: false
+        default: 1
+        type: number
+        description: Lower bound for CFBundleVersion used by CI (e.g., 54 to skip past existing TestFlight builds)
     secrets:
       APPLE_CERTIFICATE:
         required: false
@@ -143,7 +148,14 @@ jobs:
 
       - name: Set build number
         run: |
-          BUILD_NUMBER=${{ github.run_number }}
+          GH_RUN_NUMBER=${{ github.run_number }}
+          GH_RUN_ATTEMPT=${{ github.run_attempt }}
+          MIN_BUILD=${{ inputs.minimum_build_number }}
+          BUILD_NUMBER=$((GH_RUN_NUMBER + GH_RUN_ATTEMPT - 1))
+          if [[ "$BUILD_NUMBER" -lt "$MIN_BUILD" ]]; then
+            BUILD_NUMBER=$MIN_BUILD
+          fi
+          echo "Using build number: $BUILD_NUMBER"
           xcrun agvtool new-version -all "$BUILD_NUMBER"
 
       - name: Capture manifest metadata
