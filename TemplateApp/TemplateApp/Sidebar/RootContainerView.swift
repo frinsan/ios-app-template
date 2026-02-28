@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RootContainerView: View {
     @EnvironmentObject private var appState: AppState
+    @StateObject private var cloudSyncManager = CloudSyncManager()
     @State private var selection: SidebarItem = .home
     @State private var isMenuVisible = false
     @State private var legalSheet: LegalSheet?
@@ -9,6 +10,10 @@ struct RootContainerView: View {
     private let drawerWidth: CGFloat = 280
     private var menuItems: [SidebarItem] {
         var items: [SidebarItem] = [.home]
+
+        if appState.manifest.features.settings {
+            items.append(.settings)
+        }
 
         if appState.manifest.features.aiPlayground {
             items.append(.aiPlayground)
@@ -38,6 +43,7 @@ struct RootContainerView: View {
                     }
                     .animation(.easeInOut, value: selection)
             }
+            .environmentObject(cloudSyncManager)
             .accentColor(.primaryAccent)
 
             if isMenuVisible {
@@ -74,6 +80,9 @@ struct RootContainerView: View {
             handleRoute(route)
             appState.pendingRoute = nil
         }
+        .onAppear {
+            cloudSyncManager.configure(using: appState.manifest)
+        }
         .sheet(item: $legalSheet) { sheet in
             if let url = sheet.url {
                 SafariWebView(url: url)
@@ -102,6 +111,8 @@ struct RootContainerView: View {
         switch selection {
         case .home:
             ContentView()
+        case .settings:
+            TemplateSettingsView()
         case .aiPlayground:
             AIPlaygroundView()
         case .terms, .privacy:

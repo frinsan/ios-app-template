@@ -106,7 +106,8 @@ Every branded app provides an `app.json` that mirrors the template config (`Temp
   },
   "features": {
     "login": true,
-    "feedback": false
+    "feedback": false,
+    "cloudSync": false
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
@@ -121,6 +122,9 @@ Every branded app provides an `app.json` that mirrors the template config (`Temp
   "legal": {
     "privacyUrl": "https://learnandbecurious.com/privacy.html",
     "termsUrl": "https://learnandbecurious.com/terms.html"
+  },
+  "cloud": {
+    "containerId": "iCloud.com.learnandbecurious.sample"
   },
   "activeEnvironment": "staging"
 }
@@ -156,7 +160,8 @@ Each branded app supplies an `app.json` that mirrors the template’s config fil
   },
   "features": {
     "login": true,
-    "feedback": false
+    "feedback": false,
+    "cloudSync": false
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
@@ -172,6 +177,9 @@ Each branded app supplies an `app.json` that mirrors the template’s config fil
     "marketingVersion": "1.0.0",
     "buildNumber": "1"
   },
+  "cloud": {
+    "containerId": "iCloud.com.learnandbecurious.sample"
+  },
   "activeEnvironment": "staging"
 }
 ```
@@ -183,6 +191,7 @@ Required fields:
 - `bundleIdSuffix` – appended to the shared bundle ID when templating.
 - `theme` – primary/accent colors plus `appearance` (`light`, `dark`, or `system`).
 - `features` – booleans to gate UI elements per brand (see `aiPlayground` notes below).
+- `cloud` (optional) – CloudKit configuration; `cloud.containerId` defaults to `iCloud.<appId>` when omitted and `features.cloudSync` is true.
 - `apiBase` – base URLs for staging/prod API Gateway endpoints.
 - `auth` – Cognito client configuration for the brand (client ID, Hosted UI domain, custom URL scheme, AWS region).
 - `build` (optional) – `marketingVersion` (`CFBundleShortVersionString`) and `buildNumber` (`CFBundleVersion`). Defaults stay at the template values if omitted.
@@ -208,6 +217,15 @@ The template exposes an optional AI Playground screen controlled entirely by a f
   - Example (Visa app): `"aiPlayground": false`
 - The sidebar menu adds an `AI Playground` item only when `features.aiPlayground` is `true`.
 - The `SidebarItem` enum includes an `.aiPlayground` case. Any `switch` on `SidebarItem` (including brand overlays under `Overlay/TemplateApp/...`) must handle `.aiPlayground` to remain exhaustive, even if the feature is currently disabled for that brand.
+
+### Cloud Sync feature flag
+
+- Set `features.cloudSync` to `true` to have `scripts/apply_manifest.sh` inject CloudKit entitlements into `TemplateApp/TemplateApp.entitlements`.
+- When `features.cloudSync` is true:
+  - If `cloud.containerId` is present, that container is used.
+  - If `cloud.containerId` is omitted, the default container is `iCloud.<appId>`.
+- When `features.cloudSync` is false or omitted, CloudKit entitlement keys are removed from entitlements.
+- This only configures app capabilities in the project file. You still need matching iCloud/CloudKit capability enabled for the App ID and provisioning profiles in Apple Developer.
 
 Brand repos keep this manifest at the root (`app.json`) and optional asset overrides under `Assets/` (e.g., `Assets/AppIcon.appiconset`). During automation the manifest is copied verbatim into `TemplateApp/TemplateApp/Config/app.json` via `scripts/apply_manifest.sh`.
 
@@ -251,3 +269,23 @@ jobs:
 ```
 
 Copy that workflow into each brand repo, adjust the repository/ref/path, and run it from the Actions tab to get a fresh build artifact driven entirely by the manifest.
+
+## Documentation Update (2026-02-28)
+
+This section appends current canonical behavior without deleting prior historical notes/examples.
+
+- Canonical feature flag inventory now lives in:
+  - `../FEATURE_FLAGS.md` (workspace root)
+- When adding/changing flags, update `../FEATURE_FLAGS.md` first, then update this README if needed.
+
+### Cloud Sync Implementation Notes (Current)
+
+- Cloud sync uses static entitlements switching, not in-place entitlements key mutation.
+- `scripts/apply_manifest.sh` toggles `CODE_SIGN_ENTITLEMENTS`:
+  - `features.cloudSync=true` -> `TemplateApp/TemplateAppCloud.entitlements`
+  - `features.cloudSync=false` -> `TemplateApp/TemplateApp.entitlements`
+- Cloud container policy is default-only:
+  - runtime container: `iCloud.<appId>`
+  - `cloud.containerId` is unsupported and rejected by `scripts/apply_manifest.sh`
+
+Historical examples in this README that include `cloud.containerId` are kept for traceability, but the policy above is the current standard.

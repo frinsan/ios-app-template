@@ -502,11 +502,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MH94CAVYWW;
 				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Visa Photo";
+				INFOPLIST_KEY_CFBundleDisplayName = "Template App";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.learnandbecurious.sample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.learnandbecurious.template;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -614,11 +614,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MH94CAVYWW;
 				INFOPLIST_FILE = TemplateApp/TemplateApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Visa Photo";
+				INFOPLIST_KEY_CFBundleDisplayName = "Template App";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.learnandbecurious.sample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.learnandbecurious.template;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";

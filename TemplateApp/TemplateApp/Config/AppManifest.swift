@@ -20,6 +20,7 @@ struct AppManifest: Codable {
     }
 
     struct FeatureFlags: Codable {
+        var settings: Bool
         var login: Bool
         var feedback: Bool
         var push: Bool
@@ -30,8 +31,10 @@ struct AppManifest: Codable {
         var errorBanner: Bool
         var ratePrompt: Bool
         var aiPlayground: Bool
+        var cloudSync: Bool
 
         enum CodingKeys: String, CodingKey {
+            case settings
             case login
             case feedback
             case push
@@ -42,9 +45,11 @@ struct AppManifest: Codable {
             case errorBanner
             case ratePrompt
             case aiPlayground
+            case cloudSync
         }
 
         init(
+            settings: Bool = false,
             login: Bool = true,
             feedback: Bool = false,
             push: Bool = false,
@@ -54,8 +59,10 @@ struct AppManifest: Codable {
             loadingOverlay: Bool = true,
             errorBanner: Bool = true,
             ratePrompt: Bool = false,
-            aiPlayground: Bool = false
+            aiPlayground: Bool = false,
+            cloudSync: Bool = false
         ) {
+            self.settings = settings
             self.login = login
             self.feedback = feedback
             self.push = push
@@ -66,10 +73,12 @@ struct AppManifest: Codable {
             self.errorBanner = errorBanner
             self.ratePrompt = ratePrompt
             self.aiPlayground = aiPlayground
+            self.cloudSync = cloudSync
         }
 
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.settings = try container.decodeIfPresent(Bool.self, forKey: .settings) ?? false
             self.login = try container.decodeIfPresent(Bool.self, forKey: .login) ?? true
             self.feedback = try container.decodeIfPresent(Bool.self, forKey: .feedback) ?? false
             self.push = try container.decodeIfPresent(Bool.self, forKey: .push) ?? false
@@ -80,6 +89,7 @@ struct AppManifest: Codable {
             self.errorBanner = try container.decodeIfPresent(Bool.self, forKey: .errorBanner) ?? true
             self.ratePrompt = try container.decodeIfPresent(Bool.self, forKey: .ratePrompt) ?? false
             self.aiPlayground = try container.decodeIfPresent(Bool.self, forKey: .aiPlayground) ?? false
+            self.cloudSync = try container.decodeIfPresent(Bool.self, forKey: .cloudSync) ?? false
         }
     }
 
@@ -115,6 +125,10 @@ struct AppManifest: Codable {
         var categories: [String]?
     }
 
+    struct CloudConfig: Codable {
+        var containerId: String?
+    }
+
     enum Environment: String, Codable {
         case staging
         case prod
@@ -130,6 +144,7 @@ struct AppManifest: Codable {
     var legal: LegalConfig?
     var push: PushConfig?
     var share: ShareConfig?
+    var cloud: CloudConfig?
     var activeEnvironment: Environment
 
     var baseURL: URL {
@@ -145,6 +160,7 @@ struct AppManifest: Codable {
         bundleIdSuffix: "template",
         theme: .init(primaryHex: "#111111", accentHex: "#B8E986", appearance: .system),
         features: .init(
+            settings: false,
             login: true,
             feedback: false,
             push: false,
@@ -154,7 +170,8 @@ struct AppManifest: Codable {
             loadingOverlay: true,
             errorBanner: true,
             ratePrompt: false,
-            aiPlayground: false
+            aiPlayground: false,
+            cloudSync: false
         ),
         apiBase: .init(
             staging: URL(string: "https://staging.api.example.com")!,
@@ -164,6 +181,7 @@ struct AppManifest: Codable {
         legal: nil,
         push: nil,
         share: nil,
+        cloud: nil,
         activeEnvironment: .staging
     )
 }

@@ -8,6 +8,7 @@
     "appearance": "system"
   },
   "features": {
+    "settings": false,
     "login": true,
     "feedback": false,
     "push": true,
@@ -16,7 +17,8 @@
     "imageCapture": false,
     "loadingOverlay": true,
     "errorBanner": true,
-    "ratePrompt": false
+    "ratePrompt": false,
+    "cloudSync": false
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
