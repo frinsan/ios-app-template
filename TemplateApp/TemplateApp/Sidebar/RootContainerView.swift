@@ -11,6 +11,10 @@ struct RootContainerView: View {
     private var menuItems: [SidebarItem] {
         var items: [SidebarItem] = [.home]
 
+        if appState.manifest.features.imageCapture {
+            items.append(.imageCapture)
+        }
+
         if appState.manifest.features.settings {
             items.append(.settings)
         }
@@ -111,6 +115,8 @@ struct RootContainerView: View {
         switch selection {
         case .home:
             ContentView()
+        case .imageCapture:
+            ImageCaptureScreen()
         case .settings:
             TemplateSettingsView()
         case .aiPlayground:

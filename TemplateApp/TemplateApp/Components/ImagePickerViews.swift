@@ -114,19 +114,8 @@ struct CameraCaptureView: View {
     @State private var showOverlay = true
 
     var body: some View {
-        GeometryReader { proxy in
-            ZStack {
-                CameraPickerView(onImagePicked: onImagePicked, showOverlay: $showOverlay)
-                    .ignoresSafeArea()
-
-                if showOverlay {
-                    Rectangle()
-                        .strokeBorder(Color.overlayText.opacity(0.4), lineWidth: 2)
-                        .padding()
-                        .ignoresSafeArea()
-                }
-            }
-        }
+        CameraPickerView(onImagePicked: onImagePicked, showOverlay: $showOverlay)
+            .ignoresSafeArea()
         .background(Color.overlayScrim.ignoresSafeArea())
     }
 }

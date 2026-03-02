@@ -289,3 +289,21 @@ This section appends current canonical behavior without deleting prior historica
   - `cloud.containerId` is unsupported and rejected by `scripts/apply_manifest.sh`
 
 Historical examples in this README that include `cloud.containerId` are kept for traceability, but the policy above is the current standard.
+
+## Documentation Update (2026-03-01)
+
+This section records the current template UX behavior without removing older notes above.
+
+- Home screen is intentionally product-like and minimal.
+  - Dev/test actions are no longer shown on Home.
+- When `features.imageCapture` is `true`, sidebar navigation includes a dedicated `Image Capture` screen.
+  - Image Capture flow supports: Upload photo, Take photo, Retake/Replace, Remove, full-screen preview, and saving persisted image test records.
+- Settings behavior:
+  - User-facing `iCloud Sync` section remains lightweight (toggle + status + user guidance).
+  - Non-user diagnostics/actions are grouped under `Developer Tools` and shown only when `activeEnvironment != prod`.
+  - Developer Tools currently consolidates:
+    - Feature Actions (share, test error toast, request rating)
+    - Cloud Diagnostics
+    - Cloud Test Records
+    - Cloud Maintenance (including delete iCloud data action)
+    - Image Record Inspector
