@@ -18,6 +18,7 @@
 		1231C568A8652665B77E376A /* TemplateApp/TemplateApp/Auth/LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272BBFDAABD7B77954B253AB /* TemplateApp/TemplateApp/Auth/LoginView.swift */; };
 		176CB109E4A023B9C2F1AED0 /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB7EDC3A5F68FFBBB08334B /* TemplateApp/TemplateApp/Auth/ForgotPasswordView.swift */; };
 		1D2E3F4A5B60718293A4B5C6 /* TemplateApp/TemplateApp/Components/RatePromptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5F7D8C9B0A1F2E3D4C5B6A /* TemplateApp/TemplateApp/Components/RatePromptManager.swift */; };
+		1E2F3A4B5C60718293A4B5C6 /* TemplateApp/TemplateApp/Components/CloudSyncTestRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C2D3E4F5A60718293A4B5C /* TemplateApp/TemplateApp/Components/CloudSyncTestRecord.swift */; };
 		2360E4CB03678B365D3AF7FF /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CBE2CE5041519DBFE002D7 /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift */; };
 		2B7A7F1D4B2E4C8E9F1A2B3C /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1C2B3A4D5E6F708192A3B4 /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift */; };
 		2C1D3E4F5A6B708192A3B4C5 /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F8A9B0C1D2E3F4A5B6C7D /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift */; };
@@ -39,6 +40,7 @@
 		942F4A90552450C7454A1238 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ECB9CB87846A4ED8911CB1 /* TemplateApp/TemplateApp/Auth/HostedUILoginController.swift */; };
 		9474F86BD02F63BF5515952D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0911C60AF63C87AD7FE49EE2 /* Localizable.strings */; };
 		990D862AE468C6B939F32CE2 /* TemplateApp/TemplateApp/ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */; };
+		9A0B1C2D3E4F5061728394A5 /* TemplateApp/TemplateApp/Components/CloudSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B60718293A4B5C /* TemplateApp/TemplateApp/Components/CloudSyncManager.swift */; };
 		A8C7C61359E30BCA1D94176B /* TemplateApp/TemplateApp/Config/ManifestLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D8BA6E5FFA3C646BCE1295 /* TemplateApp/TemplateApp/Config/ManifestLoader.swift */; };
 		AA0C52216A1E066B7B60D951 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B6C7D8E9F00123456789B2 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift */; };
 		AEA5218587DE1DCB40151458 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E3BCCA1CBCFD9C5085544FF /* AuthenticationServices.framework */; };
@@ -102,10 +104,12 @@
 		A694CF26ED0FDABE3AA2092E /* TemplateApp/TemplateApp/Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = TemplateApp/TemplateApp/Info.plist; sourceTree = SOURCE_ROOT; };
 		A8131CE86F3AC635E7BEFD46 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift; sourceTree = SOURCE_ROOT; };
 		AF27DD4CBE7EDAD531D9CAAC /* TemplateApp/TemplateApp/Auth/AuthSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/AuthSession.swift; sourceTree = SOURCE_ROOT; };
+		B1C2D3E4F5A60718293A4B5C /* TemplateApp/TemplateApp/Components/CloudSyncTestRecord.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/CloudSyncTestRecord.swift; sourceTree = SOURCE_ROOT; };
 		B76082754AC732E97962D267 /* TemplateApp/TemplateApp/TemplateAppApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/TemplateAppApp.swift; sourceTree = SOURCE_ROOT; };
 		BB9B9701032DAB47B025C5A5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		BE4B7E13F75B52353A706D98 /* TemplateApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1FCE4B6D5EFC45EBDCF6678 /* TemplateApp/TemplateApp/API/APIClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/API/APIClient.swift; sourceTree = SOURCE_ROOT; };
+		C1D2E3F4A5B60718293A4B5C /* TemplateApp/TemplateApp/Components/CloudSyncManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/CloudSyncManager.swift; sourceTree = SOURCE_ROOT; };
 		DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift; sourceTree = SOURCE_ROOT; };
 		E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Theme/Theme.swift; sourceTree = SOURCE_ROOT; };
 		E358DAC25C55EEDB4C40213F /* TemplateAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemplateAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -261,6 +265,8 @@
 				7AE006CAFEB34D7BBE0F2A9E /* TemplateApp/TemplateApp/Components/SafariWebView.swift */,
 				6F2B7A4D5E6C471F8A2B9C0D /* TemplateApp/TemplateApp/Components/ShareSheet.swift */,
 				A5B6C7D8E9F00123456789B2 /* TemplateApp/TemplateApp/Components/ImagePickerViews.swift */,
+				C1D2E3F4A5B60718293A4B5C /* TemplateApp/TemplateApp/Components/CloudSyncManager.swift */,
+				B1C2D3E4F5A60718293A4B5C /* TemplateApp/TemplateApp/Components/CloudSyncTestRecord.swift */,
 				4F1C2B3A4D5E6F708192A3B4 /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift */,
 				5E7F8A9B0C1D2E3F4A5B6C7D /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift */,
 				0A27A5F4E9B9483C8B7C0F31 /* TemplateApp/TemplateApp/Components/ErrorBannerView.swift */,
@@ -411,6 +417,8 @@
 				8C3E5062E04ED79FE9B0B3CC /* TemplateApp/TemplateApp/API/EmailAuthService.swift in Sources */,
 				2360E4CB03678B365D3AF7FF /* TemplateApp/TemplateApp/Analytics/AnalyticsClient.swift in Sources */,
 				7B9E4F2C5E7D4D1F8C1A2B3C /* TemplateApp/TemplateApp/Analytics/AnalyticsManager.swift in Sources */,
+				1E2F3A4B5C60718293A4B5C6 /* TemplateApp/TemplateApp/Components/CloudSyncTestRecord.swift in Sources */,
+				9A0B1C2D3E4F5061728394A5 /* TemplateApp/TemplateApp/Components/CloudSyncManager.swift in Sources */,
 				2B7A7F1D4B2E4C8E9F1A2B3C /* TemplateApp/TemplateApp/Components/ImageCaptureTester.swift in Sources */,
 				2C1D3E4F5A6B708192A3B4C5 /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift in Sources */,
 				1D2E3F4A5B60718293A4B5C6 /* TemplateApp/TemplateApp/Components/RatePromptManager.swift in Sources */,
