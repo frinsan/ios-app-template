@@ -54,9 +54,9 @@ on:
         description: Xcode version to use for builds (e.g., 26.0)
       minimum_build_number:
         required: false
-        default: 1
+        default: 0
         type: number
-        description: Lower bound for CFBundleVersion used by CI (e.g., 54 to skip past existing TestFlight builds)
+        description: Build-number offset for CI (e.g., 54 makes first CI build 55, then 56, 57...)
     secrets:
       APPLE_CERTIFICATE:
         required: false
@@ -151,10 +151,14 @@ jobs:
           GH_RUN_NUMBER=${{ github.run_number }}
           GH_RUN_ATTEMPT=${{ github.run_attempt }}
           MIN_BUILD=${{ inputs.minimum_build_number }}
-          BUILD_NUMBER=$((GH_RUN_NUMBER + GH_RUN_ATTEMPT - 1))
-          if [[ "$BUILD_NUMBER" -lt "$MIN_BUILD" ]]; then
-            BUILD_NUMBER=$MIN_BUILD
+          RUN_SEQUENCE=$((GH_RUN_NUMBER + GH_RUN_ATTEMPT - 1))
+          if [[ "$RUN_SEQUENCE" -lt 1 ]]; then
+            RUN_SEQUENCE=1
           fi
+          if [[ "$MIN_BUILD" -lt 0 ]]; then
+            MIN_BUILD=0
+          fi
+          BUILD_NUMBER=$((MIN_BUILD + RUN_SEQUENCE))
           echo "Using build number: $BUILD_NUMBER"
           xcrun agvtool new-version -all "$BUILD_NUMBER"
 
