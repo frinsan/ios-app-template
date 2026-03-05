@@ -69,6 +69,7 @@ struct TemplateSettingsView: View {
     @State private var showDeleteCloudDataConfirmation = false
     @State private var editingImageRecord: CloudSyncTestRecord?
     @State private var imageRecordDraftNote: String = ""
+    @State private var imageRecordActionsRecord: CloudSyncTestRecord?
 
     var body: some View {
         List {
@@ -86,6 +87,17 @@ struct TemplateSettingsView: View {
 
                     if let guidance = iCloudGuidance(for: cloudSyncManager.status) {
                         Text(guidance)
+                            .font(.system(size: 13))
+                            .foregroundStyle(Color.secondaryText)
+                    }
+
+                    Button("Restore from iCloud") {
+                        cloudSyncManager.refreshStatus()
+                    }
+                    .disabled(!canRestoreFromICloud)
+
+                    if let restoreDisabledReason {
+                        Text(restoreDisabledReason)
                             .font(.system(size: 13))
                             .foregroundStyle(Color.secondaryText)
                     }
@@ -270,6 +282,29 @@ struct TemplateSettingsView: View {
                 }
             }
         }
+        .confirmationDialog(
+            "Image record actions",
+            isPresented: Binding(
+                get: { imageRecordActionsRecord != nil },
+                set: { if !$0 { imageRecordActionsRecord = nil } }
+            ),
+            titleVisibility: .hidden
+        ) {
+            if let record = imageRecordActionsRecord {
+                Button("Edit note") {
+                    imageRecordDraftNote = record.text
+                    editingImageRecord = record
+                    imageRecordActionsRecord = nil
+                }
+                Button("Delete", role: .destructive) {
+                    cloudSyncManager.deleteRecord(id: record.id)
+                    imageRecordActionsRecord = nil
+                }
+            }
+            Button("Cancel", role: .cancel) {
+                imageRecordActionsRecord = nil
+            }
+        }
     }
 
     private func iCloudGuidance(for status: CloudSyncManager.Status) -> String? {
@@ -278,6 +313,29 @@ struct TemplateSettingsView: View {
             return "Turn on \"Sync with iCloud\" to back up and sync across devices."
         case .unavailable, .localFallback:
             return "Check iCloud sign-in in Settings > Apple ID > iCloud, then tap Refresh."
+        default:
+            return nil
+        }
+    }
+
+    private var canRestoreFromICloud: Bool {
+        guard cloudSyncManager.isUserCloudSyncEnabled else { return false }
+        switch cloudSyncManager.status {
+        case .disabledByManifest, .disabledByUser, .noICloudAccount, .restricted:
+            return false
+        default:
+            return true
+        }
+    }
+
+    private var restoreDisabledReason: String? {
+        switch cloudSyncManager.status {
+        case .disabledByUser:
+            return "Turn on \"Sync with iCloud\" first."
+        case .noICloudAccount:
+            return "Sign in to iCloud in iOS Settings to restore."
+        case .restricted:
+            return "iCloud access is restricted on this device."
         default:
             return nil
         }
@@ -355,14 +413,8 @@ struct TemplateSettingsView: View {
 
             Spacer(minLength: 8)
 
-            Menu {
-                Button("Edit note") {
-                    imageRecordDraftNote = record.text
-                    editingImageRecord = record
-                }
-                Button("Delete", role: .destructive) {
-                    cloudSyncManager.deleteRecord(id: record.id)
-                }
+            Button {
+                imageRecordActionsRecord = record
             } label: {
                 Image(systemName: "ellipsis.circle")
                     .font(.system(size: 18))
