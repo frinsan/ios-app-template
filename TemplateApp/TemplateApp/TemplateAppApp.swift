@@ -33,6 +33,7 @@ final class AppState: ObservableObject {
     @Published var userProfile: UserProfile?
     @Published var latestLoginSuccessID: UUID?
     @Published var shouldShowWelcome: Bool = true
+    @Published var shouldShowOnboarding: Bool = false
     @Published var pushToken: String?
     @Published var pushRegisterStatus: String?
     @Published var pendingRoute: String?
@@ -73,6 +74,7 @@ final class AppState: ObservableObject {
             if !session.isExpired {
                 authState = .signedIn(session)
                 shouldShowWelcome = false
+                shouldShowOnboarding = false
                 Task {
                     await bootstrapAndFetchProfile(forceBootstrap: false)
                     await registerPushTokenIfNeeded()
@@ -82,14 +84,17 @@ final class AppState: ObservableObject {
             if let refreshToken = session.refreshToken {
                 authState = .signingIn
                 shouldShowWelcome = false
+                shouldShowOnboarding = false
                 Task {
                     await refreshSession(using: session, refreshToken: refreshToken)
                 }
                 return
             }
             shouldShowWelcome = true
+            shouldShowOnboarding = manifest.features.onboarding
         } else {
             shouldShowWelcome = true
+            shouldShowOnboarding = manifest.features.onboarding
         }
     }
 
@@ -102,6 +107,7 @@ final class AppState: ObservableObject {
 
         authState = .signedIn(session)
         shouldShowWelcome = false
+        shouldShowOnboarding = false
         latestLoginSuccessID = UUID()
         Task {
             await withLoading(message: "Syncing profile...") {
@@ -136,12 +142,18 @@ final class AppState: ObservableObject {
             userProfile = nil
             authState = .signedOut
             shouldShowWelcome = true
+            shouldShowOnboarding = manifest.features.onboarding
             pushRegisterStatus = nil
         }
     }
 
     func dismissWelcome() {
         shouldShowWelcome = false
+    }
+
+    func dismissOnboarding() {
+        shouldShowOnboarding = false
+        shouldShowWelcome = true
     }
 
     private func observePushTokens() {
@@ -186,6 +198,7 @@ final class AppState: ObservableObject {
             await MainActor.run {
                 self.authState = .signedIn(refreshed)
                 self.shouldShowWelcome = false
+                self.shouldShowOnboarding = false
             }
             await bootstrapAndFetchProfile(forceBootstrap: false)
             await registerPushTokenIfNeeded()
@@ -204,6 +217,7 @@ final class AppState: ObservableObject {
                 self.userProfile = nil
                 self.authState = .signedOut
                 self.shouldShowWelcome = true
+                self.shouldShowOnboarding = self.manifest.features.onboarding
             }
         }
     }
@@ -309,7 +323,11 @@ struct AppEntryView: View {
 
     var body: some View {
         Group {
-            if appState.shouldShowWelcome, case .signedOut = appState.authState {
+            if appState.shouldShowOnboarding, appState.shouldShowWelcome, case .signedOut = appState.authState {
+                OnboardingView {
+                    appState.dismissOnboarding()
+                }
+            } else if appState.shouldShowWelcome, case .signedOut = appState.authState {
                 WelcomeView {
                     appState.dismissWelcome()
                 }

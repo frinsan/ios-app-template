@@ -105,6 +105,7 @@ Every branded app provides an `app.json` that mirrors the template config (`Temp
     "appearance": "system"
   },
   "features": {
+    "onboarding": false,
     "login": true,
     "feedback": false,
     "cloudSync": false
@@ -159,6 +160,7 @@ Each branded app supplies an `app.json` that mirrors the template’s config fil
     "appearance": "system"
   },
   "features": {
+    "onboarding": false,
     "login": true,
     "feedback": false,
     "cloudSync": false
@@ -217,6 +219,15 @@ The template exposes an optional AI Playground screen controlled entirely by a f
   - Example (Visa app): `"aiPlayground": false`
 - The sidebar menu adds an `AI Playground` item only when `features.aiPlayground` is `true`.
 - The `SidebarItem` enum includes an `.aiPlayground` case. Any `switch` on `SidebarItem` (including brand overlays under `Overlay/TemplateApp/...`) must handle `.aiPlayground` to remain exhaustive, even if the feature is currently disabled for that brand.
+
+### Onboarding feature flag
+
+- Add `features.onboarding` to the brand manifest (`app.json`) to control pre-auth onboarding screens.
+- When `features.onboarding` is `true`:
+  - Signed-out users see a 3-page onboarding carousel before `WelcomeView`.
+  - Users can swipe between pages and use `Skip`, `Next`, and `Get Started`.
+  - Signed-in sessions bypass onboarding.
+- When `features.onboarding` is `false` or omitted, app entry goes straight to the existing welcome/auth flow.
 
 ### Cloud Sync feature flag
 

@@ -228,6 +228,132 @@ struct WelcomeView: View {
     }
 }
 
+struct OnboardingView: View {
+    @State private var selectedPage = 0
+
+    var onFinish: () -> Void
+
+    private let pages: [OnboardingPage] = [
+        .init(
+            icon: "sparkles",
+            title: "Welcome to High-Intent Apps",
+            subtitle: "Build focus with clear flows and a clean daily rhythm."
+        ),
+        .init(
+            icon: "tray.full",
+            title: "Save What Matters",
+            subtitle: "Capture links, text, and images so your ideas stay organized."
+        ),
+        .init(
+            icon: "bolt.badge.checkmark",
+            title: "Stay Consistent",
+            subtitle: "Use simple routines to return, review, and keep momentum."
+        )
+    ]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            topBar
+
+            TabView(selection: $selectedPage) {
+                ForEach(Array(pages.enumerated()), id: \.offset) { index, page in
+                    pageView(page)
+                        .tag(index)
+                        .padding(.horizontal, 24)
+                }
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+
+            VStack(spacing: 16) {
+                pageIndicator
+                Button(action: handlePrimaryAction) {
+                    Text(selectedPage == pages.count - 1 ? "Get Started" : "Next")
+                        .font(.headline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 52)
+                        .background(Color.primaryAccent, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .foregroundStyle(Color.overlayText)
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 28)
+            .padding(.top, 20)
+            .background(Color.appBackground)
+        }
+        .background(Color.appBackground.ignoresSafeArea())
+        .onAppear {
+            AnalyticsManager.shared.track(.screenView(name: "Onboarding"))
+        }
+    }
+
+    private var topBar: some View {
+        HStack {
+            Spacer()
+            Button("Skip", action: onFinish)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.primaryAccent)
+                .padding(.vertical, 12)
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 8)
+        .background(Color.appBackground)
+    }
+
+    private func pageView(_ page: OnboardingPage) -> some View {
+        VStack(spacing: 20) {
+            Spacer()
+
+            Image(systemName: page.icon)
+                .font(.system(size: 54, weight: .semibold))
+                .foregroundStyle(Color.primaryAccent)
+                .frame(width: 120, height: 120)
+                .background(
+                    RoundedRectangle(cornerRadius: 30, style: .continuous)
+                        .fill(Color.cardBackground)
+                )
+
+            Text(page.title)
+                .font(.title2.weight(.bold))
+                .foregroundStyle(Color.primaryText)
+                .multilineTextAlignment(.center)
+
+            Text(page.subtitle)
+                .font(.body)
+                .foregroundStyle(Color.secondaryText)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 12)
+
+            Spacer()
+        }
+    }
+
+    private var pageIndicator: some View {
+        HStack(spacing: 8) {
+            ForEach(0 ..< pages.count, id: \.self) { index in
+                Circle()
+                    .fill(index == selectedPage ? Color.primaryAccent : Color.dividerColor)
+                    .frame(width: 8, height: 8)
+            }
+        }
+    }
+
+    private func handlePrimaryAction() {
+        if selectedPage == pages.count - 1 {
+            onFinish()
+            return
+        }
+        withAnimation(.easeInOut(duration: 0.2)) {
+            selectedPage += 1
+        }
+    }
+}
+
+private struct OnboardingPage {
+    let icon: String
+    let title: String
+    let subtitle: String
+}
+
 // MARK: - Supporting Views
 
 private struct PrimaryAuthButton: View {

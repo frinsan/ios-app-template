@@ -9,6 +9,7 @@
   },
   "features": {
     "settings": false,
+    "onboarding": false,
     "login": true,
     "feedback": false,
     "push": true,

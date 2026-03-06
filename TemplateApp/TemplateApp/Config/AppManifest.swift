@@ -21,6 +21,7 @@ struct AppManifest: Codable {
 
     struct FeatureFlags: Codable {
         var settings: Bool
+        var onboarding: Bool
         var login: Bool
         var feedback: Bool
         var push: Bool
@@ -36,6 +37,7 @@ struct AppManifest: Codable {
 
         enum CodingKeys: String, CodingKey {
             case settings
+            case onboarding
             case login
             case feedback
             case push
@@ -52,6 +54,7 @@ struct AppManifest: Codable {
 
         init(
             settings: Bool = false,
+            onboarding: Bool = false,
             login: Bool = true,
             feedback: Bool = false,
             push: Bool = false,
@@ -66,6 +69,7 @@ struct AppManifest: Codable {
             subscriptions: Bool = false
         ) {
             self.settings = settings
+            self.onboarding = onboarding
             self.login = login
             self.feedback = feedback
             self.push = push
@@ -83,6 +87,7 @@ struct AppManifest: Codable {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.settings = try container.decodeIfPresent(Bool.self, forKey: .settings) ?? false
+            self.onboarding = try container.decodeIfPresent(Bool.self, forKey: .onboarding) ?? false
             self.login = try container.decodeIfPresent(Bool.self, forKey: .login) ?? true
             self.feedback = try container.decodeIfPresent(Bool.self, forKey: .feedback) ?? false
             self.push = try container.decodeIfPresent(Bool.self, forKey: .push) ?? false
@@ -219,6 +224,7 @@ struct AppManifest: Codable {
         theme: .init(primaryHex: "#111111", accentHex: "#B8E986", appearance: .system),
         features: .init(
             settings: false,
+            onboarding: false,
             login: true,
             feedback: false,
             push: false,
