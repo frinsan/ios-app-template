@@ -18,7 +18,8 @@
     "loadingOverlay": true,
     "errorBanner": true,
     "ratePrompt": false,
-    "cloudSync": false
+    "cloudSync": false,
+    "subscriptions": false
   },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
@@ -40,5 +41,21 @@
     "icon": "square.and.arrow.up"
   },
   "push": {},
+  "subscriptions": {
+    "productIds": [],
+    "title": "Premium",
+    "subtitle": "Use this template screen to validate StoreKit purchase and restore flows.",
+    "benefits": [],
+    "actionsTitle": "Subscription Actions",
+    "noProductsText": "No subscription products available.",
+    "checkingText": "Checking subscription status...",
+    "subscribeButtonTitle": "Subscribe",
+    "restoreButtonTitle": "Restore Purchases",
+    "manageButtonTitle": "Manage Subscription",
+    "refreshButtonTitle": "Refresh Subscription Status",
+    "premiumAreaTitle": "Premium Test Area",
+    "premiumAreaLockedText": "Locked. Subscribe to access this section.",
+    "premiumAreaUnlockedText": "Unlocked. This section represents premium-only content for brand apps."
+  },
   "activeEnvironment": "staging"
 }

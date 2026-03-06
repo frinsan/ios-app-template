@@ -60,6 +60,338 @@ struct ImageCaptureScreen: View {
     }
 }
 
+struct TemplateSubscriptionsView: View {
+    @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var subscriptionManager: SubscriptionManager
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(headerTitle)
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(Color.primaryText)
+                    Text(headerSubtitle)
+                        .font(.callout)
+                        .foregroundStyle(Color.secondaryText)
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color.dividerColor, lineWidth: 1)
+                )
+
+                subscriptionStatusCard
+
+                if subscriptionManager.isFeatureEnabled {
+                    if subscriptionManager.hasConfiguredProducts {
+                        subscriptionActionCard
+                    } else {
+                        missingConfigurationCard
+                    }
+                } else {
+                    featureDisabledCard
+                }
+
+                premiumPreviewCard
+            }
+            .padding()
+        }
+        .background(Color.appBackground.ignoresSafeArea())
+        .navigationTitle("Subscriptions")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            await subscriptionManager.refreshProductsAndEntitlements(forceProductReload: true)
+        }
+    }
+
+    private var subscriptionStatusCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            LabeledContent("Status", value: subscriptionManager.statusLabel)
+            LabeledContent("Plan", value: subscriptionManager.activePlanLabel)
+            if let statusDetail = subscriptionManager.statusDetail, !statusDetail.isEmpty {
+                Text(statusDetail)
+                    .font(.system(size: 13))
+                    .foregroundStyle(Color.secondaryText)
+            }
+            if let statusMessage = subscriptionManager.lastOperationMessage, !statusMessage.isEmpty {
+                Text(statusMessage)
+                    .font(.system(size: 13))
+                    .foregroundStyle(Color.secondaryText)
+            }
+            Button(refreshButtonTitle) {
+                Task {
+                    await subscriptionManager.refreshProductsAndEntitlements(forceProductReload: true)
+                }
+            }
+            .disabled(subscriptionManager.isLoadingProducts || subscriptionManager.isProcessingPurchase)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.dividerColor, lineWidth: 1)
+        )
+    }
+
+    private var subscriptionActionCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(actionsTitle)
+                .font(.headline)
+                .foregroundStyle(Color.primaryText)
+
+            if !benefits.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(benefits, id: \.self) { benefit in
+                        HStack(alignment: .top, spacing: 8) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(Color.primaryAccent)
+                                .padding(.top, 2)
+                            Text(benefit)
+                                .font(.callout)
+                                .foregroundStyle(Color.primaryText)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
+            }
+
+            if subscriptionManager.products.isEmpty {
+                Text(noProductsText)
+                    .font(.system(size: 13))
+                    .foregroundStyle(Color.secondaryText)
+            } else {
+                ForEach(Array(subscriptionManager.products.enumerated()), id: \.element.id) { index, product in
+                    Button {
+                        Task {
+                            await subscriptionManager.purchase(product)
+                        }
+                    } label: {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("\(subscribeButtonTitle) (\(product.displayPrice))")
+                                .font(.system(size: 16, weight: .semibold))
+                            Text(product.displayName)
+                                .font(.system(size: 13))
+                                .foregroundStyle(Color.overlayText.opacity(0.85))
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 14)
+                        .background(
+                            index == 0 ? Color.primaryAccent : Color.primaryAccent.opacity(0.85),
+                            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        )
+                        .foregroundStyle(Color.overlayText)
+                    }
+                    .disabled(subscriptionManager.isLoadingProducts || subscriptionManager.isProcessingPurchase)
+                }
+            }
+
+            Button(restoreButtonTitle) {
+                Task {
+                    await subscriptionManager.restorePurchases()
+                }
+            }
+            .disabled(subscriptionManager.isProcessingPurchase)
+
+            Button(manageButtonTitle) {
+                Task {
+                    await subscriptionManager.openManageSubscriptions()
+                }
+            }
+            .disabled(subscriptionManager.isProcessingPurchase)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.dividerColor, lineWidth: 1)
+        )
+    }
+
+    private var premiumPreviewCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(premiumAreaTitle)
+                .font(.headline)
+                .foregroundStyle(Color.primaryText)
+            if isCheckingEntitlement {
+                Text(checkingText)
+                    .font(.callout)
+                    .foregroundStyle(Color.secondaryText)
+            } else if subscriptionManager.isPremium {
+                Text(premiumUnlockedText)
+                    .font(.callout)
+                    .foregroundStyle(Color.primaryText)
+            } else {
+                Text(premiumLockedText)
+                    .font(.callout)
+                    .foregroundStyle(Color.secondaryText)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.dividerColor, lineWidth: 1)
+        )
+    }
+
+    private var missingConfigurationCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Missing configuration")
+                .font(.headline)
+                .foregroundStyle(Color.primaryText)
+            Text("Add `subscriptions.productIds` in manifest to load purchasable products.")
+                .font(.callout)
+                .foregroundStyle(Color.secondaryText)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.dividerColor, lineWidth: 1)
+        )
+    }
+
+    private var featureDisabledCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Feature disabled")
+                .font(.headline)
+                .foregroundStyle(Color.primaryText)
+            Text("Enable `features.subscriptions` in manifest to show purchase and restore actions.")
+                .font(.callout)
+                .foregroundStyle(Color.secondaryText)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.dividerColor, lineWidth: 1)
+        )
+    }
+
+    private var subscriptionsConfig: AppManifest.SubscriptionsConfig? {
+        appState.manifest.subscriptions
+    }
+
+    private var benefits: [String] {
+        subscriptionsConfig?.benefits?.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty } ?? []
+    }
+
+    private var headerTitle: String {
+        let fallback = "Premium"
+        guard let value = subscriptionsConfig?.title?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var headerSubtitle: String {
+        let fallback = "Use this template screen to validate StoreKit purchase, restore, and entitlement flows."
+        guard let value = subscriptionsConfig?.subtitle?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var subscribeButtonTitle: String {
+        let fallback = "Subscribe"
+        guard let value = subscriptionsConfig?.subscribeButtonTitle?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var restoreButtonTitle: String {
+        let fallback = "Restore Purchases"
+        guard let value = subscriptionsConfig?.restoreButtonTitle?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var manageButtonTitle: String {
+        let fallback = "Manage Subscription"
+        guard let value = subscriptionsConfig?.manageButtonTitle?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var refreshButtonTitle: String {
+        let fallback = "Refresh Subscription Status"
+        guard let value = subscriptionsConfig?.refreshButtonTitle?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var premiumAreaTitle: String {
+        let fallback = "Premium Test Area"
+        guard let value = subscriptionsConfig?.premiumAreaTitle?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var premiumLockedText: String {
+        let fallback = "Locked. Subscribe to access this section."
+        guard let value = subscriptionsConfig?.premiumAreaLockedText?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var premiumUnlockedText: String {
+        let fallback = "Unlocked. This section represents premium-only content for brand apps."
+        guard let value = subscriptionsConfig?.premiumAreaUnlockedText?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var actionsTitle: String {
+        let fallback = "Subscription Actions"
+        guard let value = subscriptionsConfig?.actionsTitle?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var noProductsText: String {
+        let fallback = "No subscription products available."
+        guard let value = subscriptionsConfig?.noProductsText?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var checkingText: String {
+        let fallback = "Checking subscription status..."
+        guard let value = subscriptionsConfig?.checkingText?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
+            return fallback
+        }
+        return value
+    }
+
+    private var isCheckingEntitlement: Bool {
+        switch subscriptionManager.state {
+        case .unknown, .loading:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
 struct TemplateSettingsView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var cloudSyncManager: CloudSyncManager

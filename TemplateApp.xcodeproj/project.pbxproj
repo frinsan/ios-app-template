@@ -52,6 +52,7 @@
 		E0F9D9152F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */; };
 		E4E24EA834C7B3268ECE79E2 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8131CE86F3AC635E7BEFD46 /* TemplateApp/TemplateApp/Theme/LightModeTextModifier.swift */; };
 		EF5F3F7D2F1C1DEB00AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */; };
+		F1A2B3C4D5E6F708192A3B4C /* TemplateApp/TemplateApp/Components/SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F2A3B4C5D6E7F8091A2B3C /* TemplateApp/TemplateApp/Components/SubscriptionManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,7 @@
 		E0F9D9142F1C5BB2005C8BC4 /* TemplateApp/TemplateApp/Theme/Theme.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Theme/Theme.swift; sourceTree = SOURCE_ROOT; };
 		E358DAC25C55EEDB4C40213F /* TemplateAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemplateAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0F1D8BD2F1C1DD000AA4B65 /* TemplateApp/TemplateApp/WelcomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/WelcomeView.swift; sourceTree = SOURCE_ROOT; };
+		E1F2A3B4C5D6E7F8091A2B3C /* TemplateApp/TemplateApp/Components/SubscriptionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TemplateApp/TemplateApp/Components/SubscriptionManager.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +273,7 @@
 				5E7F8A9B0C1D2E3F4A5B6C7D /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift */,
 				0A27A5F4E9B9483C8B7C0F31 /* TemplateApp/TemplateApp/Components/ErrorBannerView.swift */,
 				6E5F7D8C9B0A1F2E3D4C5B6A /* TemplateApp/TemplateApp/Components/RatePromptManager.swift */,
+				E1F2A3B4C5D6E7F8091A2B3C /* TemplateApp/TemplateApp/Components/SubscriptionManager.swift */,
 				B76082754AC732E97962D267 /* TemplateApp/TemplateApp/TemplateAppApp.swift */,
 				7C946D097FD8DBDC8AB08BC0 /* TemplateApp/TemplateApp/ContentView.swift */,
 				DCC6F520A38A2BB4AEA4DFA1 /* TemplateApp/TemplateApp/Auth/EmailSignUpValidator.swift */,
@@ -423,6 +426,7 @@
 				2C1D3E4F5A6B708192A3B4C5 /* TemplateApp/TemplateApp/Components/LoadingOverlay.swift in Sources */,
 				1D2E3F4A5B60718293A4B5C6 /* TemplateApp/TemplateApp/Components/RatePromptManager.swift in Sources */,
 				1066A4BEBF1346799F4BAA37 /* TemplateApp/TemplateApp/Components/ErrorBannerView.swift in Sources */,
+				F1A2B3C4D5E6F708192A3B4C /* TemplateApp/TemplateApp/Components/SubscriptionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

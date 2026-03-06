@@ -92,6 +92,15 @@ validate_optional_string() {
   fi
 }
 
+validate_optional_array_of_strings() {
+  local expr=$1
+  local name=$2
+  if ! jq -e "${expr} | (. == null or (type == \"array\" and all(.[]; type == \"string\" and length > 0)))" "$SRC" >/dev/null; then
+    echo "Manifest field must be an array of non-empty strings when present: ${name}" >&2
+    exit 1
+  fi
+}
+
 validate_active_environment() {
   if ! jq -e '.activeEnvironment | select(. == "staging" or . == "prod")' "$SRC" >/dev/null; then
     echo 'Manifest activeEnvironment must be "staging" or "prod".' >&2
@@ -113,6 +122,7 @@ validate_bool '.features.login' 'features.login'
 validate_bool '.features.feedback' 'features.feedback'
 validate_bool '.features.share' 'features.share'
 validate_bool '.features.push' 'features.push'
+validate_optional_bool '.features.subscriptions' 'features.subscriptions'
 validate_string '.apiBase.staging' 'apiBase.staging'
 validate_string '.apiBase.prod' 'apiBase.prod'
 validate_string '.auth.cognitoClientId' 'auth.cognitoClientId'
@@ -122,7 +132,16 @@ validate_string '.auth.hostedUIDomain' 'auth.hostedUIDomain'
 validate_string '.legal.privacyUrl' 'legal.privacyUrl'
 validate_string '.legal.termsUrl' 'legal.termsUrl'
 validate_optional_bool '.features.cloudSync' 'features.cloudSync'
+validate_optional_array_of_strings '.subscriptions.productIds' 'subscriptions.productIds'
 validate_active_environment
+
+SUBSCRIPTIONS_ENABLED=$(jq -r '.features.subscriptions // false' "$SRC")
+if [[ "$SUBSCRIPTIONS_ENABLED" == "true" ]]; then
+  if ! jq -e '.subscriptions.productIds | type == "array" and length > 0 and all(.[]; type == "string" and length > 0)' "$SRC" >/dev/null; then
+    echo "Manifest requires at least one subscriptions.productId when features.subscriptions is true." >&2
+    exit 1
+  fi
+fi
 
 if ! jq -e '.cloud.containerId == null' "$SRC" >/dev/null; then
   echo "Manifest field is not supported: cloud.containerId (Cloud sync uses default iCloud.<appId> container only)." >&2

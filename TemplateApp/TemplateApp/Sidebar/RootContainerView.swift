@@ -3,6 +3,7 @@ import SwiftUI
 struct RootContainerView: View {
     @EnvironmentObject private var appState: AppState
     @StateObject private var cloudSyncManager = CloudSyncManager()
+    @StateObject private var subscriptionManager = SubscriptionManager.shared
     @State private var selection: SidebarItem = .home
     @State private var isMenuVisible = false
     @State private var legalSheet: LegalSheet?
@@ -10,6 +11,10 @@ struct RootContainerView: View {
     private let drawerWidth: CGFloat = 280
     private var menuItems: [SidebarItem] {
         var items: [SidebarItem] = [.home]
+
+        if appState.manifest.features.subscriptions {
+            items.append(.subscriptions)
+        }
 
         if appState.manifest.features.imageCapture {
             items.append(.imageCapture)
@@ -48,6 +53,7 @@ struct RootContainerView: View {
                     .animation(.easeInOut, value: selection)
             }
             .environmentObject(cloudSyncManager)
+            .environmentObject(subscriptionManager)
             .accentColor(.primaryAccent)
 
             if isMenuVisible {
@@ -115,6 +121,8 @@ struct RootContainerView: View {
         switch selection {
         case .home:
             ContentView()
+        case .subscriptions:
+            TemplateSubscriptionsView()
         case .imageCapture:
             ImageCaptureScreen()
         case .settings:

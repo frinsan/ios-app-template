@@ -32,6 +32,7 @@ struct AppManifest: Codable {
         var ratePrompt: Bool
         var aiPlayground: Bool
         var cloudSync: Bool
+        var subscriptions: Bool
 
         enum CodingKeys: String, CodingKey {
             case settings
@@ -46,6 +47,7 @@ struct AppManifest: Codable {
             case ratePrompt
             case aiPlayground
             case cloudSync
+            case subscriptions
         }
 
         init(
@@ -60,7 +62,8 @@ struct AppManifest: Codable {
             errorBanner: Bool = true,
             ratePrompt: Bool = false,
             aiPlayground: Bool = false,
-            cloudSync: Bool = false
+            cloudSync: Bool = false,
+            subscriptions: Bool = false
         ) {
             self.settings = settings
             self.login = login
@@ -74,6 +77,7 @@ struct AppManifest: Codable {
             self.ratePrompt = ratePrompt
             self.aiPlayground = aiPlayground
             self.cloudSync = cloudSync
+            self.subscriptions = subscriptions
         }
 
         init(from decoder: Decoder) throws {
@@ -90,6 +94,7 @@ struct AppManifest: Codable {
             self.ratePrompt = try container.decodeIfPresent(Bool.self, forKey: .ratePrompt) ?? false
             self.aiPlayground = try container.decodeIfPresent(Bool.self, forKey: .aiPlayground) ?? false
             self.cloudSync = try container.decodeIfPresent(Bool.self, forKey: .cloudSync) ?? false
+            self.subscriptions = try container.decodeIfPresent(Bool.self, forKey: .subscriptions) ?? false
         }
     }
 
@@ -129,6 +134,58 @@ struct AppManifest: Codable {
         var containerId: String?
     }
 
+    struct SubscriptionsConfig: Codable {
+        var productIds: [String]
+        var title: String?
+        var subtitle: String?
+        var benefits: [String]?
+        var actionsTitle: String?
+        var noProductsText: String?
+        var checkingText: String?
+        var subscribeButtonTitle: String?
+        var restoreButtonTitle: String?
+        var manageButtonTitle: String?
+        var refreshButtonTitle: String?
+        var premiumAreaTitle: String?
+        var premiumAreaLockedText: String?
+        var premiumAreaUnlockedText: String?
+
+        enum CodingKeys: String, CodingKey {
+            case productIds
+            case title
+            case subtitle
+            case benefits
+            case actionsTitle
+            case noProductsText
+            case checkingText
+            case subscribeButtonTitle
+            case restoreButtonTitle
+            case manageButtonTitle
+            case refreshButtonTitle
+            case premiumAreaTitle
+            case premiumAreaLockedText
+            case premiumAreaUnlockedText
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.productIds = try container.decodeIfPresent([String].self, forKey: .productIds) ?? []
+            self.title = try container.decodeIfPresent(String.self, forKey: .title)
+            self.subtitle = try container.decodeIfPresent(String.self, forKey: .subtitle)
+            self.benefits = try container.decodeIfPresent([String].self, forKey: .benefits)
+            self.actionsTitle = try container.decodeIfPresent(String.self, forKey: .actionsTitle)
+            self.noProductsText = try container.decodeIfPresent(String.self, forKey: .noProductsText)
+            self.checkingText = try container.decodeIfPresent(String.self, forKey: .checkingText)
+            self.subscribeButtonTitle = try container.decodeIfPresent(String.self, forKey: .subscribeButtonTitle)
+            self.restoreButtonTitle = try container.decodeIfPresent(String.self, forKey: .restoreButtonTitle)
+            self.manageButtonTitle = try container.decodeIfPresent(String.self, forKey: .manageButtonTitle)
+            self.refreshButtonTitle = try container.decodeIfPresent(String.self, forKey: .refreshButtonTitle)
+            self.premiumAreaTitle = try container.decodeIfPresent(String.self, forKey: .premiumAreaTitle)
+            self.premiumAreaLockedText = try container.decodeIfPresent(String.self, forKey: .premiumAreaLockedText)
+            self.premiumAreaUnlockedText = try container.decodeIfPresent(String.self, forKey: .premiumAreaUnlockedText)
+        }
+    }
+
     enum Environment: String, Codable {
         case staging
         case prod
@@ -145,6 +202,7 @@ struct AppManifest: Codable {
     var push: PushConfig?
     var share: ShareConfig?
     var cloud: CloudConfig?
+    var subscriptions: SubscriptionsConfig?
     var activeEnvironment: Environment
 
     var baseURL: URL {
@@ -171,7 +229,8 @@ struct AppManifest: Codable {
             errorBanner: true,
             ratePrompt: false,
             aiPlayground: false,
-            cloudSync: false
+            cloudSync: false,
+            subscriptions: false
         ),
         apiBase: .init(
             staging: URL(string: "https://staging.api.example.com")!,
@@ -182,6 +241,7 @@ struct AppManifest: Codable {
         push: nil,
         share: nil,
         cloud: nil,
+        subscriptions: nil,
         activeEnvironment: .staging
     )
 }

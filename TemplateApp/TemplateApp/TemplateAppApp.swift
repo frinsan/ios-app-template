@@ -6,15 +6,22 @@ import Combine
 struct TemplateAppApp: App {
     @UIApplicationDelegateAdaptor(PushAppDelegate.self) var pushDelegate
     @StateObject private var appState = AppState()
+    @StateObject private var subscriptionManager = SubscriptionManager.shared
+
+    init() {
+        SubscriptionManager.shared.start()
+    }
 
     var body: some Scene {
         WindowGroup {
             AppEntryView()
                 .environmentObject(appState)
+                .environmentObject(subscriptionManager)
                 .tint(.primaryAccent)
                 .onAppear {
                     AnalyticsManager.shared.configure(with: appState)
                     AnalyticsManager.shared.track(.screenView(name: "AppEntry"))
+                    subscriptionManager.configure(using: appState.manifest)
                 }
         }
     }
