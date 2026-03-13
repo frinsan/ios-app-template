@@ -113,6 +113,18 @@ struct AppManifest: Codable {
         var scheme: String?
         var region: String?
         var hostedUIDomain: String?
+
+        init(
+            cognitoClientId: String? = nil,
+            scheme: String? = nil,
+            region: String? = nil,
+            hostedUIDomain: String? = nil
+        ) {
+            self.cognitoClientId = cognitoClientId
+            self.scheme = scheme
+            self.region = region
+            self.hostedUIDomain = hostedUIDomain
+        }
     }
 
     struct LegalConfig: Codable {
@@ -214,6 +226,85 @@ struct AppManifest: Codable {
         switch activeEnvironment {
         case .staging: return apiBase.staging
         case .prod: return apiBase.prod
+        }
+    }
+
+    private struct EnvironmentAuthConfig: Decodable {
+        var staging: AuthConfig?
+        var prod: AuthConfig?
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case appId
+        case displayName
+        case bundleIdSuffix
+        case theme
+        case features
+        case apiBase
+        case auth
+        case legal
+        case push
+        case share
+        case cloud
+        case subscriptions
+        case activeEnvironment
+    }
+
+    init(
+        appId: String,
+        displayName: String,
+        bundleIdSuffix: String,
+        theme: Theme,
+        features: FeatureFlags,
+        apiBase: APIConfig,
+        auth: AuthConfig,
+        legal: LegalConfig?,
+        push: PushConfig?,
+        share: ShareConfig?,
+        cloud: CloudConfig?,
+        subscriptions: SubscriptionsConfig?,
+        activeEnvironment: Environment
+    ) {
+        self.appId = appId
+        self.displayName = displayName
+        self.bundleIdSuffix = bundleIdSuffix
+        self.theme = theme
+        self.features = features
+        self.apiBase = apiBase
+        self.auth = auth
+        self.legal = legal
+        self.push = push
+        self.share = share
+        self.cloud = cloud
+        self.subscriptions = subscriptions
+        self.activeEnvironment = activeEnvironment
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        appId = try container.decode(String.self, forKey: .appId)
+        displayName = try container.decode(String.self, forKey: .displayName)
+        bundleIdSuffix = try container.decode(String.self, forKey: .bundleIdSuffix)
+        theme = try container.decode(Theme.self, forKey: .theme)
+        features = try container.decode(FeatureFlags.self, forKey: .features)
+        apiBase = try container.decode(APIConfig.self, forKey: .apiBase)
+        legal = try container.decodeIfPresent(LegalConfig.self, forKey: .legal)
+        push = try container.decodeIfPresent(PushConfig.self, forKey: .push)
+        share = try container.decodeIfPresent(ShareConfig.self, forKey: .share)
+        cloud = try container.decodeIfPresent(CloudConfig.self, forKey: .cloud)
+        subscriptions = try container.decodeIfPresent(SubscriptionsConfig.self, forKey: .subscriptions)
+        activeEnvironment = try container.decode(Environment.self, forKey: .activeEnvironment)
+
+        if let envAuth = try? container.decode(EnvironmentAuthConfig.self, forKey: .auth),
+           envAuth.staging != nil || envAuth.prod != nil {
+            switch activeEnvironment {
+            case .staging:
+                auth = envAuth.staging ?? envAuth.prod ?? AuthConfig()
+            case .prod:
+                auth = envAuth.prod ?? envAuth.staging ?? AuthConfig()
+            }
+        } else {
+            auth = try container.decode(AuthConfig.self, forKey: .auth)
         }
     }
 

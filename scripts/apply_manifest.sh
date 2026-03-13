@@ -125,10 +125,10 @@ validate_bool '.features.push' 'features.push'
 validate_optional_bool '.features.subscriptions' 'features.subscriptions'
 validate_string '.apiBase.staging' 'apiBase.staging'
 validate_string '.apiBase.prod' 'apiBase.prod'
-validate_string '.auth.cognitoClientId' 'auth.cognitoClientId'
-validate_string '.auth.scheme' 'auth.scheme'
-validate_string '.auth.region' 'auth.region'
-validate_string '.auth.hostedUIDomain' 'auth.hostedUIDomain'
+validate_string '(.auth[.activeEnvironment] // .auth).cognitoClientId' 'auth.cognitoClientId'
+validate_string '(.auth[.activeEnvironment] // .auth).scheme' 'auth.scheme'
+validate_string '(.auth[.activeEnvironment] // .auth).region' 'auth.region'
+validate_string '(.auth[.activeEnvironment] // .auth).hostedUIDomain' 'auth.hostedUIDomain'
 validate_string '.legal.privacyUrl' 'legal.privacyUrl'
 validate_string '.legal.termsUrl' 'legal.termsUrl'
 validate_optional_bool '.features.cloudSync' 'features.cloudSync'
@@ -150,7 +150,7 @@ fi
 
 APP_ID=$(jq -r '.appId' "$SRC")
 DISPLAY_NAME=$(jq -r '.displayName' "$SRC")
-URL_SCHEME=$(jq -r '.auth.scheme' "$SRC")
+URL_SCHEME=$(jq -r '(.auth[.activeEnvironment] // .auth).scheme' "$SRC")
 MARKETING_VERSION=$(jq -r '.build.marketingVersion // empty' "$SRC")
 BUILD_NUMBER=$(jq -r '.build.buildNumber // empty' "$SRC")
 CLOUD_SYNC_ENABLED=$(jq -r '.features.cloudSync // false' "$SRC")

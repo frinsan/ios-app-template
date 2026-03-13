@@ -37,10 +37,11 @@ enum RefreshTokenError: Error {
 struct HostedUILoginController {
     @MainActor
     static func signIn(provider: HostedUIProvider, manifest: AppManifest) async throws -> AuthSession {
-        guard let clientId = manifest.auth.cognitoClientId,
-              let scheme = manifest.auth.scheme,
-              let region = manifest.auth.region,
-              let domain = manifest.auth.hostedUIDomain, !domain.isEmpty
+        let auth = manifest.auth
+        guard let clientId = auth.cognitoClientId,
+              let scheme = auth.scheme,
+              let region = auth.region,
+              let domain = auth.hostedUIDomain, !domain.isEmpty
         else {
             throw HostedUILoginError.invalidConfiguration
         }
@@ -73,9 +74,10 @@ struct HostedUILoginController {
 
     @MainActor
     static func logout(manifest: AppManifest) async throws {
-        guard let domain = manifest.auth.hostedUIDomain,
-              let clientId = manifest.auth.cognitoClientId,
-              let scheme = manifest.auth.scheme else {
+        let auth = manifest.auth
+        guard let domain = auth.hostedUIDomain,
+              let clientId = auth.cognitoClientId,
+              let scheme = auth.scheme else {
             throw HostedUILoginError.invalidConfiguration
         }
 
@@ -96,8 +98,9 @@ struct HostedUILoginController {
     }
 
     static func refreshSession(manifest: AppManifest, refreshToken: String) async throws -> AuthSession {
-        guard let domain = manifest.auth.hostedUIDomain,
-              let clientId = manifest.auth.cognitoClientId else {
+        let auth = manifest.auth
+        guard let domain = auth.hostedUIDomain,
+              let clientId = auth.cognitoClientId else {
             throw HostedUILoginError.invalidConfiguration
         }
 

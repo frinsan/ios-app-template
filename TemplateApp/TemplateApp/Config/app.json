@@ -27,10 +27,18 @@
     "prod": "https://fhdsv5jl7h.execute-api.us-west-2.amazonaws.com"
   },
   "auth": {
-    "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
-    "scheme": "templateapp",
-    "region": "us-west-2",
-    "hostedUIDomain": "auth-staging.learnandbecurious.com"
+    "staging": {
+      "cognitoClientId": "5l0ibjffqpburhckouas7r234d",
+      "scheme": "templateapp",
+      "region": "us-west-2",
+      "hostedUIDomain": "auth-staging.learnandbecurious.com"
+    },
+    "prod": {
+      "cognitoClientId": "7j7sleur0f72tqc3qv6o0a0nia",
+      "scheme": "templateapp",
+      "region": "us-west-2",
+      "hostedUIDomain": "auth.learnandbecurious.com"
+    }
   },
   "legal": {
     "privacyUrl": "https://learnandbecurious.com/privacy.html",
