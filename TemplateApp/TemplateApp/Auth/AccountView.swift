@@ -299,6 +299,7 @@ private struct DeleteAccountSheet: View {
     let accentColor: Color
     let onConfirm: () -> Void
     let onCancel: () -> Void
+    @FocusState private var isConfirmationFieldFocused: Bool
 
     var body: some View {
         NavigationStack {
@@ -311,6 +312,7 @@ private struct DeleteAccountSheet: View {
                 TextField("Type DELETE", text: $confirmationText)
                     .textInputAutocapitalization(.characters)
                     .autocorrectionDisabled()
+                    .focused($isConfirmationFieldFocused)
 
                 if let errorMessage {
                     Text(errorMessage)
@@ -331,6 +333,15 @@ private struct DeleteAccountSheet: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel", action: onCancel)
                 }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isConfirmationFieldFocused = false
+                    }
+                }
+            }
+            .onAppear {
+                isConfirmationFieldFocused = true
             }
         }
     }

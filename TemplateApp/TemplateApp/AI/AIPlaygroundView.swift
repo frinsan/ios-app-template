@@ -6,6 +6,7 @@ struct AIPlaygroundView: View {
     @State private var selectedStyle: RewriteStyle = .clearer
     @State private var isProcessing: Bool = false
     @State private var errorMessage: String?
+    @FocusState private var isInputFocused: Bool
 
     private let aiService: AIService = AIServiceFactory.make()
 
@@ -28,8 +29,17 @@ struct AIPlaygroundView: View {
             }
             .padding()
         }
+        .platformScrollDismissesKeyboard()
         .navigationTitle("AI Playground")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    isInputFocused = false
+                }
+            }
+        }
     }
 
     private var header: some View {
@@ -65,6 +75,7 @@ struct AIPlaygroundView: View {
                 .font(.headline)
 
             TextEditor(text: $inputText)
+                .focused($isInputFocused)
                 .frame(minHeight: 120)
                 .padding(8)
                 .background(

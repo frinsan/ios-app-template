@@ -198,6 +198,7 @@ struct EmailSignUpView: View {
                 detailsStep
             }
         }
+        .platformScrollDismissesKeyboard()
         .lightModeTextColor()
         .navigationTitle("Sign up with email")
         .navigationBarTitleDisplayMode(.inline)
@@ -749,6 +750,7 @@ struct EmailLoginView: View {
                 ForgotPasswordLinkRow(action: { isForgotPasswordPresented = true })
             }
         }
+        .platformScrollDismissesKeyboard()
         .lightModeTextColor()
         .navigationTitle("Log in with email")
         .navigationBarTitleDisplayMode(.inline)
@@ -861,6 +863,7 @@ struct EmailConfirmView: View {
     @AppStorage("EmailSignUpResendCooldownUntil") private var signupResendCooldownUntil: Double = 0
     private let resendCooldownSeconds = 60
     private let resendTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @FocusState private var isCodeFieldFocused: Bool
 
     var body: some View {
         Form {
@@ -869,6 +872,7 @@ struct EmailConfirmView: View {
                 TextField("6-digit code", text: $code)
                     .keyboardType(.numberPad)
                     .textContentType(.oneTimeCode)
+                    .focused($isCodeFieldFocused)
             }
 
             if let errorMessage {
@@ -910,6 +914,7 @@ struct EmailConfirmView: View {
                 .disabled(isSubmitting)
             }
         }
+        .platformScrollDismissesKeyboard()
         .lightModeTextColor()
         .navigationTitle("Enter verification code")
         .onAppear {
@@ -917,6 +922,14 @@ struct EmailConfirmView: View {
         }
         .onReceive(resendTimer) { _ in
             tickResendCooldown()
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") {
+                    isCodeFieldFocused = false
+                }
+            }
         }
     }
 

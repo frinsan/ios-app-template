@@ -52,6 +52,7 @@ struct ForgotPasswordRequestView: View {
                 .disabled(!isCodeSectionEnabled || isSubmitting)
             }
         }
+        .platformScrollDismissesKeyboard()
         .navigationTitle("Reset password")
         .lightModeTextColor()
         .onChange(of: appState.latestLoginSuccessID) { _, _ in

@@ -54,6 +54,7 @@ struct ImageCaptureScreen: View {
             }
             .padding()
         }
+        .platformScrollDismissesKeyboard()
         .background(Color.appBackground.ignoresSafeArea())
         .navigationTitle("Image Capture")
         .navigationBarTitleDisplayMode(.inline)
@@ -595,6 +596,7 @@ struct TemplateSettingsView: View {
                             .lineLimit(3 ... 8)
                     }
                 }
+                .platformScrollDismissesKeyboard()
                 .navigationTitle("Edit Image Record")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

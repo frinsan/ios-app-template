@@ -380,3 +380,9 @@ final class PushAppDelegate: NSObject, UIApplicationDelegate {
         completionHandler(.noData)
     }
 }
+
+extension View {
+    func platformScrollDismissesKeyboard() -> some View {
+        scrollDismissesKeyboard(.interactively)
+    }
+}
