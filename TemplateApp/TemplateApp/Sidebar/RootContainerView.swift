@@ -167,6 +167,7 @@ struct RootContainerView: View {
     }
 
     private func toggleMenu() {
+        KeyboardDismissor.dismiss()
         withAnimation(.easeInOut(duration: 0.25)) {
             isMenuVisible.toggle()
         }
