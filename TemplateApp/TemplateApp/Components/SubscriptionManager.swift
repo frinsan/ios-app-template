@@ -14,6 +14,7 @@ enum SubscriptionSyncSource: String {
     case purchase
     case restore
     case transactionUpdate
+    case unfinishedTransaction
 }
 
 struct SubscriptionBackendSyncResult {
@@ -169,6 +170,7 @@ final class SubscriptionManager: ObservableObject {
             }
         }
 
+        await drainUnfinishedTransactions(source: .unfinishedTransaction)
         await refreshEntitlements(showLoadingState: state == .unknown)
     }
 
@@ -216,7 +218,8 @@ final class SubscriptionManager: ObservableObject {
         defer { isProcessingPurchase = false }
 
         do {
-            let result = try await product.purchase()
+            await drainUnfinishedTransactions(source: .unfinishedTransaction)
+            let result = try await purchaseResult(for: product)
             switch result {
             case let .success(verification):
                 guard case let .verified(transaction) = verification else {
@@ -258,6 +261,7 @@ final class SubscriptionManager: ObservableObject {
         defer { isProcessingPurchase = false }
 
         do {
+            await drainUnfinishedTransactions(source: .unfinishedTransaction)
             try await AppStore.sync()
             let signedTransactions = await currentSignedPremiumEntitlements()
             await syncTransactionsIfNeeded(tokens: signedTransactions, source: .restore)
@@ -284,6 +288,7 @@ final class SubscriptionManager: ObservableObject {
     }
 
     private func runListenerLoop() async {
+        await drainUnfinishedTransactions(source: .unfinishedTransaction)
         await refreshEntitlements(showLoadingState: true)
 
         for await update in StoreKit.Transaction.updates {
@@ -296,6 +301,39 @@ final class SubscriptionManager: ObservableObject {
             await syncTransactionsIfNeeded(tokens: token.map { [$0] } ?? [], source: .transactionUpdate)
             await refreshEntitlements(showLoadingState: false)
         }
+    }
+
+    private func purchaseResult(for product: Product) async throws -> Product.PurchaseResult {
+        if let scene = activePurchaseScene() {
+            return try await product.purchase(confirmIn: scene)
+        }
+        return try await product.purchase()
+    }
+
+    private func activePurchaseScene() -> UIWindowScene? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first(where: { $0.activationState == .foregroundActive })
+    }
+
+    private func drainUnfinishedTransactions(source: SubscriptionSyncSource) async {
+        var tokens: [String] = []
+
+        for await unfinished in StoreKit.Transaction.unfinished {
+            guard case let .verified(transaction) = unfinished else { continue }
+            guard premiumProductIDs.contains(transaction.productID) else { continue }
+
+            if let token = transactionToken(for: transaction) {
+                tokens.append(token)
+            }
+
+            await transaction.finish()
+        }
+
+        let uniqueTokens = Array(Set(tokens))
+        guard !uniqueTokens.isEmpty else { return }
+
+        await syncTransactionsIfNeeded(tokens: uniqueTokens, source: source)
     }
 
     private func syncTransactionsIfNeeded(tokens: [String], source: SubscriptionSyncSource) async {
