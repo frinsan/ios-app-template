@@ -56,23 +56,25 @@ struct RootContainerView: View {
         .environmentObject(subscriptionManager)
         .accentColor(.primaryAccent)
         .overlay(alignment: .topLeading) {
-            if isMenuVisible {
-                ZStack(alignment: .leading) {
+            ZStack(alignment: .leading) {
+                if isMenuVisible {
                     Color.overlayScrim.opacity(0.35)
                         .ignoresSafeArea()
                         .onTapGesture { toggleMenu() }
                         .transition(.opacity)
-
-                    SidebarView(
-                        items: menuItems,
-                        selection: $selection,
-                        isVisible: $isMenuVisible,
-                        onSelect: handleSidebarSelection
-                    )
-                    .frame(width: drawerWidth)
-                    .shadow(color: .black.opacity(0.2), radius: 10, x: 4, y: 0)
-                    .transition(.move(edge: .leading))
                 }
+
+                SidebarView(
+                    items: menuItems,
+                    selection: $selection,
+                    isVisible: $isMenuVisible,
+                    onSelect: handleSidebarSelection
+                )
+                .frame(width: drawerWidth)
+                .offset(x: isMenuVisible ? 0 : -drawerWidth - 16)
+                .shadow(color: .black.opacity(0.2), radius: 10, x: 4, y: 0)
+                .allowsHitTesting(isMenuVisible)
+                .animation(.easeInOut(duration: 0.25), value: isMenuVisible)
             }
         }
         .onChange(of: appState.authState) { _, newValue in
