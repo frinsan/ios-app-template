@@ -322,7 +322,9 @@ struct AppEntryView: View {
     @EnvironmentObject private var appState: AppState
 
     var body: some View {
-        Group {
+        ZStack(alignment: .topLeading) {
+            Color.clear
+
             if appState.shouldShowOnboarding, appState.shouldShowWelcome, case .signedOut = appState.authState {
                 OnboardingView {
                     appState.dismissOnboarding()
@@ -335,6 +337,7 @@ struct AppEntryView: View {
                 RootContainerView()
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
 

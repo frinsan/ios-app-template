@@ -214,6 +214,22 @@ The template exposes an optional AI Playground screen controlled entirely by a f
 - The sidebar menu adds an `AI Playground` item only when `features.aiPlayground` is `true`.
 - The `SidebarItem` enum includes an `.aiPlayground` case. Any `switch` on `SidebarItem` (including brand overlays under `Overlay/TemplateApp/...`) must handle `.aiPlayground` to remain exhaustive, even if the feature is currently disabled for that brand.
 
+### Brand shell guidance
+
+- The template shell is intended to stay shared across brands.
+- Brand-specific menu differences should usually be expressed through manifest feature flags and small overlay screens, not by replacing `Sidebar/RootContainerView.swift` or `TemplateAppApp.swift`.
+- Overriding shell files is supported, but it is an escape hatch:
+  - `Sidebar/RootContainerView.swift`
+  - `Sidebar/SidebarView.swift`
+  - `Sidebar/SidebarItem.swift`
+  - `TemplateAppApp.swift`
+- Once a brand overrides those files, that brand no longer inherits future template fixes for them automatically.
+- Preferred customization order:
+  - manifest flags / config
+  - assets / theming
+  - leaf overlay screens and components
+  - shell override only if the brand truly needs a different app container or navigation model
+
 ### Onboarding feature flag
 
 - Add `features.onboarding` to the brand manifest (`app.json`) to control pre-auth onboarding screens.

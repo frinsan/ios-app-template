@@ -39,40 +39,41 @@ struct RootContainerView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .leading) {
-            NavigationStack {
-                detailContent
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button(action: toggleMenu) {
-                                Image(systemName: "line.horizontal.3")
-                                    .imageScale(.large)
-                            }
+        NavigationStack {
+            detailContent
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: toggleMenu) {
+                            Image(systemName: "line.horizontal.3")
+                                .imageScale(.large)
                         }
                     }
-                    .animation(.easeInOut, value: selection)
-            }
-            .environmentObject(cloudSyncManager)
-            .environmentObject(subscriptionManager)
-            .accentColor(.primaryAccent)
-
+                }
+                .animation(.easeInOut, value: selection)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .environmentObject(cloudSyncManager)
+        .environmentObject(subscriptionManager)
+        .accentColor(.primaryAccent)
+        .overlay(alignment: .topLeading) {
             if isMenuVisible {
-                Color.overlayScrim.opacity(0.35)
-                    .ignoresSafeArea()
-                    .onTapGesture { toggleMenu() }
-                    .transition(.opacity)
-            }
+                ZStack(alignment: .leading) {
+                    Color.overlayScrim.opacity(0.35)
+                        .ignoresSafeArea()
+                        .onTapGesture { toggleMenu() }
+                        .transition(.opacity)
 
-            SidebarView(
-                items: menuItems,
-                selection: $selection,
-                isVisible: $isMenuVisible,
-                onSelect: handleSidebarSelection
-            )
-                .frame(width: drawerWidth)
-                .offset(x: isMenuVisible ? 0 : -drawerWidth - 16)
-                .shadow(color: .black.opacity(0.2), radius: 10, x: 4, y: 0)
-                .animation(.easeInOut(duration: 0.25), value: isMenuVisible)
+                    SidebarView(
+                        items: menuItems,
+                        selection: $selection,
+                        isVisible: $isMenuVisible,
+                        onSelect: handleSidebarSelection
+                    )
+                    .frame(width: drawerWidth)
+                    .shadow(color: .black.opacity(0.2), radius: 10, x: 4, y: 0)
+                    .transition(.move(edge: .leading))
+                }
+            }
         }
         .onChange(of: appState.authState) { _, newValue in
             if !menuItems.contains(selection) {
