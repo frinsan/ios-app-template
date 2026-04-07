@@ -48,6 +48,7 @@ final class SubscriptionManager: ObservableObject {
     private var configSignature = ""
     private var isRefreshingEntitlements = false
     private weak var backendSyncProvider: (any SubscriptionBackendSyncing)?
+    private var purchaseAppAccountToken: UUID?
 
     var hasConfiguredProducts: Bool {
         !configuredProductIDs.isEmpty
@@ -132,6 +133,10 @@ final class SubscriptionManager: ObservableObject {
 
     func configureBackendSyncProvider(_ provider: (any SubscriptionBackendSyncing)?) {
         backendSyncProvider = provider
+    }
+
+    func configurePurchaseAppAccountToken(_ token: UUID?) {
+        purchaseAppAccountToken = token
     }
 
     func refreshProductsAndEntitlements(forceProductReload: Bool = false) async {
@@ -304,10 +309,16 @@ final class SubscriptionManager: ObservableObject {
     }
 
     private func purchaseResult(for product: Product) async throws -> Product.PurchaseResult {
+        let options = purchaseOptions()
         if let scene = activePurchaseScene() {
-            return try await product.purchase(confirmIn: scene)
+            return try await product.purchase(confirmIn: scene, options: options)
         }
-        return try await product.purchase()
+        return try await product.purchase(options: options)
+    }
+
+    private func purchaseOptions() -> Set<Product.PurchaseOption> {
+        guard let purchaseAppAccountToken else { return [] }
+        return [.appAccountToken(purchaseAppAccountToken)]
     }
 
     private func activePurchaseScene() -> UIWindowScene? {
