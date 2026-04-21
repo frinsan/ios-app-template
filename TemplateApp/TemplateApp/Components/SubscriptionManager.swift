@@ -15,6 +15,7 @@ enum SubscriptionSyncSource: String {
     case restore
     case transactionUpdate
     case unfinishedTransaction
+    case currentEntitlements
 }
 
 struct SubscriptionBackendSyncResult {
@@ -215,6 +216,19 @@ final class SubscriptionManager: ObservableObject {
         }
     }
 
+    @discardableResult
+    func syncCurrentEntitlementsToBackend(
+        source: SubscriptionSyncSource = .currentEntitlements
+    ) async -> SubscriptionBackendSyncResult? {
+        guard isFeatureEnabled else { return nil }
+        guard hasConfiguredProducts else { return nil }
+
+        let signedTransactions = await currentSignedPremiumEntitlements()
+        guard !signedTransactions.isEmpty else { return nil }
+
+        return await syncTransactionsIfNeeded(tokens: signedTransactions, source: source)
+    }
+
     func purchase(_ product: Product) async {
         guard !isProcessingPurchase else { return }
         guard isFeatureEnabled else { return }
@@ -347,9 +361,13 @@ final class SubscriptionManager: ObservableObject {
         await syncTransactionsIfNeeded(tokens: uniqueTokens, source: source)
     }
 
-    private func syncTransactionsIfNeeded(tokens: [String], source: SubscriptionSyncSource) async {
-        guard let backendSyncProvider else { return }
-        guard !tokens.isEmpty else { return }
+    @discardableResult
+    private func syncTransactionsIfNeeded(
+        tokens: [String],
+        source: SubscriptionSyncSource
+    ) async -> SubscriptionBackendSyncResult? {
+        guard let backendSyncProvider else { return nil }
+        guard !tokens.isEmpty else { return nil }
 
         do {
             let result = try await backendSyncProvider.syncSignedTransactions(tokens, source: source)
@@ -363,8 +381,10 @@ final class SubscriptionManager: ObservableObject {
                     state = .inactive
                 }
             }
+            return result
         } catch {
             lastOperationMessage = "Subscription sync failed. Using local StoreKit status."
+            return nil
         }
     }
 
