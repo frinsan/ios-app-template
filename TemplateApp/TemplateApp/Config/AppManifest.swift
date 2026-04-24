@@ -23,7 +23,6 @@ struct AppManifest: Codable {
         var settings: Bool
         var onboarding: Bool
         var login: Bool
-        var feedback: Bool
         var push: Bool
         var share: Bool
         var pushDeepLink: Bool
@@ -39,7 +38,6 @@ struct AppManifest: Codable {
             case settings
             case onboarding
             case login
-            case feedback
             case push
             case share
             case pushDeepLink
@@ -56,7 +54,6 @@ struct AppManifest: Codable {
             settings: Bool = false,
             onboarding: Bool = false,
             login: Bool = true,
-            feedback: Bool = false,
             push: Bool = false,
             share: Bool = false,
             pushDeepLink: Bool = false,
@@ -71,7 +68,6 @@ struct AppManifest: Codable {
             self.settings = settings
             self.onboarding = onboarding
             self.login = login
-            self.feedback = feedback
             self.push = push
             self.share = share
             self.pushDeepLink = pushDeepLink
@@ -89,7 +85,6 @@ struct AppManifest: Codable {
             self.settings = try container.decodeIfPresent(Bool.self, forKey: .settings) ?? false
             self.onboarding = try container.decodeIfPresent(Bool.self, forKey: .onboarding) ?? false
             self.login = try container.decodeIfPresent(Bool.self, forKey: .login) ?? true
-            self.feedback = try container.decodeIfPresent(Bool.self, forKey: .feedback) ?? false
             self.push = try container.decodeIfPresent(Bool.self, forKey: .push) ?? false
             self.share = try container.decodeIfPresent(Bool.self, forKey: .share) ?? false
             self.pushDeepLink = try container.decodeIfPresent(Bool.self, forKey: .pushDeepLink) ?? false
@@ -317,7 +312,6 @@ struct AppManifest: Codable {
             settings: false,
             onboarding: false,
             login: true,
-            feedback: false,
             push: false,
             share: false,
             pushDeepLink: false,
