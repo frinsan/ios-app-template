@@ -98,6 +98,24 @@ struct AppManifest: Codable {
         }
     }
 
+    struct MenuConfig: Codable {
+        var settings: Bool?
+        var aiPlayground: Bool?
+        var subscriptions: Bool?
+        var imageCapture: Bool?
+    }
+
+    struct SettingsConfig: Codable {
+        var showDeveloperInfo: Bool?
+    }
+
+    enum MenuItem {
+        case settings
+        case aiPlayground
+        case subscriptions
+        case imageCapture
+    }
+
     struct APIConfig: Codable {
         var staging: URL
         var prod: URL
@@ -208,6 +226,7 @@ struct AppManifest: Codable {
     var bundleIdSuffix: String
     var theme: Theme
     var features: FeatureFlags
+    var menu: MenuConfig?
     var apiBase: APIConfig
     var auth: AuthConfig
     var legal: LegalConfig?
@@ -215,12 +234,30 @@ struct AppManifest: Codable {
     var share: ShareConfig?
     var cloud: CloudConfig?
     var subscriptions: SubscriptionsConfig?
+    var settings: SettingsConfig?
     var activeEnvironment: Environment
 
     var baseURL: URL {
         switch activeEnvironment {
         case .staging: return apiBase.staging
         case .prod: return apiBase.prod
+        }
+    }
+
+    var isSettingsDeveloperInfoVisible: Bool {
+        settings?.showDeveloperInfo ?? (activeEnvironment != .prod)
+    }
+
+    func showsMenuItem(_ item: MenuItem) -> Bool {
+        switch item {
+        case .settings:
+            return features.settings && (menu?.settings ?? features.settings)
+        case .aiPlayground:
+            return features.aiPlayground && (menu?.aiPlayground ?? features.aiPlayground)
+        case .subscriptions:
+            return features.subscriptions && (menu?.subscriptions ?? features.subscriptions)
+        case .imageCapture:
+            return features.imageCapture && (menu?.imageCapture ?? features.imageCapture)
         }
     }
 
@@ -235,6 +272,7 @@ struct AppManifest: Codable {
         case bundleIdSuffix
         case theme
         case features
+        case menu
         case apiBase
         case auth
         case legal
@@ -242,6 +280,7 @@ struct AppManifest: Codable {
         case share
         case cloud
         case subscriptions
+        case settings
         case activeEnvironment
     }
 
@@ -251,6 +290,7 @@ struct AppManifest: Codable {
         bundleIdSuffix: String,
         theme: Theme,
         features: FeatureFlags,
+        menu: MenuConfig?,
         apiBase: APIConfig,
         auth: AuthConfig,
         legal: LegalConfig?,
@@ -258,6 +298,7 @@ struct AppManifest: Codable {
         share: ShareConfig?,
         cloud: CloudConfig?,
         subscriptions: SubscriptionsConfig?,
+        settings: SettingsConfig?,
         activeEnvironment: Environment
     ) {
         self.appId = appId
@@ -265,6 +306,7 @@ struct AppManifest: Codable {
         self.bundleIdSuffix = bundleIdSuffix
         self.theme = theme
         self.features = features
+        self.menu = menu
         self.apiBase = apiBase
         self.auth = auth
         self.legal = legal
@@ -272,6 +314,7 @@ struct AppManifest: Codable {
         self.share = share
         self.cloud = cloud
         self.subscriptions = subscriptions
+        self.settings = settings
         self.activeEnvironment = activeEnvironment
     }
 
@@ -282,12 +325,14 @@ struct AppManifest: Codable {
         bundleIdSuffix = try container.decode(String.self, forKey: .bundleIdSuffix)
         theme = try container.decode(Theme.self, forKey: .theme)
         features = try container.decode(FeatureFlags.self, forKey: .features)
+        menu = try container.decodeIfPresent(MenuConfig.self, forKey: .menu)
         apiBase = try container.decode(APIConfig.self, forKey: .apiBase)
         legal = try container.decodeIfPresent(LegalConfig.self, forKey: .legal)
         push = try container.decodeIfPresent(PushConfig.self, forKey: .push)
         share = try container.decodeIfPresent(ShareConfig.self, forKey: .share)
         cloud = try container.decodeIfPresent(CloudConfig.self, forKey: .cloud)
         subscriptions = try container.decodeIfPresent(SubscriptionsConfig.self, forKey: .subscriptions)
+        settings = try container.decodeIfPresent(SettingsConfig.self, forKey: .settings)
         activeEnvironment = try container.decode(Environment.self, forKey: .activeEnvironment)
 
         if let envAuth = try? container.decode(EnvironmentAuthConfig.self, forKey: .auth),
@@ -323,6 +368,7 @@ struct AppManifest: Codable {
             cloudSync: false,
             subscriptions: false
         ),
+        menu: nil,
         apiBase: .init(
             staging: URL(string: "https://staging.api.example.com")!,
             prod: URL(string: "https://api.example.com")!
@@ -333,6 +379,7 @@ struct AppManifest: Codable {
         share: nil,
         cloud: nil,
         subscriptions: nil,
+        settings: nil,
         activeEnvironment: .staging
     )
 }

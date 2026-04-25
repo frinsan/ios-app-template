@@ -21,6 +21,12 @@
     "cloudSync": false,
     "subscriptions": false
   },
+  "menu": {
+    "settings": false,
+    "aiPlayground": false,
+    "subscriptions": false,
+    "imageCapture": false
+  },
   "apiBase": {
     "staging": "https://emjv5xdzc3.execute-api.us-west-2.amazonaws.com",
     "prod": "https://fhdsv5jl7h.execute-api.us-west-2.amazonaws.com"
@@ -64,6 +70,9 @@
     "premiumAreaTitle": "Premium Test Area",
     "premiumAreaLockedText": "Locked. Subscribe to access this section.",
     "premiumAreaUnlockedText": "Unlocked. This section represents premium-only content for brand apps."
+  },
+  "settings": {
+    "showDeveloperInfo": false
   },
   "activeEnvironment": "staging"
 }

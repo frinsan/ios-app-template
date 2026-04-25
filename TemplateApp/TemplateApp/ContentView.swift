@@ -683,7 +683,7 @@ struct TemplateSettingsView: View {
     }()
 
     private var isDeveloperToolsEnabled: Bool {
-        appState.manifest.activeEnvironment != .prod
+        appState.manifest.isSettingsDeveloperInfoVisible
     }
 
     private var imageRecords: [CloudSyncTestRecord] {

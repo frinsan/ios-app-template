@@ -12,19 +12,19 @@ struct RootContainerView: View {
     private var menuItems: [SidebarItem] {
         var items: [SidebarItem] = [.home]
 
-        if appState.manifest.features.subscriptions {
+        if appState.manifest.showsMenuItem(.subscriptions) {
             items.append(.subscriptions)
         }
 
-        if appState.manifest.features.imageCapture {
+        if appState.manifest.showsMenuItem(.imageCapture) {
             items.append(.imageCapture)
         }
 
-        if appState.manifest.features.settings {
+        if appState.manifest.showsMenuItem(.settings) {
             items.append(.settings)
         }
 
-        if appState.manifest.features.aiPlayground {
+        if appState.manifest.showsMenuItem(.aiPlayground) {
             items.append(.aiPlayground)
         }
 
