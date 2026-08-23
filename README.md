@@ -230,6 +230,13 @@ The template exposes an optional AI Playground screen controlled entirely by a f
   - leaf overlay screens and components
   - shell override only if the brand truly needs a different app container or navigation model
 
+### Brand overlay keyboard guidance
+
+- For brand-only screens with long-form text entry, prefer `ScrollView` or `Form` around the content instead of a plain root `VStack`.
+- Put keyboard-dismiss behavior on the scroll container with `.platformScrollDismissesKeyboard()`.
+- If the screen has bottom actions, pin them with `safeAreaInset(edge: .bottom)` rather than placing them in the same vertical stack as the `TextEditor`.
+- Avoid the pattern `TextEditor + buttons in a root full-screen VStack`; in this codebase that pattern can cause the whole screen to shift upward when the keyboard appears.
+
 ### Onboarding feature flag
 
 - Add `features.onboarding` to the brand manifest (`app.json`) to control pre-auth onboarding screens.
