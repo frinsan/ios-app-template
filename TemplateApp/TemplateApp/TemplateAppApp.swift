@@ -19,8 +19,10 @@ struct TemplateAppApp: App {
                 .environmentObject(subscriptionManager)
                 .tint(.primaryAccent)
                 .onAppear {
-                    AnalyticsManager.shared.configure(with: appState)
-                    AnalyticsManager.shared.track(.screenView(name: "AppEntry"))
+                    if appState.manifest.features.login {
+                        AnalyticsManager.shared.configure(with: appState)
+                        AnalyticsManager.shared.track(.screenView(name: "AppEntry"))
+                    }
                     subscriptionManager.configure(using: appState.manifest)
                 }
         }
@@ -55,9 +57,13 @@ final class AppState: ObservableObject {
                 }
             }
         )
-        AnalyticsManager.shared.configure(with: self)
+        if manifest.features.login {
+            AnalyticsManager.shared.configure(with: self)
+        }
         observePushTokens()
-        observeAppLifecycle()
+        if manifest.features.login {
+            observeAppLifecycle()
+        }
         restoreSession()
     }
 
@@ -70,6 +76,14 @@ final class AppState: ObservableObject {
     }
 
     private func restoreSession() {
+        guard manifest.features.login else {
+            AuthSessionStorage.shared.clear()
+            authState = .signedOut
+            userProfile = nil
+            shouldShowWelcome = false
+            shouldShowOnboarding = false
+            return
+        }
         if let session = AuthSessionStorage.shared.load() {
             if !session.isExpired {
                 authState = .signedIn(session)

@@ -171,6 +171,18 @@ update_build_setting() {
   perl -0pi -e 's#'"$key"' = [^;]+;#'"$key"' = '"$value"';#g' "$PROJECT_FILE"
 }
 
+update_primary_target_entitlements() {
+  local value=$1
+  PROJECT_FILE="$PROJECT_FILE" ENTITLEMENTS_VALUE="$value" perl -0pi -e '
+    BEGIN { $count = 0 }
+    s{CODE_SIGN_ENTITLEMENTS = [^;]+;}{
+      ++$count <= 2
+        ? "CODE_SIGN_ENTITLEMENTS = $ENV{ENTITLEMENTS_VALUE};"
+        : $&
+    }ge
+  ' "$PROJECT_FILE"
+}
+
 update_build_setting "PRODUCT_BUNDLE_IDENTIFIER" "$APP_ID"
 update_build_setting "INFOPLIST_KEY_CFBundleDisplayName" "\"$DISPLAY_NAME\""
 
@@ -244,10 +256,10 @@ elif [[ "$PUSH_ENABLED" != "true" ]]; then
 fi
 
 if [[ "$CLOUD_SYNC_ENABLED" == "true" ]]; then
-  update_build_setting "CODE_SIGN_ENTITLEMENTS" "TemplateApp/TemplateAppCloud.entitlements"
+  update_primary_target_entitlements "TemplateApp/TemplateAppCloud.entitlements"
   echo "Cloud sync enabled: using TemplateAppCloud.entitlements."
 else
-  update_build_setting "CODE_SIGN_ENTITLEMENTS" "TemplateApp/TemplateApp.entitlements"
+  update_primary_target_entitlements "TemplateApp/TemplateApp.entitlements"
   echo "Cloud sync disabled: using TemplateApp.entitlements."
 fi
 

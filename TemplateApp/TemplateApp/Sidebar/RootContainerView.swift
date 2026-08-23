@@ -30,10 +30,12 @@ struct RootContainerView: View {
 
         items.append(contentsOf: [.terms, .privacy])
 
-        if case .signedIn = appState.authState {
-            items.append(.account)
-        } else {
-            items.append(.login)
+        if appState.manifest.features.login {
+            if case .signedIn = appState.authState {
+                items.append(.account)
+            } else {
+                items.append(.login)
+            }
         }
         return items
     }
