@@ -178,6 +178,9 @@ jobs:
           while IFS= read -r line; do
             CANDIDATES+=("$line")
           done <<'EOF'
+          iPhone 17 Pro Max
+          iPhone 17 Pro
+          iPhone 17
           iPhone 16 Pro Max
           iPhone 16 Pro
           iPhone 16
@@ -204,8 +207,24 @@ jobs:
             fi
           done
           if [[ -z "$SELECTED_UDID" ]]; then
-            echo "No matching simulator found." >&2
-            exit 1
+            SELECTED_UDID=$(jq -r '
+              [.devices | to_entries[] | .value[]
+              | select(.isAvailable == true and (.name | startswith("iPhone")))]
+              | first
+              | .udid // empty' <<<"$SIM_JSON")
+            SELECTED_NAME=$(jq -r --arg udid "$SELECTED_UDID" '
+              [.devices | to_entries[] | .value[] | select(.udid == $udid)]
+              | first
+              | .name // empty' <<<"$SIM_JSON")
+            if [[ -z "$SELECTED_UDID" ]]; then
+              echo "No available iPhone simulator found." >&2
+              exit 1
+            fi
+            echo "Using fallback simulator: $SELECTED_NAME ($SELECTED_UDID)"
+            {
+              echo "SIMULATOR_NAME=$SELECTED_NAME"
+              echo "SIMULATOR_UDID=$SELECTED_UDID"
+            } >> "$GITHUB_ENV"
           fi
 
       - name: Run unit tests
